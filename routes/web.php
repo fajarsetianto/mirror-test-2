@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+
+Route::group(['prefix' => 'auth'], function(){
+    Auth::routes(['register' => false]);
 });
+
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('/', function () {
+        return view('pages.dashboard');
+    });
+});
+
+
+Route::get('/home', 'HomeController@index')->name('home');
