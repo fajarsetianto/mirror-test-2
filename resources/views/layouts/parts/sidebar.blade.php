@@ -49,15 +49,15 @@
 						<!-- Main -->
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
 						<li class="nav-item" >
-							<a href="index.html" class="nav-link {{ (request()->is('/')) ? 'active' : '' }}">
+							<a href="/" class="nav-link {{ (request()->is('/')) ? 'active' : '' }}">
 								<i class="icon-home4"></i>
 								<span>Dashboard</span>
 							</a>
 						</li>
-						<li class="nav-item nav-item-submenu">
+						<li class="nav-item nav-item-submenu {{ (request()->is('monitoring-evaluasi/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Monitoring & Evaluasi</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="#" class="nav-link active">Form MONEV</a></li>
+								<li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form')) ? 'active' : '' }}">Form MONEV</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Pemeriksaan</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Riwayat Pemeriksaan</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Laporan Indikator</a></li>

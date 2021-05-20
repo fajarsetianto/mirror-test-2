@@ -1,5 +1,7 @@
 @extends('layouts.clear')
 
+@section('site-title', 'Login')
+
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/forms/styling/uniform.min.js')}}"></script>
 	<script src="{{asset('assets/js/app.js')}}"></script>

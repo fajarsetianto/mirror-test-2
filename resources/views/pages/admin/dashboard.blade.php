@@ -1714,7 +1714,5 @@
 					</div>
 				</div>
 				<!-- /dashboard content -->
-
-			
 			
 @endsection

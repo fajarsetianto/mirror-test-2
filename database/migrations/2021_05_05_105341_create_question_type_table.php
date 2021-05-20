@@ -18,7 +18,6 @@ class CreateQuestionTypeTable extends Migration
             $table->string('name');
             $table->string('edit_mode');
             $table->string('full_view');
-            $table->string('validation');
             $table->timestamps();
         });
     }
