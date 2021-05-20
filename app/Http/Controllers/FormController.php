@@ -23,7 +23,7 @@ class FormController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'name' => 'required|string|max:1',
+            'name' => 'required|string',
             'description' => 'nullable|string'
         ]);
         

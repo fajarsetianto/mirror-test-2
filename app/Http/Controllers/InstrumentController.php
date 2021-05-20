@@ -24,7 +24,7 @@ class InstrumentController extends Controller
 
     public function store(Request $request, Form $form){
         $request->validate([
-            'name' => 'required|string|max:1',
+            'name' => 'required|string',
             'description' => 'nullable|string'
         ]);
         
