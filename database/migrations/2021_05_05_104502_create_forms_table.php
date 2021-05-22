@@ -19,6 +19,8 @@ class CreateFormsTable extends Migration
             $table->text('description')->nullable();
             $table->enum('category',['satuan pendidikan', 'non satuan pendidikan'])->default('satuan pendidikan');
             $table->enum('status',['draft','publish'])->default('draft');
+            $table->date('supervision_start_date');
+            $table->date('supervision_end_date');
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
 

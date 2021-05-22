@@ -8,9 +8,9 @@
 
 					<div class="header-elements d-none">
 						<div class="d-flex justify-content-center">
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calculator text-primary"></i> <span>Invoices</span></a>
-							<a href="#" class="btn btn-link btn-float text-default"><i class="icon-calendar5 text-primary"></i> <span>Schedule</span></a>
+							<a href="#" class="btn btn-success btn-float text-default"><i class="icon-bars-alt text-primary"></i><span>Preview</span></a>
+							<a href="#" class="btn btn-purple btn-float text-default"><i class="icon-calculator text-primary"></i> <span>Simpan Draft</span></a>
+							<a href="#" class="btn btn-info btn-float text-default"><i class="icon-calendar5 text-primary"></i> <span>Publish</span></a>
 						</div>
 					</div>
 				</div>

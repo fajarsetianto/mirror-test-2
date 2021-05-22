@@ -5,7 +5,7 @@
 						 @foreach ($breadcrumbs as $breadcrumb)
 
 							@if (!is_null($breadcrumb->url) && !$loop->last)
-								<li class="breadcrumb-item"><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li>
+								{{-- <li class="breadcrumb-item"><a href="{{ $breadcrumb->url }}">{{ $breadcrumb->title }}</a></li> --}}
 								<a href="{{ $breadcrumb->url }}" class="breadcrumb-item">
 									{{-- <i class="icon-home2 mr-2"></i>  --}}
 									{{ $breadcrumb->title }}

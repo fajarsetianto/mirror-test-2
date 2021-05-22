@@ -57,7 +57,7 @@
 						<li class="nav-item nav-item-submenu {{ (request()->is('monitoring-evaluasi/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Monitoring & Evaluasi</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form')) ? 'active' : '' }}">Form MONEV</a></li>
+								<li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Pemeriksaan</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Riwayat Pemeriksaan</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Laporan Indikator</a></li>

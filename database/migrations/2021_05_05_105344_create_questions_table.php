@@ -20,8 +20,8 @@ class CreateQuestionsTable extends Migration
             $table->unsignedBigInteger('question_type_id');
             $table->timestamps();
 
-            $table->foreign('instrument_id')->references('id')->on('instruments');
-            $table->foreign('question_type_id')->references('id')->on('question_type');
+            $table->foreign('instrument_id')->references('id')->on('instruments')->cascadeOnDelete();
+            $table->foreign('question_type_id')->references('id')->on('question_type')->cascadeOnDelete();
         });
     }
 

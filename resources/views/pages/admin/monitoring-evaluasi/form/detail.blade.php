@@ -14,7 +14,7 @@
 
 			
 		});
-		function getForm(x){
+		function component(x){
 				switch(x){
 					case 'add':
 						var url = "{{route('monev.form.create')}}";
@@ -59,7 +59,7 @@
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title">Daftar Form Instrument Monitoring dan Evaluasi</h6>
 		<div class="header-elements">
-			<button class="btn btn-success" onclick="getForm('add')"><i class=""></i> Add Form</button>
+			<button class="btn btn-success" onclick="component('add')"><i class=""></i> Add Form</button>
 		</div>
 	</div>
 	<hr class="m-0">

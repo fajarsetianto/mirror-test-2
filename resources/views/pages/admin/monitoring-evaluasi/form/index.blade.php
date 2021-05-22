@@ -1,4 +1,4 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
 @section('site-title','Dashboard')
 
@@ -6,6 +6,9 @@
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/loaders/blockui.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
 		$(document).ready(function(){
 			
@@ -39,10 +42,14 @@
 
 			
 		});
-		function getForm(x){
+		function component(x, y){
 				switch(x){
 					case 'add':
 						var url = "{{route('monev.form.create')}}";
+						break;
+					case 'edit':
+						var editUrl = "{{route('monev.form.edit',['$1'])}}"
+						var url = editUrl.replace("%241",y)
 						break;
 				}
 
@@ -75,16 +82,63 @@
 					$.unblockUI();
 				});
 			}
+			function destroy(y){
+				let csrf_token = "{{csrf_token()}}"
+				Swal.fire({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonClass: 'btn btn-primary',
+						cancelButtonClass: 'btn btn-light',
+						confirmButtonText: 'Yes, delete it!'
+					})
+					.then((result) => {
+						// console.log(result.value) 
+						if (result.value) {
+							$.ajax({
+								url: y,
+								type : "DELETE",
+								data : {'_method' : 'DELETE', '_token' : csrf_token},
+								success:function(data){
+									instanceDatatable.ajax.reload();
+									new PNotify({
+										title: data.title,
+										text: data.msg,
+										addclass: 'bg-success border-success',
+									});
+								},
+								error:function(data){
+									new PNotify({
+										title: data.statusText,
+										text: data.responseJSON.msg,
+										addclass: 'bg-danger border-danger',
+									});
+								}
+							});
+						}
+				});
+			}
 		
 	</script>
 @endpush
-
+@section('page-header')
+	<div class="page-header page-header-light">
+		<div class="page-header-content header-elements-md-inline">
+			<div class="page-title d-flex">
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Monitoring & Evaluasi</span> - Form</h4>
+				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+			</div>
+		</div>
+		{{ Breadcrumbs::render('form') }}				
+	</div>
+@endsection
 @section('content')
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h6 class="card-title">Daftar Form Instrument Monitoring dan Evaluasi</h6>
+		<h6 class="card-title font-weight-semibold">Daftar Form Instrument Monitoring dan Evaluasi</h6>
 		<div class="header-elements">
-			<button class="btn btn-success" onclick="getForm('add')"><i class=""></i> Add Form</button>
+			<button class="btn bg-purple-400" onclick="component('add')"><i class="icon-add-to-list"></i> Buat Form</button>
 		</div>
 	</div>
 	<hr class="m-0">

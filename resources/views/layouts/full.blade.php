@@ -10,7 +10,7 @@
         <!-- Main content -->
 		<div class="content-wrapper">
             
-            @include('layouts.parts.page-header',['breadcrumb' => isset($breadcrumb) ? $breadcrumb : null])
+            @yield('page-header')
             <div class="content">
                 @yield('content')
             </div>

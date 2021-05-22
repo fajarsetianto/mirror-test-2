@@ -8,8 +8,17 @@ class Form extends Model
 {
     protected $guarded = [];
 
+    protected $dates = [
+        'supervision_start_date',
+        'supervision_end_date',
+    ];
+
     public function instruments(){
         return $this->hasMany(Instrument::class);
+    }
+
+    public function indicators(){
+        return $this->hasMany(Indicator::class);
     }
 
     public function createdBy(){
