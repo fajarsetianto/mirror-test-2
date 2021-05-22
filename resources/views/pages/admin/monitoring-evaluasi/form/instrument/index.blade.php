@@ -1,7 +1,8 @@
 @extends('layouts.full',['breadcrumb' => 'home'])
 
-@section('site-title','Dashboard')
+@section('site-title','Monitoring & Evaluasi - '. $form->name)
 @push('css-top')
+	<link href="{{asset('assets/global/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<style>
 		.sp-container{
 			z-index: 9999;
@@ -14,6 +15,8 @@
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
 	<script>
 		$(document).ready(function(){
 				instrumentDatatable = $('#instrument-table').DataTable({
@@ -148,28 +151,58 @@
 	<div class="page-header page-header-light">
 		<div class="page-header-content header-elements-md-inline">
 			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Home</span> - Dashboard</h4>
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Monitoring & Evaluasi</span> - Form</h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					<button href="#" class="btn btn-success "><i class="icon-eye"></i> <span>Preview</span></button>
-					<button href="#" class="mx-3 btn bg-purple-400 mx-y"><i class="icon-calculator"></i> <span>Simpan Draft</span></button>
-					<button href="#" class="btn btn-info"><i class="icon-calendar5"></i> <span>Publish</span></button>
+					<button href="#" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></button>
+					<button href="#" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
+					<button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan Draft</span></button>
+					<button href="#" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
 				</div>
 			</div>
 		</div>	
 	</div>
+	{{ Breadcrumbs::render('form',$form) }}	
 @endsection
 
 @section('content')
+<div class="card">
+	<div class="card-header bg-teal-400 text-white header-elements-inline">
+		<h3 class="card-title font-weight-semibold">{{ strtoupper($form->name)}}</h3>
+		<div class="header-elements">
+			<button type="button" onclick="component('edit','{{route('monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
+		</div>
+	</div>
+	
+	<div class="card-body">
+		{{$form->description}}
+	</div>
+	<div class="card-footer bg-white d-flex align-items-center">
+		<div class="mr-4">
+			<i class="mi-assignment-ind mi-2x mr-2 text-info"></i>
+			<span class="font-weight-bold">Kategori Sasaran Monitoring </span>: {{$form->category}}
+		</div>
+
+		<div class="mr-4">
+			<i class="mi-access-alarms mr-2 mi-2x text-success"></i>
+			<span class="font-weight-bold">Waktu Mulai </span>: {{$form->supervision_start_date->format('d/m/Y')}}
+		</div>
+		<div class="mr-4">
+			<i class="mi-alarm-off mr-2 mi-2x text-danger"></i>
+			<span class="font-weight-bold">Waktu Selesai </span>: {{$form->supervision_end_date->format('d/m/Y')}}
+		</div>
+	</div>
+	
+</div>
 
 <div class="card">
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title">Instrument Form Monitoring dan Evaluasi</h6>
 		<div class="header-elements">
-			<button class="btn btn-success" onclick="component('add','{{route('monev.form.instrument.create',[$form->id])}}')"><i class=""></i> Tambah Group Pertanyaan</button>
+			<button class="btn bg-purple-400" onclick="component('add','{{route('monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Instrument Form</button>
 		</div>
 	</div>
 	<hr class="m-0">
@@ -192,7 +225,7 @@
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title">Manajemen Indikator</h6>
 		<div class="header-elements">
-			<button class="btn btn-success" onclick="component('add','{{route('monev.form.indicator.create',[$form->id])}}')"><i class=""></i> Tambah Indikator</button>
+			<button class="btn bg-purple-400" onclick="component('add','{{route('monev.form.indicator.create',[$form->id])}}')"><i class="mi-info"></i> Tambah Indikator</button>
 		</div>
 	</div>
 	<hr class="m-0">

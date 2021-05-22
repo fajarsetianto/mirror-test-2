@@ -101,7 +101,10 @@
 								type : "DELETE",
 								data : {'_method' : 'DELETE', '_token' : csrf_token},
 								success:function(data){
+									
 									instanceDatatable.ajax.reload();
+									
+																			
 									new PNotify({
 										title: data.title,
 										text: data.msg,
@@ -130,7 +133,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('form') }}				
+		{{ Breadcrumbs::render('forms') }}				
 	</div>
 @endsection
 @section('content')
