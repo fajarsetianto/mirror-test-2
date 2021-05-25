@@ -61,7 +61,6 @@ Route::group(['middleware' => 'auth'], function(){
                 Route::post('/create', 'TargetController@store')->name('store');
                 Route::get('{target}/edit', 'TargetController@edit')->name('edit');
                 Route::put('{target}/update', 'TargetController@update')->name('update');
-
                 Route::get('summary', 'TargetController@summary')->name('summary');
                 Route::delete('{target}', 'TargetController@destroy')->name('destroy');
             });
@@ -76,7 +75,7 @@ Route::group(['middleware' => 'auth'], function(){
         });
     });
 
-    Route::group(['prefix' => 'management-sekolah','as' => 'institution.'], function(){
+    Route::group(['prefix' => 'management-lembaga','as' => 'institution.'], function(){
         Route::group(['prefix' => 'non-satuan-pendidikan','as' => 'non-satuan.'], function(){
             Route::get('/', 'InstitutionController@index')->name('index');
             Route::get('/data', 'InstitutionController@data')->name('data');

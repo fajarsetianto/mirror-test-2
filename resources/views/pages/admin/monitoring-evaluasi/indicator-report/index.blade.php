@@ -5,7 +5,6 @@
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
-	<script src="{{asset('assets/global/js/plugins/loaders/blockui.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
