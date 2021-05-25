@@ -1,4 +1,4 @@
- <div class="modal" tabindex="-1">
+ <div class="modal">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">

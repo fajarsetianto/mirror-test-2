@@ -16,17 +16,16 @@
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
-	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.js')}}"></script>
-	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/forms/selects/select2.min.js')}}"></script>	
 	<script>
 		$(document).ready(function(){
-				instrumentDatatable = $('#instrument-table').DataTable({
+				instanceDatatable = $('.datatable').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
-					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.form.instrument.data",[$form->id]) !!}',
+					serverSide: true,
+					ajax: '{!! route("monev.form.target.data",[$form->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false,
 						render: function (data, type, row, meta) {
@@ -34,34 +33,8 @@
 						}
 					},
 					{data: 'name', name: 'name'},
-					{data: 'description', name: 'description'},
-					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
-					],
-					autoWidth: false,
-					dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-					language: {
-						search: '<span>Filter:</span> _INPUT_',
-						lengthMenu: '<span>Show:</span> _MENU_',
-						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
-					}
-				});
-                indicatorDatatable = $('#indicator-table').DataTable({
-					pageLength : 10,
-					lengthMenu: [[5, 10, 20], [5, 10, 20]],
-					processing: true,
-					serverSide: true,
-					responsive: true,
-					ajax: '{!! route("monev.form.indicator.data",[$form->id]) !!}',
-					columns: [
-					{ "data": null,"sortable": false,
-						render: function (data, type, row, meta) {
-							return meta.row + meta.settings._iDisplayStart + 1;
-						}
-					},
-                    {data: 'minimum', name: 'minimum'},
-                    {data: 'maximum', name: 'maximum'},
-                    {data: 'color', name: 'color'},
-					{data: 'description', name: 'description'},
+					{data: 'officer_name', name: 'officer_name'},
+                    {data: 'type', name: 'type'},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -105,7 +78,7 @@
 						$.unblockUI();
 					});
 				}
-        function destroy(x,y){
+        function destroy(y){
 			let csrf_token = "{{csrf_token()}}"
             Swal.fire({
                     title: 'Are you sure?',
@@ -125,11 +98,8 @@
                             data : {'_method' : 'DELETE', '_token' : csrf_token},
                             success:function(data){
                                 
-								if(x =="instrument"){
-									instrumentDatatable.ajax.reload()
-								}else{
-									indicatorDatatable.ajax.reload();
-								}
+								instanceDatatable.ajax.reload()
+								
                                 new PNotify({
                                     title: data.title,
                                     text: data.msg,
@@ -154,93 +124,39 @@
 	<div class="page-header page-header-light">
 		<div class="page-header-content header-elements-md-inline">
 			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Monitoring & Evaluasi</span> - Form</h4>
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Form</span> - Sasaran Monitoring</h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					<button href="#" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></button>
-					<button onclick="component('{{route('monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
-					<button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan Draft</span></button>
+					<a href="{{route('monev.form.instrument.index',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Detail Form</span></a>
 					<button href="#" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
 				</div>
 			</div>
 		</div>	
 	</div>
-	{{ Breadcrumbs::render('form',$form) }}	
+	{{ Breadcrumbs::render('target',$form) }}	
 @endsection
 
 @section('content')
-<div class="card">
-	<div class="card-header bg-teal-400 text-white header-elements-inline">
-		<h3 class="card-title font-weight-semibold">{{ strtoupper($form->name)}}</h3>
-		<div class="header-elements">
-			<button type="button" onclick="component('{{route('monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
-		</div>
-	</div>
-	
-	<div class="card-body">
-		{{$form->description}}
-	</div>
-	<div class="card-footer bg-white d-flex align-items-center">
-		<div class="mr-4">
-			<i class="mi-assignment-ind mi-2x mr-2 text-info"></i>
-			<span class="font-weight-bold">Kategori Sasaran Monitoring </span>: {{$form->category}}
-		</div>
-
-		<div class="mr-4">
-			<i class="mi-access-alarms mr-2 mi-2x text-success"></i>
-			<span class="font-weight-bold">Waktu Mulai </span>: {{$form->supervision_start_date->format('d/m/Y')}}
-		</div>
-		<div class="mr-4">
-			<i class="mi-alarm-off mr-2 mi-2x text-danger"></i>
-			<span class="font-weight-bold">Waktu Selesai </span>: {{$form->supervision_end_date->format('d/m/Y')}}
-		</div>
-	</div>
-	
-</div>
 
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h6 class="card-title">Instrument Form Monitoring dan Evaluasi</h6>
+		<h6 class="card-title">Daftar Sasaran Monitoring</h6>
 		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Instrument Form</button>
+			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
 		</div>
 	</div>
 	<hr class="m-0">
 	<div class="card-body">
-		<table class="table" id="instrument-table">
+		<table class="table datatable">
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>Group Pertanyaan</th>
-					<th>Description</th>
-					<th class="text-center">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-	</div>
-</div>
-<div class="card">
-	<div class="card-header header-elements-inline">
-		<h6 class="card-title">Manajemen Indikator</h6>
-		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.indicator.create',[$form->id])}}')"><i class="mi-info"></i> Tambah Indikator</button>
-		</div>
-	</div>
-	<hr class="m-0">
-	<div class="card-body">
-		<table class="table" id="indicator-table">
-			<thead>
-				<tr>
-					<th>No</th>
-					<th>Bobot Nilai Minimum</th>
-                    <th>Bobot Nilai Maximum</th>
-                    <th>Warna</th>
-					<th>Deskripsi</th>
+					<th>Sasaran Monitoring</th>
+                    <th>Nama Petugas</th>
+                    <th>Pengisi Form</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

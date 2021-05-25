@@ -27,7 +27,7 @@ class IndicatorController extends Controller
     public function store(Request $request, Form $form){
         $request->validate([
             'minimum' => 'required|numeric',
-            'maximum' => 'required|numeric',
+            'maximum' => 'required|numeric|gte:minimum',
             'color' => 'required|string',
             'description' => 'nullable|string',
         ]);
@@ -43,13 +43,12 @@ class IndicatorController extends Controller
             'title' => 'Successful!',
             'msg' => 'Data succesfully Created!'
         ],200);
-
     }
 
     public function update(Request $request, Form $form, Indicator $indicator){
         $request->validate([
             'minimum' => 'required|numeric',
-            'maximum' => 'required|numeric',
+            'maximum' => 'required|numeric|gte:minimum',
             'color' => 'required|string',
             'description' => 'nullable|string',
         ]);
@@ -75,7 +74,7 @@ class IndicatorController extends Controller
     public function data(Form $form){
         $data = $form->indicators()->latest()->get();
         
-        return Datatables::of($data)
+        return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('color', function($row){   
                 $btn = '<div class="sp-preview"><div class="sp-preview-inner" style="background-color: '.$row->color.';"></div></div>';     
@@ -88,7 +87,7 @@ class IndicatorController extends Controller
                         <i class="icon-menu9"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`edit`,`'.route('monev.form.indicator.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.indicator.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
                         <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`indicator`,`'.route('monev.form.indicator.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>

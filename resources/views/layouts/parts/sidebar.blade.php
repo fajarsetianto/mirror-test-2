@@ -21,12 +21,12 @@
 				<!-- User menu -->
 				<div class="sidebar-user">
 					<div class="card-body">
-						<div class="media">
+						<div class="media d-flex align-items-center">
 							<div class="mr-3">
 								<a href="#"><img src="{{asset('assets/global/images/placeholders/placeholder.jpg')}}" width="38" height="38" class="rounded-circle" alt=""></a>
 							</div>
 
-							<div class="media-body">
+							<div class="media-body ">
 								<div class="media-title font-weight-semibold">{{ucfirst(auth()->user()->name)}}</div>
 								{{-- <div class="font-size-xs opacity-50">
 									<i class="icon-pin font-size-sm"></i> &nbsp;Santa Ana, CA
@@ -60,7 +60,7 @@
 								<li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Pemeriksaan</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Riwayat Pemeriksaan</a></li>
-								<li class="nav-item"><a href="#" class="nav-link">Laporan Indikator</a></li>
+								<li class="nav-item"><a href="{{route('monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/indicator-report*')) ? 'active' : '' }}">Laporan Indikator</a></li>
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu">
@@ -69,10 +69,11 @@
 								<li class="nav-item"><a href="#" class="nav-link active">List User</a></li>
 							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen Sekolah</span></a>
+						<li class="nav-item nav-item-submenu {{ (request()->is('lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
+							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen Lembaga</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="#" class="nav-link active">List Sekolah</a></li>
+								<li class="nav-item"><a href="#" class="nav-link">Satuan Pendidikan</a></li>
+								<li class="nav-item"><a href="{{route('institution.non-satuan.index')}}" class="nav-link {{ (request()->is('lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
 							</ul>
 						</li>
 						<li class="nav-item" >
