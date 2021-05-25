@@ -60,7 +60,7 @@
 								<li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Pemeriksaan</a></li>
 								<li class="nav-item"><a href="#" class="nav-link">Riwayat Pemeriksaan</a></li>
-								<li class="nav-item"><a href="{{route('monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/indicator-report*')) ? 'active' : '' }}">Laporan Indikator</a></li>
+								<li class="nav-item"><a href="{{route('monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/laporan-indikator*')) ? 'active' : '' }}">Laporan Indikator</a></li>
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu">
@@ -69,11 +69,11 @@
 								<li class="nav-item"><a href="#" class="nav-link active">List User</a></li>
 							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu {{ (request()->is('lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
+						<li class="nav-item nav-item-submenu {{ (request()->is('management-lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen Lembaga</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="#" class="nav-link">Satuan Pendidikan</a></li>
-								<li class="nav-item"><a href="{{route('institution.non-satuan.index')}}" class="nav-link {{ (request()->is('lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
+								<li class="nav-item"><a href="{{route('institution.non-satuan.index')}}" class="nav-link {{ (request()->is('management-lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
 							</ul>
 						</li>
 						<li class="nav-item" >
