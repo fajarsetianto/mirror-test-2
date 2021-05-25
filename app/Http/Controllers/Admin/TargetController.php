@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace  App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Form;
 use App\Models\Institution;
 use App\Models\Target;
 use Illuminate\Http\Request;
 use DataTables;
-use TypeError;
 
 class TargetController extends Controller
 {

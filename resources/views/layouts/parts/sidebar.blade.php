@@ -63,10 +63,10 @@
 								<li class="nav-item"><a href="{{route('monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/laporan-indikator*')) ? 'active' : '' }}">Laporan Indikator</a></li>
 							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
+						<li class="nav-item nav-item-submenu {{ (request()->is('management-user*')) ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen User</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="#" class="nav-link active">List User</a></li>
+								<li class="nav-item"><a href="{{route('management-user.index')}}" class="nav-link {{ (request()->is('management-user*')) ? 'active' : '' }}">List User</a></li>
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu {{ (request()->is('management-lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">

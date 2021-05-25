@@ -35,3 +35,8 @@ Breadcrumbs::for('indicator-report.detail', function ($trail, $form) {
     $trail->parent('indicator-report');
     $trail->push(ucwords($form->name), route('monev.indicator-report.detail',[$form->id]));
 });
+
+Breadcrumbs::for('management-user', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Manajemen User', route('management-user.index'));
+});
