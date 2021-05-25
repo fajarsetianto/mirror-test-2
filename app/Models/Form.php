@@ -21,6 +21,10 @@ class Form extends Model
         return $this->hasMany(Indicator::class);
     }
 
+    public function targets(){
+        return $this->hasMany(Target::class);
+    }
+
     public function createdBy(){
         return $this->belongsTo(User::class);
     }

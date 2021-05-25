@@ -76,14 +76,14 @@ class FormController extends Controller
 
     public function data(){
         $data = Form::latest()->get();
-        return Datatables::of($data)
+        return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
                 $link = '<a href="'.route('monev.form.instrument.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
-                $link = '<a href="#" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</a>';     
+                $link = '<button onclick="component(`'.route('monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
                 return $link;
             })
             ->addColumn('actions', function($row){   
@@ -94,7 +94,7 @@ class FormController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`edit`,'.$row->id.')"><i class="icon-pencil"></i> Edit</a>
+                        <a href="#" class="dropdown-item" onclick="component(`'.route('monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
                         <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
