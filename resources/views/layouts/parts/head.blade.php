@@ -17,6 +17,14 @@
 
 	@stack('css-top')
 	<!-- /global stylesheets -->
+	<style>
+		.breadcrumb-item{
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 200px;
+		}
+	</style>
 
 	<!-- Core JS files -->
 	<script src="{{asset('assets/global/js/main/jquery.min.js')}}"></script>

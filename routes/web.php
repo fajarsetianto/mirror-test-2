@@ -61,7 +61,6 @@ Route::group(['middleware' => 'auth'], function(){
                 Route::post('/create', 'TargetController@store')->name('store');
                 Route::get('{target}/edit', 'TargetController@edit')->name('edit');
                 Route::put('{target}/update', 'TargetController@update')->name('update');
-
                 Route::get('summary', 'TargetController@summary')->name('summary');
                 Route::delete('{target}', 'TargetController@destroy')->name('destroy');
             });
