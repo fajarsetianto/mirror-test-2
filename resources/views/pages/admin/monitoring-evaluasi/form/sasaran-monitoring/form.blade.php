@@ -36,7 +36,7 @@
                         <div class="form-group text-center text-muted content-divider mb-0">
                             <span class="px-2">atau</span>
                         </div>
-                        <button type="button" class="btn btn-light w-100" onclick="component('{{route('school.institution.create')}}')"><i class="mi-assignment-turned-in"></i> Tambah Lembaga Baru</button>
+                        <button type="button" class="btn btn-light w-100" onclick="component('{{route('institution.non-satuan.create')}}')"><i class="mi-assignment-turned-in"></i> Tambah Lembaga Baru</button>
                     </div>
                 </div>
                 <div id="dynamic-input-wrapper">
