@@ -17,13 +17,13 @@ class InstitutionController extends Controller
 
     public function create(){
         return view($this->viewNamespace.'form', [
-            'url' => route('school.institution.store'),
+            'url' => route('institution.non-satuan.store'),
         ]);
     }
 
     public function edit(Institution $institution){
         return view($this->viewNamespace.'form', [
-            'url' => route('school.institution.update',[$institution->id]),
+            'url' => route('institution.non-satuan.update',[$institution->id]),
             'item' => $institution
         ]);
     }
