@@ -23,7 +23,6 @@
 	<script>
 		number = 1;
 		$(document).ready(function(){
-				questionArr = []
 				instrumentDatatable = $('#instrument-table').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
@@ -79,11 +78,11 @@
 		});
 		
     
-		removeOption = (uniqId) => {
+		removeOption = (questionId,uniqId) => {
 			let number = 1
 			$(`#row-${uniqId}`).remove()
-			$(`.option-question`).each((key, elem) => {
-				$(`.option-number`).eq(key).text(`Opsi ${number++}`)
+			$(`.option-question-${questionId}`).each((key, elem) => {
+				$(`.option-number-${questionId}`).eq(key).text(`Opsi ${number++}`)
 			})
 		}
 
@@ -93,11 +92,9 @@
 			optionAnother = $(`.option-another-${uniqId}`).length
 
 			if(optionNumber == 2){
-				console.log(`#option-${uniqId}`)
-				console.log($(`#option-${uniqId} > row`).html())
 				$(`#row-option-${uniqId}`).append(`
 					<div class="col-md-1 ml-0 pl-0">
-						<button type="button" id="remove-field-${uniqId}" onclick="removeOption(${uniqId})" class="btn btn-icon rounded-round"><i class="icon-cross2"></i></button>
+						<button type="button" id="remove-field-${uniqId}" onclick="removeOption(${uniqId},${uniqId})" class="btn btn-icon rounded-round"><i class="icon-cross2"></i></button>
 					</div>
 				`)
 			}
@@ -105,10 +102,10 @@
 			$(`#count-option-${uniqId}`).val(optionNumber)
 
 			data = `
-			<div class="row mt-4 option-${uniqId} option-question" id="row-${newUniqId}">
+			<div class="row mt-4 option-${uniqId} option-question-${uniqId}" id="row-${newUniqId}">
 					<div class="col-md-2 pr-0 mr-0">
 						<i class="${icon}"></i> 
-						<span class="option-number">Opsi ${optionNumber-optionAnother}</span>
+						<span class="option-number-${uniqId}">Opsi ${optionNumber-optionAnother}</span>
 					</div>
 					<div class="col-md-10 ml-0 pl-0">
 						<div class="row">
@@ -116,7 +113,7 @@
 								<input class="alpaca-control form-control flex-1 mr-3" required value="${valueOption == null ? '' : valueOption}" name="option_answer[]" placeholder="Opsi Jawaban">   
 							</div>
 							<div class="col-md-1 ml-0 pl-0">
-								<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${newUniqId})" class="btn btn-icon rounded-round"><i class="icon-cross2"></i></button>
+								<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${uniqId},${newUniqId})" class="btn btn-icon rounded-round"><i class="icon-cross2"></i></button>
 							</div>
 						</div>
 						<div class="row">
@@ -150,7 +147,7 @@
 									<input readonly class="alpaca-control form-control flex-1 mr-3" name="option_answer[]" value="Lainnya" placeholder="Lainnya">   
 								</div>
 								<div class="col-md-1 ml-0 pl-0">
-									<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${newUniqId})" class="btn btn-icon rounded-round"><i class="icon-cross2"></i></button>
+									<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${uniqId},${newUniqId})" class="btn btn-icon rounded-round"><i class="icon-cross2"></i></button>
 								</div>
 							</div>
 							<div class="row">
@@ -253,6 +250,7 @@
 			questionType=''
 			addOption = ''
 			countOption = 0
+			number = 1
 			uniqId = (new Date()).getTime()
 			if(typeClick == 'singkat'){
 				questionType = 'Singkat'
@@ -280,10 +278,10 @@
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 						<label  class="pt-2 control-label alpaca-control-label">Opsi Jawaban</label>
-						<div class="row mt-2 option-${uniqId} option-question" id="row-${uniqId}">
+						<div class="row mt-2 option-${uniqId} option-question-${uniqId}" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
 								<i class="${icon}"></i> 
-								<span class="option-number">Opsi 1</span>
+								<span class="option-number-${uniqId}">Opsi 1</span>
 							</div>
 							<div class="col-md-10 ml-0 pl-0">
 								<div class="row" id="row-option-${uniqId}">
@@ -319,10 +317,10 @@
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 						<label class="pt-2 control-label alpaca-control-label">Opsi Jawaban</label>
-						<div class="row mt-2 option-${uniqId} option-question" id="row-${uniqId}">
+						<div class="row mt-2 option-${uniqId} option-question-${uniqId}" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
 								<i class="${icon}"></i> 
-								<span class="option-number">Opsi 1</span>
+								<span class="option-number-${uniqId}">Opsi 1</span>
 							</div>
 							<div class="col-md-10 ml-0 pl-0">
 								<div class="row" id="row-option-${uniqId}">
@@ -358,10 +356,10 @@
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-						<div class="row mt-2 option-${uniqId} option-question" id="row-${uniqId}">
+						<div class="row mt-2 option-${uniqId} option-question-${uniqId}" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
 								<i class="${icon}"></i> 
-								<span class="option-number">Opsi 1</span>
+								<span class="option-number-${uniqId}">Opsi 1</span>
 							</div>
 							<div class="col-md-10 ml-0 pl-0">
 								<div class="row" id="row-option-${uniqId}">
@@ -568,7 +566,7 @@
 			<div class="card mt-0">
 				<div class="card-body">
 					<button class="btn btn-block bg-purle text-left mb-3" onclick="saveDraft('{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button>
-					<button class="btn btn-block btn-primary text-left mb-5" onclick="component(questionArr,'{{route('monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button>
+					<button class="btn btn-block btn-primary text-left mb-5" onclick="component('public','{{route('monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button>
 				</div>
 			</div>
 		</div>
