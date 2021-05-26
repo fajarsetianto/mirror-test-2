@@ -9,6 +9,9 @@
 		.cursor{
 			cursor: pointer;
 		}
+		.bg-purle {
+			background-color: #5C6BC0;
+		}
 	</style>
 @endpush
 @push('scripts-top')
@@ -235,7 +238,7 @@
             });
 		}
 
-		function cancel(uniqId){
+		cancel = (uniqId) =>{
 			$(`#form-card-${uniqId}`).remove()
 
 			let number = 1;
@@ -245,7 +248,7 @@
 			this.number = number
 		}
 
-		function question(typeClick, questionName = null, option =null){
+		question = (typeClick, questionName = null, option =null) => {
 			type =''
 			questionType=''
 			addOption = ''
@@ -256,7 +259,7 @@
 				
 				type = `
 					<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label class="pt-2 control-label alpaca-control-label font-weight-bold">Jawaban</label>
+						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
 						<input type="text" disabled id="alpaca5" class="alpaca-control form-control" placeholder="Jawaban ${questionType}"  autocomplete="off">
 					</div>
 				`
@@ -265,7 +268,7 @@
 
 					type = `
 					<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label class="pt-2 control-label alpaca-control-label font-weight-bold">Jawaban</label>
+						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
 						<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
 					</div>
 					
@@ -276,7 +279,7 @@
 				countOption = 1
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Opsi Jawaban</label>
+						<label  class="pt-2 control-label alpaca-control-label">Opsi Jawaban</label>
 						<div class="row mt-2 option-${uniqId} option-question" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
 								<i class="${icon}"></i> 
@@ -315,7 +318,7 @@
 				countOption = 1
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label class="pt-2 control-label alpaca-control-label font-weight-bold">Opsi Jawaban</label>
+						<label class="pt-2 control-label alpaca-control-label">Opsi Jawaban</label>
 						<div class="row mt-2 option-${uniqId} option-question" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
 								<i class="${icon}"></i> 
@@ -354,7 +357,7 @@
 
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label class="pt-2 control-label alpaca-control-label font-weight-bold">Jawaban</label>
+						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
 						<div class="row mt-2 option-${uniqId} option-question" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
 								<i class="${icon}"></i> 
@@ -386,6 +389,14 @@
 							</div>
 						</div>
 				`
+			} else if (typeClick == 'file-upload' || typeClick == 'file upload'){
+				questionType = 'File Upload'
+				type = `
+					<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+						<label class="pt-2 control-label d-block alpaca-control-label">Berkas File Upload</label>
+						<button disabled class="btn btn-light text-left mb-3 text-primary"><i class="icon-upload4 mr-2"></i>File Upload</button>
+					</div>
+				`
 			}
 			$('#content').append(`
 				<div id="form-card-${uniqId}">
@@ -400,12 +411,14 @@
 									</div>
 									<div class="col-lg-11">
 										<div class="d-flex ">
-											<input class="alpaca-control form-control flex-1 mr-3" required name="question[]" value="${questionName == null ? '' : questionName}" placeholder="Pertanyaan - ${questionType}">
+											<label>Pertanyaan - ${questionType}</label>
 											<div class="question-action ml-auto align-self-center">
 												<a href="#" class="mr-2 text-dark"><i class="icon-pencil"></i></a>
 												<a href="#" class="mr-2 text-dark"><i class="icon-trash-alt"></i></a>
 											</div>
 										</div>
+										<input class="alpaca-control form-control flex-1 mr-3" required name="question[]" value="${questionName == null ? '' : questionName}" placeholder="Pertanyaan - ${questionType}">
+										
 										${type}
 									</div>
 								</div>
@@ -437,7 +450,7 @@
 			number++;
 		}
 
-		function saveDraft(url){
+		saveDraft = (url) => {
 			$.ajax({
 				url: url,
 				type: "POST",
@@ -481,7 +494,7 @@
 			})
 		}
 
-		function save(uniqId, url){
+		save = (uniqId, url) =>{
 			let formData = new FormData()
 			$(`#form-card-${uniqId} input`).serializeArray().forEach(function(elem){
 				formData.append(elem.name, elem.value)
@@ -554,7 +567,7 @@
 			</div>
 			<div class="card mt-0">
 				<div class="card-body">
-					<button class="btn btn-block bg-purple-600 text-left mb-3" onclick="saveDraft('{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button>
+					<button class="btn btn-block bg-purle text-left mb-3" onclick="saveDraft('{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button>
 					<button class="btn btn-block btn-primary text-left mb-5" onclick="component(questionArr,'{{route('monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button>
 				</div>
 			</div>
