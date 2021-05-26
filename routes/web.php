@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::group(['prefix' => 'auth'], function(){
     Auth::routes(['register' => false]);
 });
@@ -73,8 +71,6 @@ Route::group(['middleware' => 'auth'], function(){
                 Route::get('/', 'IndicatorReportController@index')->name('index');
                 Route::get('/data', 'IndicatorReportController@data')->name('data');
                 Route::get('{form}/detail', 'IndicatorReportController@detail')->name('detail');
-                Route::put('{form}/update', 'IndicatorReportController@update')->name('update');
-                Route::delete('{form}', 'IndicatorReportController@destroy')->name('destroy');
             });
         });
     
