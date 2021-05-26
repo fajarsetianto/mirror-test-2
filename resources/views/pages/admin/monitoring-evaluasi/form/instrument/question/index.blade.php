@@ -223,13 +223,13 @@
 			$(`#form-card-${uniqId}`).remove()
 		}
 
-		function question(idClicked, questionName = null, option =null){
+		function question(typeClick, questionName = null, option =null){
 			type =''
 			questionType=''
 			addOption = ''
 			countOption = 0
 			uniqId = (new Date()).getTime()
-			if(idClicked == 'singkat'){
+			if(typeClick == 'singkat'){
 				questionType = 'Singkat'
 				
 				type = `
@@ -238,7 +238,7 @@
 						<input type="text" disabled id="alpaca5" class="alpaca-control form-control" placeholder="Jawaban ${questionType}"  autocomplete="off">
 					</div>
 				`
-			} else if (idClicked == 'paraghraf'){
+			} else if (typeClick == 'paraghraf'){
 					questionType = 'Paraghraf'
 
 					type = `
@@ -248,7 +248,7 @@
 					</div>
 					
 					`
-			} else if (idClicked == 'ganda'){
+			} else if (typeClick == 'ganda'){
 				questionType = 'Ganda'
 				icon = 'icon-circle'
 				countOption = 1
@@ -286,7 +286,7 @@
 						</div>
 				`
 				
-			} else if (idClicked == 'multiple' || idClicked == 'multiple choice'){
+			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
 				questionType = 'Multiple Choice'
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1
@@ -323,7 +323,7 @@
 							</div>
 						</div>
 				`
-			} else if (idClicked == 'dropdown') {
+			} else if (typeClick == 'dropdown') {
 				questionType = 'Dropdown'
 				icon = 'icon-circle-down2'
 				countOption = 1
