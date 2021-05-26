@@ -49,6 +49,13 @@ class QuestionController extends Controller
     }
 
     public function store(Request $request, Form $form, Instrument $instrument){
+        $request->validate([
+            "count_option.*"    => "required|numeric",
+            "question_type.*"  => "required|string",
+            "question.*"  => "required",
+            "option_answer.*"  => "required|string",
+            "score.*"  => "required|string",
+        ]);
         $data = $request->all();
        
         $questionId = [];
@@ -67,19 +74,21 @@ class QuestionController extends Controller
         $x =0;
         foreach($data['count_option'] as $key1 => $countOption):
             $y = 1;
-            for ($i=$x; $i < count($data['option_answer']); $i++) { 
-                if($y > $countOption){
-                    break;
-                }
-                $offeredAnswer = new OfferedAnswer(array(
-                    'value' => $data['option_answer'][$i],
-                    'score' => $data['score'][$i],
-                    'question_id' => $questionId[$key1]
-                ));
+            if(isset($data['option_answer'])):
+                for ($i=$x; $i < count($data['option_answer']); $i++) :
+                    if($y > $countOption){
+                        break;
+                    }
+                    $offeredAnswer = new OfferedAnswer(array(
+                        'value' => $data['option_answer'][$i],
+                        'score' => $data['score'][$i],
+                        'question_id' => $questionId[$key1]
+                    ));
 
-                $offeredAnswer->save();
-                $x++; $y++;
-            }
+                    $offeredAnswer->save();
+                    $x++; $y++;
+                endfor;
+            endif;
         endforeach;
         
 

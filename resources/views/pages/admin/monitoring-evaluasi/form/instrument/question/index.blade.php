@@ -291,7 +291,7 @@
 								<div class="row">
 									<div class="col-md-4 ml-0 pl-0">
 										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" placeholder="Bobot Nilai">   
+										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" type="number" placeholder="Bobot Nilai">   
 									</div>
 								</div>
 							</div>
@@ -330,7 +330,7 @@
 								<div class="row">
 									<div class="col-md-4 ml-0 pl-0">
 										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" placeholder="Bobot Nilai">   
+										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" type="number" placeholder="Bobot Nilai">   
 									</div>
 								</div>
 							</div>
@@ -369,7 +369,7 @@
 								<div class="row">
 									<div class="col-md-4 ml-0 pl-0">
 										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" placeholder="Bobot Nilai">   
+										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" type="number" placeholder="Bobot Nilai">   
 									</div>
 								</div>
 							</div>
