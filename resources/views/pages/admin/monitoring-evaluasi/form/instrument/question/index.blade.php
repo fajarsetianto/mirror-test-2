@@ -245,7 +245,7 @@
 			this.number = number
 		}
 
-		question = (typeClick, questionName = null, option =null) => {
+		question = (typeClick, questionName = null, option =null, $idQuestion=null) => {
 			type =''
 			questionType=''
 			addOption = ''
@@ -425,7 +425,7 @@
 								<div class="row">
 									<div class="col-lg-6 ml-auto text-right">
 										<button class="btn bg-danger text-left mb-3" onclick="cancel(${uniqId})">Batal</button>
-										<button class="btn bg-success text-left mb-3" onclick="return save(${uniqId}, '{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')">Simpan</button>
+										<button class="btn bg-success text-left mb-3" onclick="return save(${uniqId}, '{{route('monev.form.instrument.question.store',[$form->id, $instrument->id, $idQuestion])}}')">Simpan</button>
 									</div>
 								</div>
 							</div>
