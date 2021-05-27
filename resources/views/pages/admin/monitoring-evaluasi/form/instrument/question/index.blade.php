@@ -409,7 +409,7 @@
 									<div class="col-lg-11">
 										<div class="d-flex ">
 											<label>Pertanyaan - ${questionType}</label>
-											<div class="question-action ml-auto align-self-center">
+											<div class="question-action ml-auto">
 												<a href="#" class="mr-2 text-dark"><i class="icon-pencil"></i></a>
 												<a href="#" class="mr-2 text-dark"><i class="icon-trash-alt"></i></a>
 											</div>
