@@ -32,7 +32,7 @@
                 </div>
                 <label class="text-secondary">FILE UPLOAD</label>
                 <div class="form-group row pl-2">
-                    <div class="col-md-4 cursor"id="kisi-pil-ganda" onclick="clicked('kisi-pil-ganda')">
+                    <div class="col-md-4 cursor"id="file-upload" onclick="clicked('file-upload')">
                         <i class="icon-cloud-upload2 mr-2"></i> File Upload
                     </div>
                 </div>

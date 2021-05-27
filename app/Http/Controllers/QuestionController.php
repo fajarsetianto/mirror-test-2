@@ -52,7 +52,7 @@ class QuestionController extends Controller
         $request->validate([
             "count_option.*"    => "required|numeric",
             "question_type.*"  => "required|string",
-            "question.*"  => "required",
+            "question.*"  => "required|string",
             "option_answer.*"  => "required|string",
             "score.*"  => "required|string",
         ]);
