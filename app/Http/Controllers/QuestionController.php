@@ -1,19 +1,22 @@
 <?php
 
-namespace  App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Form;
 use App\Models\Instrument;
+use App\Models\Question;
+use App\Models\QuestionType;
+use App\Models\OfferedAnswer;
 use Illuminate\Http\Request;
 use DataTables;
 
-class InstrumentController extends Controller
+class QuestionController extends Controller
 {
-    protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.instrument.";
+    protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.instrument.question.";
 
-    public function index(Form $form){
-        return view($this->viewNamespace.'index', compact('form'));
+    public function index(Form $form,Instrument $instrument){
+        $data = Question::with('offeredAnswer', 'questionType')->where('instrument_id', $instrument->id)->get();
+        return view($this->viewNamespace.'index', compact('form','instrument','data'));
     }
 
     public function create(Form $form){
@@ -45,16 +48,40 @@ class InstrumentController extends Controller
         ],200);
     }
 
-    public function store(Request $request, Form $form){
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'nullable|string'
-        ]);
+    public function store(Request $request, Form $form, Instrument $instrument){
+        $data = $request->all();
+       
+        $questionId = [];
+        Question::where('instrument_id', $instrument->id)->delete();
+        foreach($data['question'] as $key => $row):
+            $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
+            $question = new Question(array(
+                'content' => $row,
+                'instrument_id' => $instrument->id,
+                'question_type_id' => $questionType->id
+            ));
+            $question->save();
+            array_push($questionId,$question->id);
+        endforeach;
+
+        $x =0;
+        foreach($data['count_option'] as $key1 => $countOption):
+            $y = 1;
+            for ($i=$x; $i < count($data['option_answer']); $i++) { 
+                if($y > $countOption){
+                    break;
+                }
+                $offeredAnswer = new OfferedAnswer(array(
+                    'value' => $data['option_answer'][$i],
+                    'score' => $data['score'][$i],
+                    'question_id' => $questionId[$key1]
+                ));
+
+                $offeredAnswer->save();
+                $x++; $y++;
+            }
+        endforeach;
         
-        $data = $request->only('name','description'); 
-        $newInstrument = new Instrument($data);
-        $newInstrument->form()->associate($form);
-        $newInstrument->save();
 
         return response()->json([
             'status' => 1,
@@ -75,10 +102,10 @@ class InstrumentController extends Controller
 
     public function data(Form $form){
         $data = $form->instruments()->latest()->get();
-        return DataTables::of($data)
+        return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('monev.form.instrument.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('actions', function($row) use ($form){   
@@ -88,7 +115,7 @@ class InstrumentController extends Controller
                         <i class="icon-menu9"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.instrument.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`edit`,`'.route('monev.form.instrument.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
                         <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`instrument`,`'.route('monev.form.instrument.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
