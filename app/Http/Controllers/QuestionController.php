@@ -32,14 +32,61 @@ class QuestionController extends Controller
         ]);
     }
 
-    public function update(Request $request,Form $form, Instrument $instrument){
+    public function update(Request $request,Form $form, Instrument $instrument,$question){
         $request->validate([
-            'name' => 'required|string',
-            'description' => 'nullable|string'
+            "question.*"  => "required|string",
+            "count_option.*"    => "required|numeric",
+            "question_type.*"  => "required|string",
+            "question.*"  => "required|string",
+            "option_answer.*"  => "required|string",
+            "score.*"  => "required|string",
         ]);
+        $data = $request->all();
         
-        $data = $request->only('name','description'); 
-        $instrument->update($data);
+        if($question == 0):
+            foreach($data['question'] as $key => $row):
+                $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
+                $question = new Question(array(
+                    'content' => $row,
+                    'instrument_id' => $instrument->id,
+                    'question_type_id' => $questionType->id
+                ));
+                $question->save();
+            endforeach;
+        else:
+            $question = Question::find($question);
+        endif;
+
+        
+        foreach($data['question'] as $key => $row):
+            $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
+            $question->update(array(
+                'content' => $row,
+                'instrument_id' => $instrument->id,
+                'question_type_id' => $questionType->id
+            ));
+        endforeach;
+
+        $x =0;
+        OfferedAnswer::where('question_id', $question->id)->delete();
+        foreach($data['count_option'] as $key1 => $countOption):
+            $y = 1;
+            if(isset($data['option_answer'])):
+                for ($i=$x; $i < count($data['option_answer']); $i++) :
+                    if($y > $countOption){
+                        break;
+                    }
+                    $offeredAnswer = new OfferedAnswer(array(
+                        'value' => $data['option_answer'][$i],
+                        'score' => $data['score'][$i],
+                        'question_id' => $question->id
+                    ));
+
+                    $offeredAnswer->save();
+                    $x++; $y++;
+                endfor;
+            endif;
+        endforeach;
 
         return response()->json([
             'status' => 1,
@@ -49,6 +96,14 @@ class QuestionController extends Controller
     }
 
     public function store(Request $request, Form $form, Instrument $instrument){
+        $request->validate([
+            "question.*"  => "required|string",
+            "count_option.*"    => "required|numeric",
+            "question_type.*"  => "required|string",
+            "question.*"  => "required|string",
+            "option_answer.*"  => "required|string",
+            "score.*"  => "required|string",
+        ]);
         $data = $request->all();
        
         $questionId = [];
@@ -67,19 +122,21 @@ class QuestionController extends Controller
         $x =0;
         foreach($data['count_option'] as $key1 => $countOption):
             $y = 1;
-            for ($i=$x; $i < count($data['option_answer']); $i++) { 
-                if($y > $countOption){
-                    break;
-                }
-                $offeredAnswer = new OfferedAnswer(array(
-                    'value' => $data['option_answer'][$i],
-                    'score' => $data['score'][$i],
-                    'question_id' => $questionId[$key1]
-                ));
+            if(isset($data['option_answer'])):
+                for ($i=$x; $i < count($data['option_answer']); $i++) :
+                    if($y > $countOption){
+                        break;
+                    }
+                    $offeredAnswer = new OfferedAnswer(array(
+                        'value' => $data['option_answer'][$i],
+                        'score' => $data['score'][$i],
+                        'question_id' => $questionId[$key1]
+                    ));
 
-                $offeredAnswer->save();
-                $x++; $y++;
-            }
+                    $offeredAnswer->save();
+                    $x++; $y++;
+                endfor;
+            endif;
         endforeach;
         
 
