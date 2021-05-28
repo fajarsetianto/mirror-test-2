@@ -21,7 +21,6 @@
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
-		number = 1;
 		$(document).ready(function(){
 				instrumentDatatable = $('#instrument-table').DataTable({
 					pageLength : 10,
@@ -240,18 +239,18 @@
 
 			let number = 1;
 			$('.question-number').each((key, elem) => {
-				$('.question-number').eq(key).text(number++)
+				$('.question-number').eq(key).text(`${number++}.`)
 			})
-			this.number = number
 		}
 
-		question = (typeClick, questionName = null, option =null) => {
-			type =''
-			questionType=''
-			addOption = ''
-			countOption = 0
-			number = 1
-			uniqId = (new Date()).getTime()
+		question = (typeClick, questionName = null, option =null, questionId=0) => {
+			let type =''
+			let questionType=''
+			let addOption = ''
+			let countOption = 0
+			let number = $('.question-number').length + 1
+			let uniqId = (new Date()).getTime()
+
 			if(typeClick == 'singkat'){
 				questionType = 'Singkat'
 				
@@ -423,9 +422,10 @@
 								<div id="field-other-${uniqId}" class="row"></div>
 								${addOption}
 								<div class="row">
+								
 									<div class="col-lg-6 ml-auto text-right">
 										<button class="btn bg-danger text-left mb-3" onclick="cancel(${uniqId})">Batal</button>
-										<button class="btn bg-success text-left mb-3" onclick="return save(${uniqId}, '{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')">Simpan</button>
+										<button class="btn bg-success text-left mb-3" onclick="return save(${uniqId}, '${'{{route('monev.form.instrument.question.update',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}?_method=PUT')">Simpan</button>
 									</div>
 								</div>
 							</div>
@@ -592,7 +592,7 @@
 			</div>
 			@foreach($data as $row)
 			<script>
-				question('{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}')
+				question('{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{$row->id}}')
 			</script>
 				
 			@endforeach
