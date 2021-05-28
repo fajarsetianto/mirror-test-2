@@ -4,12 +4,14 @@
 
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
-	<script src="{{asset('assets/global/js/plugins/loaders/blockui.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
 	<script>
 		$(document).ready(function(){
 			(function(){
-				$('.datatable').DataTable();
+				$('.datatable').DataTable({
+					responsive: true
+				});
 			})()
 
 			

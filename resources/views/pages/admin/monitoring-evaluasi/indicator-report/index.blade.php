@@ -1,6 +1,6 @@
 @extends('layouts.full')
 
-@section('site-title','Form Instrument Monitoring dan Evaluasi')
+@section('site-title','Laporan Indikator')
 
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
@@ -15,10 +15,10 @@
 			instanceDatatable = $('.datatable').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
-					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.form.data",['$form->id']) !!}',
+					responsive: true,
+					ajax: '{!! route("monev.indicator-report.data") !!}',
 					columns: [
 					{ "data": null,"sortable": false,
 						render: function (data, type, row, meta) {
@@ -39,80 +39,7 @@
 						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
 					}
 				});
-			
-
-			
 		});
-		function component(y){
-				$.blockUI({ 
-					message: '<i class="icon-spinner4 spinner"></i>',
-					overlayCSS: {
-						backgroundColor: '#1b2024',
-						opacity: 0.8,
-						zIndex: 1200,
-						cursor: 'wait'
-					},
-					css: {
-						border: 0,
-						color: '#fff',
-						padding: 0,
-						zIndex: 1201,
-						backgroundColor: 'transparent'
-					},
-				});
-
-				$.get(y, function(data){
-					$('.modal').html(data);
-				}).done(function() {
-					$('.modal').modal('show');
-				})
-				.fail(function() {
-					alert( "Terjadi Kesalahan" );
-				})
-				.always(function() {
-					$.unblockUI();
-				});
-			}
-			function destroy(y){
-				let csrf_token = "{{csrf_token()}}"
-				Swal.fire({
-						title: 'Are you sure?',
-						text: "You won't be able to revert this!",
-						type: 'warning',
-						showCancelButton: true,
-						confirmButtonClass: 'btn btn-primary',
-						cancelButtonClass: 'btn btn-light',
-						confirmButtonText: 'Yes, delete it!'
-					})
-					.then((result) => {
-						// console.log(result.value) 
-						if (result.value) {
-							$.ajax({
-								url: y,
-								type : "DELETE",
-								data : {'_method' : 'DELETE', '_token' : csrf_token},
-								success:function(data){
-									
-									instanceDatatable.ajax.reload();
-									
-																			
-									new PNotify({
-										title: data.title,
-										text: data.msg,
-										addclass: 'bg-success border-success',
-									});
-								},
-								error:function(data){
-									new PNotify({
-										title: data.statusText,
-										text: data.responseJSON.msg,
-										addclass: 'bg-danger border-danger',
-									});
-								}
-							});
-						}
-				});
-			}
 		
 	</script>
 @endpush
@@ -120,20 +47,17 @@
 	<div class="page-header page-header-light">
 		<div class="page-header-content header-elements-md-inline">
 			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Monitoring & Evaluasi</span> - Form</h4>
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Laporan Indikator</span></h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('forms') }}				
+		{{ Breadcrumbs::render('indicator-report') }}				
 	</div>
 @endsection
 @section('content')
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h6 class="card-title font-weight-semibold">Daftar Form Instrument Monitoring dan Evaluasi</h6>
-		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.create')}}')"><i class="icon-add-to-list"></i> Buat Form</button>
-		</div>
+		<h6 class="card-title font-weight-semibold">Laporan Indicator Form Instrument Monitoring dan Evaluasi</h6>
 	</div>
 	<hr class="m-0">
 	<div class="card-body">
@@ -154,6 +78,3 @@
 	</div>
 </div>
 @endsection
-@push('scripts-bottom')
-	<x-modal></x-modal>
-@endpush

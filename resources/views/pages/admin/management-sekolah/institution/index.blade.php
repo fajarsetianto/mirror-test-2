@@ -1,13 +1,11 @@
 @extends('layouts.full')
 
-@section('site-title','Form Instrument Monitoring dan Evaluasi')
+@section('site-title','Manajemen Non Satuan Pendidikan')
 
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
-	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.js')}}"></script>
-	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
 		$(document).ready(function(){
@@ -15,10 +13,10 @@
 			instanceDatatable = $('.datatable').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
-					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.form.data",['$form->id']) !!}',
+					responsive: true,
+					ajax: '{!! route("institution.non-satuan.data",['$form->id']) !!}',
 					columns: [
 					{ "data": null,"sortable": false,
 						render: function (data, type, row, meta) {
@@ -26,9 +24,12 @@
 						}
 					},
 					{data: 'name', name: 'name'},
-					{data: 'target', name: 'target'},
-					{data: 'category', name: 'category'},
-					{data: 'status', name: 'status'},
+					{data: 'npsn', name: 'npsn'},
+                    {data: 'email', name: 'email'},
+					{data: 'address', name: 'address'},
+					{data: 'province', name: 'province'},
+                    {data: 'city', name: 'city'},
+                    {data: 'headmaster', name: 'headmaster'},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -44,6 +45,7 @@
 			
 		});
 		function component(y){
+
 				$.blockUI({ 
 					message: '<i class="icon-spinner4 spinner"></i>',
 					overlayCSS: {
@@ -120,19 +122,19 @@
 	<div class="page-header page-header-light">
 		<div class="page-header-content header-elements-md-inline">
 			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Monitoring & Evaluasi</span> - Form</h4>
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Manajemen Lembaga</span> - Non Satuan Pendidikan</h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('forms') }}				
+		{{ Breadcrumbs::render('non-satuan') }}				
 	</div>
 @endsection
 @section('content')
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h6 class="card-title font-weight-semibold">Daftar Form Instrument Monitoring dan Evaluasi</h6>
+		<h6 class="card-title font-weight-semibold">Daftar Lembaga Non Satuan Pendidikan</h6>
 		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.create')}}')"><i class="icon-add-to-list"></i> Buat Form</button>
+			<button class="btn bg-purple-400" onclick="component('{{route('institution.non-satuan.create')}}')"><i class="icon-add-to-list"></i> Buat Lembaga Baru</button>
 		</div>
 	</div>
 	<hr class="m-0">
@@ -141,10 +143,13 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>Judul Form</th>
-					<th>Sasaran Monitoring</th>
-					<th>Kategori Satuan Pendidikan</th>
-					<th>Status</th>
+					<th>Nama</th>
+					<th>NPSN</th>
+					<th>Email</th>
+					<th>Alamat</th>
+                    <th>Provinsi</th>
+                    <th>Kabupaten / Kota</th>
+                    <th>Nama Kepala Lembaga</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

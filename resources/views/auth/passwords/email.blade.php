@@ -40,7 +40,17 @@
                                 @enderror
 							</div>
 
-							<button type="submit" class="btn bg-blue btn-block"><i class="icon-spinner11 mr-2"></i> Reset password</button>
+							<div class="form-group">
+								<button type="submit" class="btn bg-blue btn-block"><i class="icon-spinner11 mr-2"></i> Reset password</button>
+							</div>
+							
+							<div class="form-group text-center text-muted content-divider">
+								<span class="px-2">or sign in</span>
+							</div>
+
+							<div class="form-group">
+								<a href="{{route('login')}}" class="btn btn-light btn-block">Sign in</a>
+							</div>
 						</div>
 					</div>
 				</form>
