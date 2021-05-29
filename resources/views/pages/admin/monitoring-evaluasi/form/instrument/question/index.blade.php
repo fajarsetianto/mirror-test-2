@@ -414,7 +414,7 @@
 						text: data.msg,
 						addclass: 'bg-success border-success',
 					});
-
+					location.reload();
 				},
 				error: function (data) {
 					if(data.status == 422){
