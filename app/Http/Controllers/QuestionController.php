@@ -147,8 +147,8 @@ class QuestionController extends Controller
         ],200);
     }
 
-    public function destroy(Form $form, Instrument $instrument){
-        $instrument->delete();
+    public function destroy(Form $form, Instrument $instrument, Question $question){
+        $question->delete();
 
         return response()->json([
             'status' => 1,

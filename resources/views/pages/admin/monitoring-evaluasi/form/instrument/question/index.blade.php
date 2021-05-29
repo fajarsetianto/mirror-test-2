@@ -21,62 +21,6 @@
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
-		$(document).ready(function(){
-				instrumentDatatable = $('#instrument-table').DataTable({
-					pageLength : 10,
-					lengthMenu: [[5, 10, 20], [5, 10, 20]],
-					processing: true,
-					serverSide: true,
-					ajax: '{!! route("monev.form.instrument.data",[$form->id]) !!}',
-					columns: [
-					{ "data": null,"sortable": false,
-						render: function (data, type, row, meta) {
-							return meta.row + meta.settings._iDisplayStart + 1;
-						}
-					},
-					{data: 'name', name: 'name'},
-					{data: 'description', name: 'description'},
-					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
-					],
-					autoWidth: false,
-					dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-					language: {
-						search: '<span>Filter:</span> _INPUT_',
-						lengthMenu: '<span>Show:</span> _MENU_',
-						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
-					}
-				});
-                indicatorDatatable = $('#indicator-table').DataTable({
-					pageLength : 10,
-					lengthMenu: [[5, 10, 20], [5, 10, 20]],
-					processing: true,
-					serverSide: true,
-					ajax: '{!! route("monev.form.indicator.data",[$form->id]) !!}',
-					columns: [
-					{ "data": null,"sortable": false,
-						render: function (data, type, row, meta) {
-							return meta.row + meta.settings._iDisplayStart + 1;
-						}
-					},
-                    {data: 'minimum', name: 'minimum'},
-                    {data: 'maximum', name: 'maximum'},
-                    {data: 'color', name: 'color'},
-					{data: 'description', name: 'description'},
-					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
-					],
-					autoWidth: false,
-					dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-					language: {
-						search: '<span>Filter:</span> _INPUT_',
-						lengthMenu: '<span>Show:</span> _MENU_',
-						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
-					}
-				});
-                
-			
-		});
-		
-    
 		removeOption = (questionId,uniqId) => {
 			let number = 1
 			$(`#row-${uniqId}`).remove()
@@ -85,7 +29,7 @@
 			})
 		}
 
-		addOptions = (icon,uniqId, valueOption=null, score=null) =>{
+		addOptions = (icon,uniqId, valueOption=null, score=null) => {
 			newUniqId = (new Date()).getTime()
 			optionNumber = ++($(`.option-${uniqId}`).length)
 			optionAnother = $(`.option-another-${uniqId}`).length
@@ -191,8 +135,9 @@
 						$.unblockUI();
 					});
 				}
-        function destroy(x,y){
+        function destroy(uniqId,questionId){
 			let csrf_token = "{{csrf_token()}}"
+			let urlActionDelete = `${'{{route('monev.form.instrument.question.destroy',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}`
             Swal.fire({
                     title: 'Are you sure?',
 	                text: "You won't be able to revert this!",
@@ -203,24 +148,18 @@
 	                confirmButtonText: 'Yes, delete it!'
                 })
                 .then((result) => {
-                    // console.log(result.value) 
                     if (result.value) {
                         $.ajax({
-                            url: y,
+                            url: urlActionDelete,
                             type : "DELETE",
                             data : {'_method' : 'DELETE', '_token' : csrf_token},
                             success:function(data){
-                                
-								if(x =="instrument"){
-									instrumentDatatable.ajax.reload()
-								}else{
-									indicatorDatatable.ajax.reload();
-								}
                                 new PNotify({
                                     title: data.title,
                                     text: data.msg,
                                     addclass: 'bg-success border-success',
                                 });
+								cancel(uniqId)
                             },
                             error:function(data){
                                 new PNotify({
@@ -234,7 +173,7 @@
             });
 		}
 
-		cancel = (uniqId) =>{
+		cancel = (uniqId) => {
 			$(`#form-card-${uniqId}`).remove()
 
 			let number = 1;
@@ -395,6 +334,8 @@
 					</div>
 				`
 			}
+
+			let urlActionUpdate = `${'{{route('monev.form.instrument.question.update',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}?_method=PUT`
 			$('#content').append(`
 				<div id="form-card-${uniqId}">
 				@csrf
@@ -410,8 +351,7 @@
 										<div class="d-flex ">
 											<label>Pertanyaan - ${questionType}</label>
 											<div class="question-action ml-auto">
-												<a href="#" class="mr-2 text-dark"><i class="icon-pencil"></i></a>
-												<a href="#" class="mr-2 text-dark"><i class="icon-trash-alt"></i></a>
+												<a onclick="destroy(${uniqId},'${questionId}')" id="trash-${uniqId}" class="${questionId == 0 ? 'd-none' : ''} mr-2 text-dark cursor"><i class="icon-trash-alt"></i></a>
 											</div>
 										</div>
 										<input class="alpaca-control form-control flex-1 mr-3" required name="question[]" value="${questionName == null ? '' : questionName}" placeholder="Pertanyaan - ${questionType}">
@@ -425,7 +365,8 @@
 								
 									<div class="col-lg-6 ml-auto text-right">
 										<button class="btn bg-danger text-left mb-3" onclick="cancel(${uniqId})">Batal</button>
-										<button class="btn bg-success text-left mb-3" onclick="return save(${uniqId}, '${'{{route('monev.form.instrument.question.update',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}?_method=PUT')">Simpan</button>
+										<button class="btn bg-success text-left mb-3" 
+											onclick="return save(${uniqId}, '${urlActionUpdate}')">Simpan</button>
 									</div>
 								</div>
 							</div>
@@ -456,9 +397,7 @@
 				processData: false,
 				contentType: false,
 				success: function (data) {
-					
 					$('.modal').modal('hide');
-					instrumentDatatable.ajax.reload();
 					new PNotify({
 						title: data.title,
 						text: data.msg,
@@ -468,12 +407,6 @@
 				},
 				error: function (data) {
 					if(data.status == 422){
-						$('.text-help').remove();
-						$.each( data.responseJSON.errors, function( key, value) {
-							$('[name="'+key+'"]').parent().append(
-								$('<small class="text-help text-danger d-block w-100">').html(value[0])
-							)
-						});
 						new PNotify({
 							title: data.responseJSON.message,
 							text: 'please check your input',
@@ -486,13 +419,12 @@
 							addclass: 'bg-danger border-danger',
 						});
 					}
-					$('button[type="submit"]', context).html('Save <i class="icon-paperplane ml-2"></i> ');
 
 				}
 			})
 		}
 
-		save = (uniqId, url) =>{
+		save = (uniqId, url) => {
 			let formData = new FormData()
 			$(`#form-card-${uniqId} input`).serializeArray().forEach(function(elem){
 				formData.append(elem.name, elem.value)
@@ -504,24 +436,18 @@
 				processData: false,
 				contentType: false,
 				success: function (data) {
-					
 					$('.modal').modal('hide');
-					instrumentDatatable.ajax.reload();
 					new PNotify({
 						title: data.title,
 						text: data.msg,
 						addclass: 'bg-success border-success',
 					});
 
+					$(`#trash-${uniqId}`).removeClass('d-none')
+
 				},
 				error: function (data) {
 					if(data.status == 422){
-						$('.text-help').remove();
-						$.each( data.responseJSON.errors, function( key, value) {
-							$('[name="'+key+'"]').parent().append(
-								$('<small class="text-help text-danger d-block w-100">').html(value[0])
-							)
-						});
 						new PNotify({
 							title: data.responseJSON.message,
 							text: 'please check your input',
@@ -534,7 +460,6 @@
 							addclass: 'bg-danger border-danger',
 						});
 					}
-					$('button[type="submit"]', context).html('Save <i class="icon-paperplane ml-2"></i> ');
 
 				}
 			})
@@ -591,10 +516,9 @@
 				</div>
 			</div>
 			@foreach($data as $row)
-			<script>
-				question('{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{$row->id}}')
-			</script>
-				
+				<script>
+					question('{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{$row->id}}')
+				</script>
 			@endforeach
 		</form>
 		
