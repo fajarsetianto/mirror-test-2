@@ -19,9 +19,8 @@ class QuestionController extends Controller
         return view($this->viewNamespace.'index', compact('form','instrument','data'));
     }
 
-    public function create(Form $form){
+    public function create(){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.instrument.store',[$form->id]),
         ]);
     }
 

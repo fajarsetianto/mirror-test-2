@@ -1,11 +1,11 @@
 <div class="modal-dialog modal-md">
     <div class="modal-content">
-        <div class="modal-header">
-            <h6 class="modal-title font-weight-semibold"> Pilih Jenis Pertanyaan</h6>
+        <div class="modal-header" id="modal-header">
+            <h6 class="modal-title font-weight-semibold" id="header-title-modal"></h6>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body" id="modal-body">
             <form action="#" id="modal-form">
                 <label class="text-secondary">TEXT</label>
                 <div class="form-group row pl-2">
@@ -38,11 +38,7 @@
                 </div>
                 <input type="hidden" id="id-checked">
                 <div class="d-flex align-items-center justify-content-center">
-                    @isset($item)
-                        <button class="btn bg-warning" type="submit"><i class="icon-pencil font-size-base mr-1"></i> Update</button>
-                    @else
-                        <button class="btn bg-success" type="submit"><i class="icon-checkmark3 font-size-base mr-1"></i> Tambahkan</button>
-                    @endisset
+                    <button class="btn bg-success" type="submit"><i class="icon-checkmark3 font-size-base mr-1"></i> Tambahkan</button>
                 </div>
             </form>
         </div>
@@ -52,6 +48,26 @@
 <script>
     prevIdClicked = ''
     numberOption = 1
+
+    $(document).ready(function(){
+        checkStatus = () => {
+            if(status == 'true'){
+                $('#modal-form').show()
+                $('#header-title-modal').text('Pilih Jenis Pertanyaan')
+                $('#modal-header').removeClass('bg-danger')
+                $('#modal-header').addClass('bg-success-600')
+            } else {
+                $('#modal-form').hide()
+                $('#modal-header').addClass('bg-danger')
+                $('#modal-header').removeClass('bg-success-600')
+                $('#header-title-modal').text('Pertanyaan Anda Belum Tersimpan!')
+                $('#modal-body').text('Simpan pertanyaan yang telah Anda buat terlebih dahulu sebelum menambahkan pertanyaan lain.')
+            }
+        }
+
+        checkStatus()
+    });
+
     clicked = (idClicked) =>{
         $('#id-checked').val(idClicked)
         if(prevIdClicked != ''){

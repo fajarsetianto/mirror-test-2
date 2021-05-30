@@ -21,7 +21,7 @@
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
-
+		status = true
 		removeOption = (questionId,uniqId) => {
 			let number = 1
 			$(`#row-${uniqId}`).remove()
@@ -175,6 +175,7 @@
 		}
 
 		cancel = (uniqId) => {
+			status = true
 			$(`#form-card-${uniqId}`).remove()
 
 			let number = 1;
@@ -184,7 +185,9 @@
 		}
 
 		edit = (uniqId) => {
+			status = false
 			$(`#save-cancel-${uniqId}`).removeClass('d-none')
+			$(`#cancel-${uniqId}`).addClass('d-none')
 			$(`#add-option-${uniqId}`).removeClass('d-none')
 			$(`#question-input-${uniqId}`).attr('readonly',false)
 			$(`.option-answer-${uniqId}`).attr('readonly',false)
@@ -199,6 +202,7 @@
 			let countOption = 0
 			let number = $('.question-number').length + 1
 			let uniqId = (new Date()).getTime()
+			status = questionId == 0 ? false : true
 
 			if(typeClick == 'singkat'){
 				questionType = 'Singkat'
@@ -210,15 +214,14 @@
 					</div>
 				`
 			} else if (typeClick == 'paraghraf'){
-					questionType = 'Paraghraf'
+				questionType = 'Paraghraf'
 
-					type = `
+				type = `
 					<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
 						<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
 					</div>
-					
-					`
+				`
 			} else if (typeClick == 'ganda'){
 				questionType = 'Ganda'
 				icon = 'icon-circle'
@@ -375,8 +378,8 @@
 								
 								<div class="row ${questionId != 0 ? 'd-none' : ''}" id="save-cancel-${uniqId}">
 									<div class="col-lg-6 ml-auto text-right">
-										<button class="btn bg-danger text-left mb-3" onclick="cancel(${uniqId})">Batal</button>
-										<button class="btn bg-success text-left mb-3" 
+										<button class="btn bg-danger text-left mb-3" id="cancel-${uniqId}" onclick="cancel(${uniqId})">Batal</button>
+										<button class="btn bg-success text-left mb-3" id="save-${uniqId}"
 											onclick="return save(${uniqId}, '${urlActionUpdate}')">Simpan</button>
 									</div>
 								</div>
@@ -437,6 +440,7 @@
 
 		save = (uniqId, url) => {
 			let formData = new FormData()
+			status = true
 			$(`#form-card-${uniqId} input`).serializeArray().forEach(function(elem){
 				formData.append(elem.name, elem.value)
 			})
@@ -453,7 +457,6 @@
 						text: data.msg,
 						addclass: 'bg-success border-success',
 					});
-
 					$(`#trash-${uniqId}`).removeClass('d-none')
 					$(`#edit-${uniqId}`).removeClass('d-none')
 					$(`#save-cancel-${uniqId}`).addClass('d-none')
@@ -503,7 +506,7 @@
 		<div class="col-lg-3">
 			<div class="card mb-0 pt-2 pb-2">
 				<div class="card-body">
-					<button class="btn btn-block btn-success text-left" onclick="component('addQuestion','{{route('monev.form.instrument.question.create',[$form->id, $instrument->id])}}')"><i class="icon-bubble-lines3 mr-2"></i> Tambah Pertanyaan</button>
+					<button class="btn btn-block btn-success text-left" onclick="component('addQuestion',`{{route('monev.form.instrument.question.create',[$form->id, $instrument->id])}}`)"><i class="icon-bubble-lines3 mr-2"></i> Tambah Pertanyaan</button>
 				</div>
 			</div>
 			<div class="card mt-0">
