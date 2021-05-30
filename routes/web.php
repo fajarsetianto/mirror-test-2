@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function(){
 
             Route::group(['prefix' => '{form}/instruments','as' => 'instrument.'],function(){
                 Route::get('/', 'InstrumentController@index')->name('index');
-                Route::get('/preview', 'InstrumentController@preview')->name('preview');
+                Route::get('preview', 'InstrumentController@preview')->name('preview');
                 Route::get('/data', 'InstrumentController@data')->name('data');
                 Route::get('/create', 'InstrumentController@create')->name('create');
                 Route::post('/create', 'InstrumentController@store')->name('store');

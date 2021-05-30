@@ -20,6 +20,7 @@
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
 		status = true
 		removeOption = (questionId,uniqId) => {
@@ -217,10 +218,10 @@
 				questionType = 'Paraghraf'
 
 				type = `
-					<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-						<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
-					</div>
+				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
+					<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
+				</div>
 				`
 			} else if (typeClick == 'ganda'){
 				questionType = 'Ganda'
@@ -228,6 +229,7 @@
 				countOption = 1
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<div>
 						<label  class="pt-2 control-label alpaca-control-label">Opsi Jawaban</label>
 						<div class="row mt-2 option-${uniqId} option-question-${uniqId}" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
@@ -249,16 +251,17 @@
 							</div>
 						</div>
 					</div>
+				</div>
 				`
 
 				addOption = `
-						<div class="row ${questionId != 0 ? 'd-none' : ''}" id="add-option-${uniqId}">
-							<div class="col-lg-11 ml-auto mt-2">
-								<span onclick="addOptions('${icon}',${uniqId})" class="text-secondary cursor"><i class="icon-plus-circle2 text-primary"></i> Tambah Opsi </span>
-								atau
-								<span onclick="addOptionAnother('${icon}',${uniqId})" class="text-primary cursor">tambah "Lainnya" <span>
-							</div>
+					<div class="row ${questionId != 0 ? 'd-none' : ''}" id="add-option-${uniqId}">
+						<div class="col-lg-11 ml-auto mt-2">
+							<span onclick="addOptions('${icon}',${uniqId})" class="text-secondary cursor"><i class="icon-plus-circle2 text-primary"></i> Tambah Opsi </span>
+							atau
+							<span onclick="addOptionAnother('${icon}',${uniqId})" class="text-primary cursor">tambah "Lainnya" <span>
 						</div>
+					</div>
 				`
 				
 			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
@@ -267,6 +270,7 @@
 				countOption = 1
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<div>
 						<label class="pt-2 control-label alpaca-control-label">Opsi Jawaban</label>
 						<div class="row mt-2 option-${uniqId} option-question-${uniqId}" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
@@ -288,6 +292,7 @@
 							</div>
 						</div>
 					</div>
+				</div>
 				`
 
 				addOption = `
@@ -306,6 +311,7 @@
 
 				type = `
 				<div id="form-group-${uniqId}" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<div>
 						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
 						<div class="row mt-2 option-${uniqId} option-question-${uniqId}" id="row-${uniqId}">
 							<div class="col-md-2 pr-0 mr-0">
@@ -327,6 +333,7 @@
 							</div>
 						</div>
 					</div>
+				</div>
 				`
 
 				addOption = `
