@@ -12,6 +12,9 @@
 		.bg-purle {
 			background-color: #5C6BC0;
 		}
+		.border-top-success{
+			border-top: 15px solid #26a69a;
+		}
 	</style>
 @endpush
 @push('scripts-top')
@@ -39,7 +42,7 @@
 			if(optionNumber == 2){
 				$(`#row-option-${uniqId}`).append(`
 					<div class="col-md-1 ml-0 pl-0">
-						<button type="button" id="remove-field-${uniqId}" onclick="removeOption(${uniqId},${uniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
+						<button type="button" onclick="removeOption(${uniqId},${uniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
 					</div>
 				`)
 			}
@@ -58,7 +61,7 @@
 								<input class="alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${valueOption == null ? '' : valueOption}" name="option_answer[]" placeholder="Opsi Jawaban">   
 							</div>
 							<div class="col-md-1 ml-0 pl-0">
-								<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
+								<button type="button" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
 							</div>
 						</div>
 						<div class="row">
@@ -92,7 +95,7 @@
 									<input readonly class="alpaca-control form-control flex-1 mr-3" name="option_answer[]" value="Lainnya" placeholder="Lainnya">   
 								</div>
 								<div class="col-md-1 ml-0 pl-0">
-									<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
+									<button type="button" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
 								</div>
 							</div>
 							<div class="row">
@@ -219,8 +222,10 @@
 
 				type = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-					<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
+					<div>
+						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
+						<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
+					</div>
 				</div>
 				`
 			} else if (typeClick == 'ganda'){
@@ -361,7 +366,7 @@
 				@csrf
 				<input type="hidden" id="count-option-${uniqId}" name="count_option[]" value="${countOption}">
 				<input type="hidden" name="question_type[]" value="${questionType}">
-						<div class="card">
+						<div class="card border-left-teal">
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-1">
@@ -518,7 +523,10 @@
 
 	<div class="row">
 		<div class="col-lg-3">
-			<div class="card mb-0 pt-2 pb-2">
+			<div class="card mb-0 pb-2">
+				<div class="card-header bg-teal-400 text-white header-elements-inline">
+					<h6 class="card-title">ACTION</h6>
+				</div>
 				<div class="card-body">
 					<button class="btn btn-block btn-success text-left" onclick="component('addQuestion',`{{route('monev.form.instrument.question.create',[$form->id, $instrument->id])}}`)"><i class="icon-bubble-lines3 mr-2"></i> Tambah Pertanyaan</button>
 				</div>
@@ -543,7 +551,7 @@
 		<div class="col-lg-9" >
 		<form action="#" id="content">
 			@csrf
-			<div class="card">
+			<div class="card border-top-success">
 				<div class="page-header">
 					<div class="page-header-content">
 						<div class="page-title">
