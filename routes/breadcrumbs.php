@@ -27,7 +27,7 @@ Breadcrumbs::for('admin.home', function ($trail) {
 
             Breadcrumbs::for('admin.monev.forms.form.preview', function ($trail, $form) {
                 $trail->parent('admin.monev.forms.form', $form);
-                $trail->push('preview', route('monev.form.instrument.preview', [$form->id]));
+                $trail->push('Preview', route('monev.form.instrument.preview', [$form->id]));
             });
 
     Breadcrumbs::for('admin.monev.indicator-report', function ($trail) {
