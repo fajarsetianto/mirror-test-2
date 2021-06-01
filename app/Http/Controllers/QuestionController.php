@@ -19,9 +19,8 @@ class QuestionController extends Controller
         return view($this->viewNamespace.'index', compact('form','instrument','data'));
     }
 
-    public function create(Form $form){
+    public function create(){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.instrument.store',[$form->id]),
         ]);
     }
 
@@ -90,6 +89,7 @@ class QuestionController extends Controller
 
         return response()->json([
             'status' => 1,
+            'item' => ['question' => $question->id],
             'title' => 'Successful!',
             'msg' => 'Data succesfully updated!'
         ],200);
@@ -147,8 +147,8 @@ class QuestionController extends Controller
         ],200);
     }
 
-    public function destroy(Form $form, Instrument $instrument){
-        $instrument->delete();
+    public function destroy(Form $form, Instrument $instrument, Question $question){
+        $question->delete();
 
         return response()->json([
             'status' => 1,

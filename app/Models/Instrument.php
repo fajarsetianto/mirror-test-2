@@ -11,7 +11,7 @@ class Instrument extends Model
     public function form(){
         return $this->belongsTo(Form::class);
     }
-
+    
     public function questions(){
         return $this->hasMany(Question::class);
     }
