@@ -15,6 +15,10 @@ class InstrumentController extends Controller
         return view($this->viewNamespace.'index', compact('form'));
     }
 
+    public function preview(Form $form){
+        return view($this->viewNamespace.'preview', compact('form'));
+    }
+
     public function create(Form $form){
         return view($this->viewNamespace.'form', [
             'url' => route('monev.form.instrument.store',[$form->id]),
