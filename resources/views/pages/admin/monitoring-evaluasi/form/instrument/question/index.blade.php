@@ -12,6 +12,9 @@
 		.bg-purle {
 			background-color: #5C6BC0;
 		}
+		.border-top-success{
+			border-top: 15px solid #26a69a;
+		}
 	</style>
 @endpush
 @push('scripts-top')
@@ -363,7 +366,7 @@
 				@csrf
 				<input type="hidden" id="count-option-${uniqId}" name="count_option[]" value="${countOption}">
 				<input type="hidden" name="question_type[]" value="${questionType}">
-						<div class="card">
+						<div class="card border-left-teal">
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-1">
@@ -514,7 +517,10 @@
 
 	<div class="row">
 		<div class="col-lg-3">
-			<div class="card mb-0 pt-2 pb-2">
+			<div class="card mb-0 pb-2">
+				<div class="card-header bg-teal-400 text-white header-elements-inline">
+					<h6 class="card-title">ACTION</h6>
+				</div>
 				<div class="card-body">
 					<button class="btn btn-block btn-success text-left" onclick="component('addQuestion',`{{route('monev.form.instrument.question.create',[$form->id, $instrument->id])}}`)"><i class="icon-bubble-lines3 mr-2"></i> Tambah Pertanyaan</button>
 				</div>
@@ -529,7 +535,7 @@
 		<div class="col-lg-9" >
 		<form action="#" id="content">
 			@csrf
-			<div class="card">
+			<div class="card border-top-success">
 				<div class="page-header">
 					<div class="page-header-content">
 						<div class="page-title">

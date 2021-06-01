@@ -13,7 +13,7 @@
 			background-color: #5C6BC0;
 		}
 		.border-top-success{
-			border-top: 15px solid #4caf50;
+			border-top: 15px solid #26a69a;
 		}
 	</style>
 @endpush
@@ -129,7 +129,7 @@
 			let urlActionUpdate = ''
 			$(`#content-${key}`).append(`
 				<div id="form-card">
-						<div class="card border-left-success">
+						<div class="card border-left-teal">
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-1">
