@@ -1,7 +1,7 @@
 <!-- Main navbar -->
 <div class="navbar navbar-expand-md navbar-light fixed-top">
     <div class="navbar-brand">
-        <a class="d-inline-block" href="{{route('respondent.dashboard')}}"><h6 class="font-weight-bold mb-0 text-black">Sistem Monitoring dan Evaluasi Pembangunan Gedung</h6></a>
+        <a class="d-inline-block" href="{{route('respondent.dashboard')}}"><h6 class="font-weight-bold mb-0 text-black-50">Sistem Monitoring dan Evaluasi Pembangunan Gedung</h6></a>
     </div>
 
     <div class="d-md-none">
