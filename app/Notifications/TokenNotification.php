@@ -46,8 +46,8 @@ class TokenNotification extends Notification
         return (new MailMessage)
                     ->line('Anda diudang untuk menjadi responden pada sistem monitoring dan evaluasi')
                     ->line('Token anda adalah ' . $this->target->respondent->plain_token)
-                    ->line('Silahkan halaman berikut untuk mulai mengerjakan')
-                    ->action('Notification Action', route('respondent.login'))
+                    ->line('Silahkan klik tautan dibawah ini untuk mulai mengerjakan')
+                    ->action('Mulai Mengerjakan', route('respondent.login'))
                     ->line('Thank you for using our application!');
     }
 

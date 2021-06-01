@@ -54,7 +54,7 @@ class InspectionController extends Controller
 
 
     public function data(){
-        $data = Form::latest()->get();
+        $data = Form::published()->valid()->latest()->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

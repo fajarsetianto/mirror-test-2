@@ -89,6 +89,9 @@ class InstrumentController extends Controller
             ->addColumn('questions', function($row){   
                 return $row->questions()->count();
             })
+            ->addColumn('max_score', function($row){   
+                return $row->maxScore();
+            })
             ->addColumn('status', function($row){   
                 switch($row->status){
                     case 'draft': 

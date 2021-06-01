@@ -135,7 +135,7 @@
 				</div>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('inspection-history.target.detail',$form, $target) }}				
+		{{ Breadcrumbs::render('admin.monev.inspection-history.target.detail',$form, $target) }}				
 	</div>
 @endsection
 @section('content')

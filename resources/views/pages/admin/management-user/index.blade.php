@@ -120,7 +120,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('management-user') }}				
+		{{ Breadcrumbs::render('admin.management-user') }}				
 	</div>
 @endsection
 @section('content')

@@ -36,6 +36,7 @@
 						},
 						{data: 'name', name: 'name'},
 						{data: 'questions', name: 'questions'},
+						{data: 'max_score', name: 'max_score'},
 						{data: 'status', name: 'status'},
 						{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
@@ -190,7 +191,7 @@
 			</div>
 		</div>	
 	</div>
-	{{ Breadcrumbs::render('form',$form) }}	
+	{{ Breadcrumbs::render('admin.monev.forms.form',$form) }}	
 @endsection
 
 @section('content')
@@ -204,10 +205,10 @@
 
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h6 class="card-title">Instrument Form Monitoring dan Evaluasi</h6>
+		<h6 class="card-title">Daftar Group Pertanyaan</h6>
 		@if($form->isEditable())
 			<div class="header-elements">
-				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Instrument Form</button>
+				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Group Pertanyaan</button>
 			</div>
 		@endif
 	</div>
@@ -219,6 +220,7 @@
 					<th>No</th>
 					<th>Group Pertanyaan</th>
 					<th>Jumlah Pertanyaan</th>
+					<th>Total Maksimal Skor</th>
 					<th>Status</th>
 					<th class="text-center">Actions</th>
 				</tr>

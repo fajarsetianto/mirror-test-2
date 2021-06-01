@@ -1,6 +1,6 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
-@section('site-title','Dashboard')
+@section('site-title',$instrument->name)
 @push('css-top')
 	<style>
 		.sp-container{
@@ -511,9 +511,10 @@
 			</div>
 		</div>	
 	</div>
+	{{ Breadcrumbs::render('admin.monev.forms.form.question',$form, $instrument) }}	
 @endsection
 
-@section('content')
+@section('content') 
 	@if (Session::has('message'))
 		<div class="alert alert-info alert-styled-left alert-dismissible">
 			<button type="button" class="close" data-dismiss="alert"><span>×</span></button>

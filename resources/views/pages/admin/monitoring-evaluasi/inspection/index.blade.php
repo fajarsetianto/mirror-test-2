@@ -124,7 +124,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('inspection') }}				
+		{{ Breadcrumbs::render('admin.monev.inspection') }}				
 	</div>
 @endsection
 @section('content')

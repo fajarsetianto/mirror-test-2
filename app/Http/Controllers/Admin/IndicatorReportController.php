@@ -21,7 +21,7 @@ class IndicatorReportController extends Controller
     }
 
     public function data(){
-        $data = Form::latest()->get();
+        $data = Form::published()->expired()->latest()->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

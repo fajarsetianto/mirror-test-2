@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Form extends Model
@@ -43,5 +44,20 @@ class Form extends Model
 
     public function isPublishable(){
         return $this->questions()->exists() && !$this->instruments()->whereStatus('draft')->exists() && $this->targets()->exists();
+    }
+
+    public function scopeExpired($query)
+    {
+        return $query->whereDate('supervision_end_date', '>', Carbon::now());
+    }
+
+    public function scopeValid($query)
+    {
+        return $query->whereDate('supervision_end_date', '<=', Carbon::now());
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->whereStatus('publish');
     }
 }
