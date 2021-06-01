@@ -1,6 +1,6 @@
 @extends('layouts.full',['breadcrumb' => 'home'])
 
-@section('site-title','Dashboard')
+@section('site-title','Preview '.$form->name)
 @push('css-top')
 	<style>
 		.sp-container{
@@ -164,6 +164,7 @@
 			</div>
 		</div>	
 	</div>
+	{{ Breadcrumbs::render('admin.monev.forms.form.preview',$form) }}			
 @endsection
 
 @section('content')

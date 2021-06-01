@@ -15,15 +15,20 @@ Breadcrumbs::for('admin.home', function ($trail) {
             $trail->push(ucwords($form->name), route('monev.form.instrument.index', [$form->id]));
         });
 
-        Breadcrumbs::for('admin.monev.forms.form.question', function ($trail, $form, $instrument) {
-            $trail->parent('admin.monev.forms.form',$form);
-            $trail->push(ucwords($instrument->name), route('monev.form.instrument.question.index', [$form->id, $instrument->id]));
-        });
+            Breadcrumbs::for('admin.monev.forms.form.question', function ($trail, $form, $instrument) {
+                $trail->parent('admin.monev.forms.form',$form);
+                $trail->push(ucwords($instrument->name), route('monev.form.instrument.question.index', [$form->id, $instrument->id]));
+            });
 
-        Breadcrumbs::for('admin.monev.forms.form.target', function ($trail, $form) {
-            $trail->parent('admin.monev.forms.form', $form);
-            $trail->push('Sasaran Monitoring', route('monev.form.target.index', [$form->id]));
-        });
+            Breadcrumbs::for('admin.monev.forms.form.target', function ($trail, $form) {
+                $trail->parent('admin.monev.forms.form', $form);
+                $trail->push('Sasaran Monitoring', route('monev.form.target.index', [$form->id]));
+            });
+
+            Breadcrumbs::for('admin.monev.forms.form.preview', function ($trail, $form) {
+                $trail->parent('admin.monev.forms.form', $form);
+                $trail->push('preview', route('monev.form.instrument.preview', [$form->id]));
+            });
 
     Breadcrumbs::for('admin.monev.indicator-report', function ($trail) {
         $trail->parent('admin.home');
