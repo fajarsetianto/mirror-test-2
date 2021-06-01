@@ -89,6 +89,7 @@ class QuestionController extends Controller
 
         return response()->json([
             'status' => 1,
+            'item' => ['question' => $question->id],
             'title' => 'Successful!',
             'msg' => 'Data succesfully updated!'
         ],200);
