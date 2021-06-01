@@ -472,6 +472,7 @@
 					$(`.option-answer-${uniqId}`).attr('readonly',true)
 					$(`.score-${uniqId}`).attr('readonly',true)
 					$(`#add-option-${uniqId}`).addClass('d-none')
+					$(`#trash-${uniqId}`).attr('onclick', `destroy(${uniqId}, '${data.item.question}')`)
 
 				},
 				error: function (data) {
