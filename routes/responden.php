@@ -7,12 +7,11 @@ Route::group(['prefix' => 'auth'], function(){
         'verify' => false,
         'forgot' => false,
     ]);
-
-    Route::get('/checkpoint', 'Auth\LoginController@checkpoint')->name('checkpoint');
-    // Route::get('/checkpoint', function(){
-    //     return 'halo ha';
-    // })->name('checkpoint');
-    Route::post('/checkpoint', 'Auth\LoginController@checkpointStore')->name('checkpoint.store');
+    Route::group(['middleware'=> 'auth:respondent'], function(){
+        Route::get('/checkpoint', 'Auth\LoginController@checkpoint')->name('checkpoint');
+        Route::post('/checkpoint', 'Auth\LoginController@checkpointStore')->name('checkpoint.store');
+    });
+    
 });
 Route::group(['middleware' => ['auth:respondent','responden.name']], function(){
     Route::get('/','HomeController@index')->name('dashboard');

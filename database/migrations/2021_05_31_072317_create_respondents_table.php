@@ -21,7 +21,7 @@ class CreateRespondentsTable extends Migration
             $table->string('plain_token',100)->unique();
             $table->date('start_working_at')->nullable();
             $table->timestamps();
-            $table->foreign('target_id')->references('id')->on('targets');
+            $table->foreign('target_id')->references('id')->on('targets')->cascadeOnDelete();
         });
     }
 

@@ -194,7 +194,12 @@
 @endsection
 
 @section('content')
-
+@if (Session::has('message'))
+		<div class="alert alert-info alert-styled-left alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+			{{ Session::get('message') }}
+		</div>
+	@endif
 @include('pages.admin.monitoring-evaluasi.form.parts.header',['editable' => true])
 
 <div class="card">

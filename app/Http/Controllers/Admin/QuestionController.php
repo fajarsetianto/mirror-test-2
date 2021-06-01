@@ -185,4 +185,14 @@ class QuestionController extends Controller
             ->rawColumns(['actions', 'name'])
             ->make(true);
     }
+
+    public function changestatus(Request $request, Form $form, Instrument $instrument){
+        $request->validate([
+            'status' => 'required|string|in:draft,ready'
+        ]);
+
+        $instrument->update($request->only('status'));
+
+        return redirect()->back()->with('message','Instrument telah berhasil ditandai sebagai "'.$request->status.'"');
+    }
 }

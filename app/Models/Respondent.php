@@ -51,4 +51,8 @@ class Respondent extends Authenticatable
         return $this->belongsTo(Target::class);
     }
 
+    public function routeNotificationForMail(){
+        return $this->target->nonSatuanPendidikan->email;
+    }
+
 }

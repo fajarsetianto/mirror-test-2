@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
+use App\Notifications\TokenNotification;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -85,15 +86,18 @@ class FormController extends Controller
             }elseif($form->instruments()->whereStatus('draft')->exists()){
                 $failed_note = "Terdapat group pertanyaan dengan status draf, silahkan periksa kembali";
             }else{
-                $failed_note = "Form ini belum memmiliki sasaran monitoring, silahkan tambahkan sasaran monitoring";
+                $failed_note = "Form ini belum memiliki sasaran monitoring, silahkan tambahkan sasaran monitoring";
             }
         }
-        return view($this->viewNamespace.'publish', compact('passed','failed_note'));
+        return view($this->viewNamespace.'publish', compact('form','passed','failed_note'));
     }
 
     public function publishing(Form $form){
         $form->update(['status' => 'publish']);
-        return back();
+        foreach($form->targets as $target){
+            $target->respondent->notify(new TokenNotification($target));
+        }
+        return redirect()->route('monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
     }
 
     public function data(){

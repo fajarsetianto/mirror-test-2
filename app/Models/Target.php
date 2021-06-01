@@ -25,6 +25,6 @@ class Target extends Model
     }
 
     public function respondent(){
-        return $this->belongsTo(Respondent::class,'target_id');
+        return $this->hasOne(Respondent::class,'target_id');
     }
 }

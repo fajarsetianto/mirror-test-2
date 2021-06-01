@@ -42,6 +42,6 @@ class Form extends Model
     }
 
     public function isPublishable(){
-        return $this->questions()->exists() && !$this->instruments()->whereStatus('draft')->exists() && !$this->targets->exists();
+        return $this->questions()->exists() && !$this->instruments()->whereStatus('draft')->exists() && $this->targets()->exists();
     }
 }

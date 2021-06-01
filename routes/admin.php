@@ -15,6 +15,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
 
         Route::group(['prefix' => '{form}/instruments','as' => 'instrument.'],function(){
             Route::get('/', 'InstrumentController@index')->name('index');
+            Route::get('preview', 'InstrumentController@preview')->name('preview');
             Route::get('/data', 'InstrumentController@data')->name('data');
             Route::get('/create', 'InstrumentController@create')->name('create');
             Route::post('/create', 'InstrumentController@store')->name('store');
@@ -27,6 +28,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
                 Route::get('/data', 'QuestionController@data')->name('data');
                 Route::get('/create', 'QuestionController@create')->name('create');
                 Route::post('/create', 'QuestionController@store')->name('store');
+                Route::post('/changestatus', 'QuestionController@changestatus')->name('changestatus');
                 Route::get('{question}/edit', 'QuestionController@edit')->name('edit');
                 Route::put('{question}/update', 'QuestionController@update')->name('update');
                 Route::delete('{question}', 'QuestionController@destroy')->name('destroy');

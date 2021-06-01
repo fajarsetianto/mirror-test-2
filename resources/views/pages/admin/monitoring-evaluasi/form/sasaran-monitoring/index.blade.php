@@ -130,7 +130,7 @@
 			<div class="header-elements d-none">
 				<div class="d-flex">
 					<a href="{{route('monev.form.instrument.index',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Detail Form</span></a>
-					<button href="#" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
+					<button  class="btn btn-info" onclick="component('{{route('monev.form.publish',[$form->id])}}')" ><i class="mi-assignment"></i> <span>Publish</span></button>
 				</div>
 			</div>
 		</div>	
