@@ -36,7 +36,38 @@ Breadcrumbs::for('indicator-report.detail', function ($trail, $form) {
     $trail->push(ucwords($form->name), route('monev.indicator-report.detail',[$form->id]));
 });
 
+Breadcrumbs::for('inspection', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Pemeriksaan', route('monev.inspection.index'));
+});
+
+Breadcrumbs::for('inspection.detail', function ($trail, $form) {
+    $trail->parent('inspection');
+    $trail->push(ucwords($form->name), route('monev.inspection.detail',[$form->id]));
+});
+
+Breadcrumbs::for('inspection-history.target', function ($trail, $form) {
+    $trail->parent('inspection');
+    $trail->push(ucwords($form->name), route('monev.inspection.detail',[$form->id]));
+});
+
+Breadcrumbs::for('inspection-history.target.detail', function ($trail, $form, $target) {
+    $trail->parent('inspection-history.target',$form);
+    $trail->push(ucwords($target->nonSatuanPendidikan->name), route('monev.inspection-history.target.detail',[$form->id, $target->id]));
+});
+
 Breadcrumbs::for('management-user', function ($trail) {
     $trail->parent('home');
     $trail->push('Manajemen User', route('management-user.index'));
+});
+
+
+// Breadcrumb for Respondent
+Breadcrumbs::for('responden.home', function ($trail) {
+    $trail->push('Home', route('respondent.dashboard'));
+});
+
+Breadcrumbs::for('responden.home.form', function ($trail) {
+    $trail->parent('responden.home');
+    $trail->push('Form', route('respondent.form.index'));
 });

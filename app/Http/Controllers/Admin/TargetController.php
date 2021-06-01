@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Form;
 use App\Models\Institution;
 use App\Models\Target;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -41,9 +42,17 @@ class TargetController extends Controller
             'officer_id' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric|exists:users,id',
         ]);
 
-        $form->targets()->create(
+        $newTarget = $form->targets()->create(
             $request->only('type','institution_id','officer_id')
         );
+        // return response()->json($newTarget);
+
+        $newToken = sha1(time());
+        $newTarget->respondent()->create([
+            'token' => Hash::make($newToken),
+            'plain_token' => $newToken,
+            'target_id' => $newTarget->id
+        ]);
 
         return response()->json([
             'status' => 1,
@@ -113,7 +122,7 @@ class TargetController extends Controller
                     </div>
                 </div>
             </div>';     
-                return $btn;
+                return $form->isEditable() ? $btn : '';
             })
             
             ->rawColumns(['actions'])

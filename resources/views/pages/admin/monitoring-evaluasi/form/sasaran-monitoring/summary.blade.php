@@ -32,8 +32,12 @@
             @endif
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-link" data-dismiss="modal">Tambahkan Nanti</button>
-            <a href="{{route('monev.form.target.index',[$form->id])}}" class="btn bg-success">Tambahkan Sasaran Monitoring</a>
+            @if($form->isEditable())
+                <button type="button" class="btn btn-link" data-dismiss="modal">Tambahkan Nanti</button>
+                <a href="{{route('monev.form.target.index',[$form->id])}}" class="btn bg-success">Tambahkan Sasaran Monitoring</a>
+            @else
+                <a href="{{route('monev.form.target.index',[$form->id])}}" class="btn bg-success">Lihat Sasaran Monitoring</a>
+            @endif
         </div>
     </div>
 </div>

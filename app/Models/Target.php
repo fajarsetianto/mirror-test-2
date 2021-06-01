@@ -23,4 +23,8 @@ class Target extends Model
     public function officerName(){
         return $this->officer == null ? '-' : $this->officer->name;
     }
+
+    public function respondent(){
+        return $this->belongsTo(Respondent::class,'target_id');
+    }
 }

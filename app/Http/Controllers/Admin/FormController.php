@@ -75,6 +75,27 @@ class FormController extends Controller
         ],200);
     }
 
+    public function publish(Form $form){
+        $form->load('questions','targets');
+        $passed = $form->isPublishable();
+        $failed_note = '';
+        if(!$passed){
+            if(!$form->questions()->exists()){
+                $failed_note = "Form in belum memiliki pertanyaan, silahkan tambahkan pertanyaan";
+            }elseif($form->instruments()->whereStatus('draft')->exists()){
+                $failed_note = "Terdapat group pertanyaan dengan status draf, silahkan periksa kembali";
+            }else{
+                $failed_note = "Form ini belum memmiliki sasaran monitoring, silahkan tambahkan sasaran monitoring";
+            }
+        }
+        return view($this->viewNamespace.'publish', compact('passed','failed_note'));
+    }
+
+    public function publishing(Form $form){
+        $form->update(['status' => 'publish']);
+        return back();
+    }
+
     public function data(){
         $data = Form::latest()->get();
         return DataTables::of($data)
@@ -101,7 +122,7 @@ class FormController extends Controller
                     </div>
                 </div>
             </div>';     
-                return $btn;
+                return $row->isEditable() ? $btn : '';
             })
             ->addColumn('status', function($row){   
                 $btn = '<span class="badge badge-primary">'.$row->status.'</span>';     

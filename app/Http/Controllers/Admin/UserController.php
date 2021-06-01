@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use DataTables;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -27,10 +29,12 @@ class UserController extends Controller
             'email' => 'required|string|email'
         ]);
 
-        User::create(
+        $newUser = new User(
             $request->only('name','email')
         );
-
+        $password = Str::random(8);
+        $newUser->password = Hash::make($password);
+        $newUser->save();
         return response()->json([
             'status' => 1,
             'title' => 'Successful!',

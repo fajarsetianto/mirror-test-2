@@ -143,9 +143,11 @@
 <div class="card">
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title">Daftar Sasaran Monitoring</h6>
-		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
-		</div>
+		@if($form->isEditable())
+			<div class="header-elements">
+				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
+			</div>
+		@endif
 	</div>
 	<hr class="m-0">
 	<div class="card-body">

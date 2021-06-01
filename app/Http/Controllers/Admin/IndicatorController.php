@@ -95,7 +95,7 @@ class IndicatorController extends Controller
                     </div>
                 </div>
             </div>';     
-                return $btn;
+                return $form->isEditable() ? $btn : '';
             })
             
             ->rawColumns(['color','actions'])
