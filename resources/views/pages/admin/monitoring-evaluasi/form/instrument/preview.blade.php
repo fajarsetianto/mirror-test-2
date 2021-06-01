@@ -12,6 +12,9 @@
 		.bg-purle {
 			background-color: #5C6BC0;
 		}
+		.border-top-success{
+			border-top: 15px solid #4caf50;
+		}
 	</style>
 @endpush
 @push('scripts-top')
@@ -24,6 +27,7 @@
 	<script>
 		question = (typeClick, questionName, option, key, number) => {
 			let tempDataOption = ''
+			let uniqId = (new Date()).getTime()
 			if(option != null){
 				dataOption = JSON.parse(option.replace(/&quot;/g, '\"'))
 			}
@@ -52,11 +56,11 @@
 				icon = 'icon-circle'
 				countOption = 1
 
-				dataOption.forEach(element => {
+				dataOption.forEach((element, key) => {
 					tempDataOption += `
 					<div class="form-check">
-						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-						<label class="form-check-label" for="flexRadioDefault2">
+						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqId}-${key}" checked>
+						<label class="form-check-label" for="flexRadioDefault-${uniqId}-${key}">
 							${element.value}
 						</label>
 					</div>
@@ -68,16 +72,6 @@
 					<label class="d-block">Opsi Jawaban</label>
 					${tempDataOption}
 				</div>
-				`
-
-				addOption = `
-						<div class="row">
-							<div class="col-lg-11 ml-auto mt-2">
-								<span class="text-secondary cursor"><i class="icon-plus-circle2 text-primary"></i> Tambah Opsi </span>
-								atau
-								<span class="text-primary cursor">tambah "Lainnya" <span>
-							</div>
-						</div>
 				`
 				
 			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
@@ -101,54 +95,27 @@
 					${tempDataOption}
 				</div>
 				`
-				addOption = `
-						<div class="row">
-							<div class="col-lg-11 ml-auto mt-2">
-								<span onclick="addOptions('${icon}',${uniqId})" class="text-secondary cursor"><i class="icon-plus-circle2 text-primary"></i> Tambah Opsi </span>
-								atau
-								<span onclick="addOptionAnother('${icon}',${uniqId})"  class="text-primary cursor">tambah "Lainnya" <span>
-							</div>
-						</div>
-				`
 			} else if (typeClick == 'dropdown') {
 				questionType = 'Dropdown'
 				icon = 'icon-circle-down2'
 				countOption = 1
 
+				dataOption.forEach(element => {
+					tempDataOption += `
+						<option value="${element.value}">${element.value}</option>
+					`
+				});
+
 				type = `
-				<div id="form-group" class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-						<div class="row mt-2 option option-question" id="row">
-							<div class="col-md-2 pr-0 mr-0">
-								<i class="${icon}"></i> 
-								<span class="option-number">Opsi 1</span>
-							</div>
-							<div class="col-md-10 ml-0 pl-0">
-								<div class="row" id="row-option">
-									<div class="col-md-11 ml-0 pl-0">
-										<input class="alpaca-control form-control flex-1 mr-3" required name="option_answer[]" required placeholder="Opsi Jawaban">   
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-4 ml-0 pl-0">
-										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3" required name="score[]" type="number" placeholder="Bobot Nilai">   
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="form-group">
+					<label class="d-block">Opsi Jawaban</label>
+					<select data-placeholder="Select option" class="form-control form-control-select2">
+						<option>Select your option</option>
+						${tempDataOption}
+					</select>
+				</div>
 				`
 
-				addOption = `
-						<div class="row">
-							<div class="col-lg-11 ml-auto mt-2">
-								<span onclick="addOptions('${icon}',${uniqId})" class="text-secondary cursor"><i class="icon-plus-circle2 text-primary"></i> Tambah Opsi </span>
-								atau
-								<span onclick="addOptionAnother('${icon}',${uniqId})"  class="text-primary cursor">tambah "Lainnya" <span>
-							</div>
-						</div>
-				`
 			} else if (typeClick == 'file-upload' || typeClick == 'file upload'){
 				questionType = 'File Upload'
 				type = `
@@ -162,7 +129,7 @@
 			let urlActionUpdate = ''
 			$(`#content-${key}`).append(`
 				<div id="form-card">
-						<div class="card">
+						<div class="card border-left-success">
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-1">
@@ -200,34 +167,42 @@
 @endsection
 
 @section('content')
-
-	<div class="row">
-		@foreach($form->instruments()->get() as $key => $row)
-		<div class="col-lg-12" >
-			<div class="card">
-				<div class="page-header">
-					<div class="page-header-content">
-						<div class="page-title">
-							<div class="instrument-header d-flex">
-								<h4><span class="font-weight-semibold">{{$row->name}}</span></h4>
+	<div class="container">	
+		<div class="row">
+			@foreach($instrument as $key => $row)
+			<div class="col-lg-12" >
+				<div class="card border-top-success">
+					<div class="page-header ">
+						<div class="page-header-content">
+							<div class="page-title">
+								<div class="instrument-header d-flex">
+									<h4><span class="font-weight-semibold">{{$row->name}}</span></h4>
+								</div>
+								<div class="instrument-description">
+									<p class="text-secondary">{{$row->description}}</p>
+								</div>
 							</div>
-							<div class="instrument-description">
-								<p class="text-secondary">{{$row->description}}</p>
-							</div>
-						</div>
-					</div>	
+						</div>	
+					</div>
+				</div>
+			</div>
+		
+			<div id="content-{{$key+1}}" class="col-md-12">
+				@foreach($row->questions()->get() as $number => $question)
+					<script>
+						question('{{strtolower($question->questionType->name)}}', '{{$question->content}}', '{{json_encode($question->offeredAnswer)}}', {{$key+1}}, {{$number+1}})
+					</script>
+				@endforeach
+			</div>
+			@endforeach
+		</div>
+		<div class="row">
+			<div class="col-md-12 ml-auto">
+				<div class="d-flex flex-row-reverse bd-highlight">
+					{{$instrument->links()}}
 				</div>
 			</div>
 		</div>
-	
-		<div id="content-{{$key+1}}" class="col-md-12">
-			@foreach($row->questions()->get() as $number => $question)
-				<script>
-					question('{{strtolower($question->questionType->name)}}', '{{$question->content}}', '{{json_encode($question->offeredAnswer)}}', {{$key+1}}, {{$number+1}})
-				</script>
-			@endforeach
-		</div>
-		@endforeach
 	</div>
 
 @endsection

@@ -16,7 +16,8 @@ class InstrumentController extends Controller
     }
 
     public function preview(Form $form){
-        return view($this->viewNamespace.'preview', compact('form'));
+        $instrument = $form->instruments()->paginate(1);
+        return view($this->viewNamespace.'preview', compact('form','instrument'));
     }
 
     public function create(Form $form){

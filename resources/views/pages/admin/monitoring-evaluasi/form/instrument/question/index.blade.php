@@ -39,7 +39,7 @@
 			if(optionNumber == 2){
 				$(`#row-option-${uniqId}`).append(`
 					<div class="col-md-1 ml-0 pl-0">
-						<button type="button" id="remove-field-${uniqId}" onclick="removeOption(${uniqId},${uniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
+						<button type="button" onclick="removeOption(${uniqId},${uniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
 					</div>
 				`)
 			}
@@ -58,7 +58,7 @@
 								<input class="alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${valueOption == null ? '' : valueOption}" name="option_answer[]" placeholder="Opsi Jawaban">   
 							</div>
 							<div class="col-md-1 ml-0 pl-0">
-								<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
+								<button type="button" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
 							</div>
 						</div>
 						<div class="row">
@@ -92,7 +92,7 @@
 									<input readonly class="alpaca-control form-control flex-1 mr-3" name="option_answer[]" value="Lainnya" placeholder="Lainnya">   
 								</div>
 								<div class="col-md-1 ml-0 pl-0">
-									<button type="button" id="remove-field-${newUniqId}" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
+									<button type="button" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
 								</div>
 							</div>
 							<div class="row">
@@ -219,8 +219,10 @@
 
 				type = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-					<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
+					<div>
+						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
+						<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}"></textarea>
+					</div>
 				</div>
 				`
 			} else if (typeClick == 'ganda'){
