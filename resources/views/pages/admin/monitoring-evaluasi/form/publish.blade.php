@@ -7,7 +7,7 @@
         </div>
         <div class="modal-body">
             <div class="alert alert-info alert-styled-left">
-                <span class="font-weight-semibold">Apakah anda yakin? </span>. Anda tidak bisa merubah form ini dan segala komponen didalamnya.
+                <span class="font-weight-semibold">Apakah anda yakin? </span><br> Anda tidak bisa merubah form ini dan segala komponen di dalamnya.
             </div>
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn bg-secondary" data-dismiss="modal">Batal</button>

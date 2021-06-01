@@ -128,7 +128,6 @@
 			<div class="header-elements d-none">
 				<div class="d-flex">
 					<button href="#" class="mr-3 btn bg-purple "><i class="icon-download"></i> <span>Unduh</span></button>
-					<button onclick="component('{{route('monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="icon-trash"></i> <span>Hapus</span></button>
 				</div>
 			</div>
 		</div>
