@@ -50,12 +50,12 @@
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
 						<li class="nav-item" >
 							<a href="/" class="nav-link {{ (request()->is('/')) ? 'active' : '' }}">
-								<i class="icon-home4"></i>
+								<i class="mi-home"></i>
 								<span>Dashboard</span>
 							</a>
 						</li>
 						<li class="nav-item nav-item-submenu {{ (request()->is('monitoring-evaluasi/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Monitoring & Evaluasi</span></a>
+							<a href="#" class="nav-link"><i class="mi-find-in-page"></i> <span>Monitoring & Evaluasi</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
 								<li class="nav-item"><a href="{{route('monev.inspection.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/pemeriksaan*')) ? 'active' : '' }}">Pemeriksaan</a></li>
@@ -64,13 +64,13 @@
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu {{ (request()->is('management-user*')) ? 'nav-item-expanded nav-item-open' : '' }}">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen User</span></a>
+							<a href="#" class="nav-link"><i class="mi-people"></i> <span>Manajemen User</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('management-user.index')}}" class="nav-link {{ (request()->is('management-user*')) ? 'active' : '' }}">List User</a></li>
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu {{ (request()->is('management-lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
-							<a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen Lembaga</span></a>
+							<a href="#" class="nav-link"><i class="mi-domain"></i> <span>Manajemen Lembaga</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="#" class="nav-link">Satuan Pendidikan</a></li>
 								<li class="nav-item"><a href="{{route('institution.non-satuan.index')}}" class="nav-link {{ (request()->is('management-lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>

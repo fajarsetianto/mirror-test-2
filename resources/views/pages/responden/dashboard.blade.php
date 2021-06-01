@@ -1,8 +1,5 @@
 @extends('layouts.responden.full')
 @section('site-title','Dashboard')
-@push('css-top')
-    <link href="{{asset('assets/global/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
-@endpush
 @section('content')
 <!-- Content area -->
 			<div class="content container">

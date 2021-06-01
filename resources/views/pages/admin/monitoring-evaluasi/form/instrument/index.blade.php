@@ -1,8 +1,7 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
 @section('site-title','Monitoring & Evaluasi - '. $form->name)
 @push('css-top')
-	<link href="{{asset('assets/global/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<style>
 		.sp-container{
 			z-index: 9999;

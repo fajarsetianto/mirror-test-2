@@ -2,7 +2,6 @@
 
 @section('site-title','Sistem Monitoring dan Evaluasi - '. $form->name)
 @push('css-top')
-	<link href="{{asset('assets/global/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<style>
 		.sp-container{
 			z-index: 9999;
