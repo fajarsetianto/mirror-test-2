@@ -6,6 +6,11 @@
 		.sp-container{
 			z-index: 9999;
 		}
+		.btn-group-toggle label.btn.btn-primary:not(.active) {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			color: inherit;
+		}
 	</style>
 @endpush
 @push('scripts-top')
