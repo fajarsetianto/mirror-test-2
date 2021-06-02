@@ -48,12 +48,12 @@ class Form extends Model
 
     public function scopeExpired($query)
     {
-        return $query->whereDate('supervision_end_date', '>', Carbon::now());
+        return $query->whereDate('supervision_end_date', '<', Carbon::now());
     }
 
     public function scopeValid($query)
     {
-        return $query->whereDate('supervision_end_date', '<=', Carbon::now());
+        return $query->whereDate('supervision_end_date', '>=', Carbon::now());
     }
 
     public function scopePublished($query)
