@@ -120,7 +120,7 @@ class FormController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
                         <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
@@ -128,8 +128,9 @@ class FormController extends Controller
             </div>';     
                 return $row->isEditable() ? $btn : '';
             })
-            ->addColumn('status', function($row){   
-                $btn = '<span class="badge badge-primary">'.$row->status.'</span>';     
+            ->addColumn('status', function($row){
+                $btn = '<span class="badge badge'.($row->status == 'draft' ? '-warning' :  '-primary') .'">'.$row->status.'</span>';     
+                
                 return $btn;
             })
             ->rawColumns(['name','target','actions','status'])
