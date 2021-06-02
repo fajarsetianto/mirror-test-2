@@ -37,7 +37,7 @@
 				<form class="login-form" style="width: auto" method="POST" action="{{ route('respondent.login') }}">
 					@csrf
 					<h3 class="text-center font-weight-bold">Sistem Monitoring dan Evaluasi Pembangunan Gedung <br>
-					Direktorat Jendral Pendidikan Vokasi
+					Direktorat Jenderal Pendidikan Vokasi
 					</h3>
 					<div class="card mb-0">
 						<div class="card-header bg-teal-400 text-white text-center">
