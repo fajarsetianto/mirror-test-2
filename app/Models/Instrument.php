@@ -15,4 +15,13 @@ class Instrument extends Model
     public function questions(){
         return $this->hasMany(Question::class);
     }
+
+    public function maxScore(){
+        return $this->questions()->whereHas('offeredAnswer')->get()->sum(function($item){
+            if($item->questionType->name == "Multiple Choice"){
+                return $item->offeredAnswer()->sum('score');
+            }
+            return $item->offeredAnswer()->max('score');
+        });
+    }
 }

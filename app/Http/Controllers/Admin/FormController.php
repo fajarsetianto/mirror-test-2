@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Form;
+use App\Notifications\TokenNotification;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -74,6 +76,30 @@ class FormController extends Controller
         ],200);
     }
 
+    public function publish(Form $form){
+        $form->load('questions','targets');
+        $passed = $form->isPublishable();
+        $failed_note = '';
+        if(!$passed){
+            if(!$form->questions()->exists()){
+                $failed_note = "Form in belum memiliki pertanyaan, silahkan tambahkan pertanyaan";
+            }elseif($form->instruments()->whereStatus('draft')->exists()){
+                $failed_note = "Terdapat group pertanyaan dengan status draf, silahkan periksa kembali";
+            }else{
+                $failed_note = "Form ini belum memiliki sasaran monitoring, silahkan tambahkan sasaran monitoring";
+            }
+        }
+        return view($this->viewNamespace.'publish', compact('form','passed','failed_note'));
+    }
+
+    public function publishing(Form $form){
+        $form->update(['status' => 'publish']);
+        foreach($form->targets as $target){
+            $target->respondent->notify(new TokenNotification($target));
+        }
+        return redirect()->route('monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
+    }
+
     public function data(){
         $data = Form::latest()->get();
         return DataTables::of($data)
@@ -94,16 +120,17 @@ class FormController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
                         <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>
             </div>';     
-                return $btn;
+                return $row->isEditable() ? $btn : '';
             })
-            ->addColumn('status', function($row){   
-                $btn = '<span class="badge badge-primary">'.$row->status.'</span>';     
+            ->addColumn('status', function($row){
+                $btn = '<span class="badge badge'.($row->status == 'draft' ? '-warning' :  '-primary') .'">'.$row->status.'</span>';     
+                
                 return $btn;
             })
             ->rawColumns(['name','target','actions','status'])

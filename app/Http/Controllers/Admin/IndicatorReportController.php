@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace  App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Form;
 use DataTables;
@@ -20,7 +21,7 @@ class IndicatorReportController extends Controller
     }
 
     public function data(){
-        $data = Form::latest()->get();
+        $data = Form::published()->expired()->latest()->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

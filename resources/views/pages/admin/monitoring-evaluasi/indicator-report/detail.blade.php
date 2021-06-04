@@ -12,7 +12,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('indicator-report.detail',$form) }}				
+		{{ Breadcrumbs::render('admin.monev.indicator-report.detail',$form) }}				
 	</div>
 @endsection
 @section('content')

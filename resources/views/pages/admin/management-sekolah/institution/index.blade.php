@@ -126,7 +126,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('non-satuan') }}				
+		{{ Breadcrumbs::render('admin.institution.non-satuan') }}				
 	</div>
 @endsection
 @section('content')

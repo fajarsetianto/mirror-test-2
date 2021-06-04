@@ -1,8 +1,7 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
 @section('site-title','Monitoring & Evaluasi - '. $form->name)
 @push('css-top')
-	<link href="{{asset('assets/global/css/icons/material/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<style>
 		.sp-container{
 			z-index: 9999;
@@ -130,12 +129,14 @@
 			<div class="header-elements d-none">
 				<div class="d-flex">
 					<a href="{{route('monev.form.instrument.index',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Detail Form</span></a>
-					<button href="#" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
+					@if($form->isEditable())
+						<button  class="btn btn-info" onclick="component('{{route('monev.form.publish',[$form->id])}}')" ><i class="mi-assignment"></i> <span>Publish</span></button>
+					@endif
 				</div>
 			</div>
 		</div>	
 	</div>
-	{{ Breadcrumbs::render('target',$form) }}	
+	{{ Breadcrumbs::render('admin.monev.forms.form.target',$form) }}	
 @endsection
 
 @section('content')
@@ -143,9 +144,11 @@
 <div class="card">
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title">Daftar Sasaran Monitoring</h6>
-		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
-		</div>
+		@if($form->isEditable())
+			<div class="header-elements">
+				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
+			</div>
+		@endif
 	</div>
 	<hr class="m-0">
 	<div class="card-body">

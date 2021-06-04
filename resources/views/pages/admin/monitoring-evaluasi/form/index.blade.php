@@ -1,7 +1,15 @@
 @extends('layouts.full')
 
 @section('site-title','Form Instrument Monitoring dan Evaluasi')
-
+@push('css-top')
+	<style>
+		.btn-group-toggle label.btn.btn-primary:not(.active) {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			color: inherit;
+		}
+	</style>
+@endpush
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
@@ -124,7 +132,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('forms') }}				
+		{{ Breadcrumbs::render('admin.monev.forms') }}				
 	</div>
 @endsection
 @section('content')

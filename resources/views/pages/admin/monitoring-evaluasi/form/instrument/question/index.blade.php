@@ -1,6 +1,6 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
-@section('site-title','Dashboard')
+@section('site-title',$instrument->name)
 @push('css-top')
 	<style>
 		.sp-container{
@@ -511,9 +511,16 @@
 			</div>
 		</div>	
 	</div>
+	{{ Breadcrumbs::render('admin.monev.forms.form.question',$form, $instrument) }}	
 @endsection
 
-@section('content')
+@section('content') 
+	@if (Session::has('message'))
+		<div class="alert alert-info alert-styled-left alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+			{{ Session::get('message') }}
+		</div>
+	@endif
 
 	<div class="row">
 		<div class="col-lg-3">
@@ -527,8 +534,18 @@
 			</div>
 			<div class="card mt-0">
 				<div class="card-body">
-					<button class="btn btn-block bg-purle text-left mb-3" onclick="saveDraft('{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button>
-					<button class="btn btn-block btn-primary text-left mb-5" onclick="component('public','{{route('monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button>
+					<form method="POST" action="{{route('monev.form.instrument.question.changestatus',[$form->id,$instrument->id])}}" class="form-inline">
+						@csrf
+						<input type="hidden" name="status" value="draft">
+						<button class="btn btn-block bg-purle text-left mb-3" type="submit"><i class="icon-file-text3 mr-2"></i>Tandai Sebagai Draft</button>
+					</form>
+					<form method="POST" action="{{route('monev.form.instrument.question.changestatus',[$form->id,$instrument->id])}}" class="form-inline">
+						@csrf
+						<input type="hidden" name="status" value="ready">
+						<button class="btn btn-block btn-primary text-left mb-5" type="submit"><i class="icon-file-text mr-2"></i>Tandai Sudah Selesai</button>
+					</form>
+					{{-- <button class="btn btn-block bg-purle text-left mb-3" onclick="saveDraft('{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button> --}}
+					{{-- <button class="btn btn-block btn-primary text-left mb-5" onclick="component('public','{{route('monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button> --}}
 				</div>
 			</div>
 		</div>

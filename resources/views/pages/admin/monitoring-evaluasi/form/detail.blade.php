@@ -1,4 +1,4 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
 @section('site-title','Dashboard')
 
