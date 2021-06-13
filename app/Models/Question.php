@@ -19,4 +19,8 @@ class Question extends Model
     public function questionType(){
         return $this->belongsTo(QuestionType::class);
     }
+
+    public function userAnswer(){
+        return $this->hasOne(UserAnswer::class);
+    }
 }
