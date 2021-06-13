@@ -34,8 +34,13 @@ class FormController extends Controller
 
     public function data(){
         $data = auth('respondent')->user()->load('target.form.instruments')->target->form->instruments;
+
         return DataTables::of($data)
             ->addIndexColumn()
+            ->addColumn('name', function($row){   
+                $link = '<a href="'.route('respondent.form.question.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                return $link;
+            })
             ->addColumn('question', function($row){   
                 return '0/'.$row->questions()->count();
             })
@@ -56,7 +61,7 @@ class FormController extends Controller
             </div>';    
                 return $btn;
             })
-            ->rawColumns(['status','actions'])
+            ->rawColumns(['name','status','actions'])
             ->make(true);
     }
 }

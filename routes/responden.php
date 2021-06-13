@@ -18,5 +18,11 @@ Route::group(['middleware' => ['auth:respondent','responden.name']], function(){
     Route::group(['as' => 'form.','prefix' => 'form'], function(){
         Route::get('/','FormController@index')->name('index');
         Route::get('date','FormController@data')->name('data');
+        Route::group(['as' => 'question.','prefix' => '{instrument}/question'], function(){
+            Route::get('/','QuestionController@index')->name('index');
+            Route::post('/','QuestionController@store')->name('store');
+            Route::get('/show','QuestionController@show')->name('show');
+
+        });
     });
 });
