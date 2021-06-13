@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInstitutionsTable extends Migration
+class CreateOfficersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateInstitutionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('institutions', function (Blueprint $table) {
+        Schema::create('officers', function (Blueprint $table) {
             $table->id();
-            $table->text('name');
-            $table->string('npsn');
-            $table->string('email');
-            $table->text('address');
-            $table->string('province');
-            $table->string('city');
-            $table->string('headmaster');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->boolean('is_active')->default(false);
             $table->unsignedBigInteger('created_by');
+            $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
@@ -36,6 +35,6 @@ class CreateInstitutionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('institutions');
+        Schema::dropIfExists('officers');
     }
 }

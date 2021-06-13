@@ -11,4 +11,8 @@ class Institution extends Model
     public function targets(){
         return $this->hasMany(Target::class);
     }
+
+    public function createdBy(){
+        return $this->belongsTo(User::class,'created_by');
+    }
 }

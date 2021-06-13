@@ -18,13 +18,13 @@ class CreateTargetsTable extends Migration
             $table->enum('type',['responden', 'petugas MONEV', 'responden & petugas MONEV' ])->default('responden');
             $table->unsignedBigInteger('officer_id')->nullable();
             $table->unsignedBigInteger('form_id')->nullable();
-            $table->unsignedBigInteger('institution_id')->nullable();
+            $table->unsignedBigInteger('institutionable_id');
+            $table->unsignedBigInteger('institutionable_type');
 
             $table->timestamps();
 
-            $table->foreign('officer_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('officer_id')->references('id')->on('officers')->cascadeOnDelete();
             $table->foreign('form_id')->references('id')->on('forms')->cascadeOnDelete();
-            $table->foreign('institution_id')->references('id')->on('institutions')->cascadeOnDelete();
         });
     }
 

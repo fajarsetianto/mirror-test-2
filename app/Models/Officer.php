@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Form;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class Officer extends Authenticatable
 {
     use Notifiable;
 
@@ -37,15 +38,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function officers(){
-        return $this->hasMany(Officer::class,'created_by');
+    public function createdBy(){
+        return $this->belongsTo(User::class,'created_by');
+    }
+
+    public function targets(){
+        return $this->hasMany(Target::class);
     }
 
     public function forms(){
-        return $this->hasMany(Form::class,'created_by');
-    }
-
-    public function institutions(){
-        return $this->hasMany(Institution::class,'created_by');
+        return $this->belongsToMany(Form::class,'targets','officer_id','form_id');
     }
 }

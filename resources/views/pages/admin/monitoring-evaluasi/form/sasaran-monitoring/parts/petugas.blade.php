@@ -7,12 +7,11 @@
         <div class="col-md-9">
             <select class="form-control select2" name="officer_id" data-fouc>
                 <option value="" disabled selected>Pilih Petugas Monev</option>
-                @foreach (App\Models\User::all() as $user)
+                @foreach ($users as $user)
                     <option value="{{$user->id}}" @isset($item) {{$item->officer_id == $user->id ?  'selected' : ''}} @endisset>{{$user->name}}</option>
                 @endforeach
             </select>
         </div>
     </div>
-    
 @endif
 

@@ -40,7 +40,7 @@ class InstitutionController extends Controller
             'headmaster' => 'required|string',
         ]);
 
-        Institution::create(
+        auth()->user()->institutions()->create(
             $request->only('type','name','npsn','email','address','province','city','headmaster')
         );
 
@@ -84,7 +84,7 @@ class InstitutionController extends Controller
     }
 
     public function data(){
-        $data = Institution::latest()->get();
+        $data = auth()->user()->institutions()->latest()->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', function($row){   

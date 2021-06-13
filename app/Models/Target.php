@@ -16,8 +16,9 @@ class Target extends Model
         return $this->belongsTo(User::class, 'officer_id');
     }
 
-    public function nonSatuanPendidikan(){
-        return $this->belongsTo(Institution::class,'institution_id');
+    public function institutionable()
+    {
+        return $this->morphTo();
     }
 
     public function officerName(){

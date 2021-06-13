@@ -11,8 +11,6 @@ use DataTables;
 
 class InstrumentController extends Controller
 {
-    // protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.instrument.";
-
     public function data(Form $form, Target $target){
         $data = $form->instruments()->latest()->get();
         return DataTables::of($data)

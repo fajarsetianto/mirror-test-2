@@ -22,7 +22,7 @@ class TargetController extends Controller
         return view($this->viewNamespace.'form', [
             'url' => route('monev.form.target.store',[$form->id]),
             'form' => $form,
-            'institutions' => Institution::all()
+            'institutions' => auth()->user()->institutions
         ]);
     }
 
@@ -30,7 +30,7 @@ class TargetController extends Controller
         return view($this->viewNamespace.'form', [
             'url' => route('monev.form.target.update',[$form->id, $target->id]),
             'form' => $form,
-            'institutions' => Institution::all(),
+            'institutions' => auth()->user()->institutions,
             'item' => $target
         ]);
     }
@@ -130,6 +130,7 @@ class TargetController extends Controller
     }
 
     public function getInput(Form $form, Target $target){
-        return view($this->viewNamespace.'parts.petugas', compact('form','target'));
+        $users = auth()->user()->officers;
+        return view($this->viewNamespace.'parts.petugas', compact('form','target','users'));
     }
 }

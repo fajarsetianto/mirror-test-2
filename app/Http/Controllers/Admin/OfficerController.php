@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Officer;
+use App\Notifications\Officer\AccountCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class OfficerController extends Controller
 {
-    protected $viewNamespace = "pages.admin.management-user.";
+    protected $viewNamespace = "pages.admin.officer.";
 
     public function index(){
         return view($this->viewNamespace.'index');
@@ -26,15 +27,16 @@ class UserController extends Controller
     public function store(Request $request){
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email'
+            'email' => 'required|string|email|unique:officers,email'
         ]);
 
-        $newUser = new User(
+        $newOfficer = auth()->user()->officers()->make(
             $request->only('name','email')
         );
         $password = Str::random(8);
-        $newUser->password = Hash::make($password);
-        $newUser->save();
+        $newOfficer->password = Hash::make($password);
+        $newOfficer->save();
+        $newOfficer->notify(New AccountCreated($password));
         return response()->json([
             'status' => 1,
             'title' => 'Successful!',
@@ -42,20 +44,20 @@ class UserController extends Controller
         ],200);
     }
 
-    public function edit(User $user){
+    public function edit(Officer $officer){
         return view($this->viewNamespace.'form',[
-            'item' => $user,
-            'url' => route('management-user.update',[$user->id])
+            'item' => $officer,
+            'url' => route('management-user.update',[$officer->id])
         ]);
     }
 
-    public function update(Request $request, User $user){
+    public function update(Request $request, Officer $officer){
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|string|email'
+            'email' => 'required|string|email|unique:officers,email,'.$officer->id
         ]);
 
-        $user->update(
+        $officer->update(
             $request->only('name','email')
         );
 
@@ -66,9 +68,8 @@ class UserController extends Controller
         ],200);
     }
 
-    public function destroy(User $user){
-        $user->delete();
-
+    public function destroy(Officer $officer){
+        $officer->delete();
         return response()->json([
             'status' => 1,
             'title' => 'Successful!',
@@ -77,7 +78,7 @@ class UserController extends Controller
     }
 
     public function data(){
-        $data = User::latest()->get();
+        $data = auth()->user()->officers()->latest()->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', function($row){   

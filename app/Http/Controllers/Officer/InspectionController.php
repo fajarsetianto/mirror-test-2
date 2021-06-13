@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Inspection;
+namespace App\Http\Controllers\Officer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
@@ -9,15 +9,15 @@ use DataTables;
 
 class InspectionController extends Controller
 {
-    protected $viewNamespace = "pages.admin.monitoring-evaluasi.inspection.";
+    protected $viewNamespace = "pages.officer.inspection.";
 
     public function index(){
         return view($this->viewNamespace.'index');
     }
 
-    public function detail(Request $request, Form $form){
+    public function detail(Request $request, Target $target){
         if($request->ajax()){
-            $data = $form->targets()->latest()->get();
+            $data = $target;
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
@@ -41,7 +41,7 @@ class InspectionController extends Controller
                         break;
                 }
             })
-            ->addColumn('actions', function($row) use ($form){   
+            ->addColumn('actions', function($row){   
                 $btn = '<button class="btn btn-success"><i class="mi-visibility"></i> Lihat Detail</button>';     
                 return $btn;
             })
@@ -52,9 +52,14 @@ class InspectionController extends Controller
         return view($this->viewNamespace.'detail', compact('form'));
     }
 
-
     public function data(){
-        $data = auth()->user()->forms()->published()->valid()->latest()->get();
+        $data = auth('officer')
+                    ->user()
+                    ->forms()
+                    // ->published()
+                    // ->valid()
+                    ->latest()
+                    ->get();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
@@ -62,8 +67,7 @@ class InspectionController extends Controller
                 return $link;
             })
             ->addColumn('target', function($row){   
-                $link = '<button onclick="component(`'.route('monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
-                return $link;
+                return '';
             })
             ->addColumn('actions', function($row){   
                 $btn = '<div class="list-icons">

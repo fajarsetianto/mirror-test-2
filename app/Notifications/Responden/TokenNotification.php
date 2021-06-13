@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\Responden;
 
 use App\Models\Target;
 use Illuminate\Bus\Queueable;
@@ -44,11 +44,11 @@ class TokenNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Anda diudang untuk menjadi responden pada sistem monitoring dan evaluasi')
-                    ->line('Token anda adalah ' . $this->target->respondent->plain_token)
-                    ->line('Silahkan klik tautan dibawah ini untuk mulai mengerjakan')
-                    ->action('Mulai Mengerjakan', route('respondent.login'))
-                    ->line('Thank you for using our application!');
+            ->line('Anda diudang untuk menjadi responden pada sistem monitoring dan evaluasi')
+            ->line('Token anda adalah ' . $this->target->respondent->plain_token)
+            ->line('Silahkan klik tautan dibawah ini untuk mulai mengerjakan')
+            ->action('Mulai Mengerjakan', route('respondent.dashboard'))
+            ->line('Thank you for using our application!');
     }
 
     /**
