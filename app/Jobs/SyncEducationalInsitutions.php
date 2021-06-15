@@ -93,6 +93,7 @@ class SyncEducationalInsitutions implements ShouldQueue
                 if($response != null){
                     break;
                 }
+                sleep(5);
                 $tries++;
             } 
             
