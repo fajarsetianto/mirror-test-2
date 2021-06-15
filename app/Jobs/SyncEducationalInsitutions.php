@@ -36,7 +36,10 @@ class SyncEducationalInsitutions implements ShouldQueue
     public function __construct()
     {
         $this->_client = new Client([
-            'base_uri' => $this->_baseUri
+            'base_uri' => $this->_baseUri,
+            'curl' => [
+                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+            ]
         ]);
     }
 
@@ -125,7 +128,7 @@ class SyncEducationalInsitutions implements ShouldQueue
 
     protected function _fetch(Request $request){
         try {
-            $response = $this->_client->send($request,['version' => 3]);
+            $response = $this->_client->send($request);
             if($response->getStatusCode() == "200"){
                 $responseData = json_decode($response->getBody());
                 return $responseData;
