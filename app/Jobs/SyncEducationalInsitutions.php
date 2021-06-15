@@ -24,6 +24,9 @@ class SyncEducationalInsitutions implements ShouldQueue
     protected $_baseUri = 'https://api.vokasi.kemdikbud.go.id';
     protected $_username = 'emonev@api';
     protected $_password = 'b,]ZLJ7\]MyMC$mr@!tr';
+
+    protected $_sleep = 10; // use > 0 to enable sleep
+
     // protected $_password = 'b,]ZLJ7\]MyMC$mr@!t';
     /**
      * Create a new job instance.
@@ -52,6 +55,7 @@ class SyncEducationalInsitutions implements ShouldQueue
     protected function login(){
         $tries = 0;
         while($tries <= 5){
+            $this->sleep();
             $request = new Request('POST','auth/login', ['Content-Type' => 'application/x-www-form-urlencoded'], http_build_query([
                 'username' => $this->_username, 
                 'password' => $this->_password
@@ -77,7 +81,7 @@ class SyncEducationalInsitutions implements ShouldQueue
         $pages = 1;
         while($currentPage <= $pages){
             Log::info('Starting fetching page: '.$currentPage);
-            sleep(5);
+            $this->sleep();
             $request = new Request(
                 'POST',
                 'data/spg?access-token='.$this->_token,
@@ -93,7 +97,7 @@ class SyncEducationalInsitutions implements ShouldQueue
                 if($response != null){
                     break;
                 }
-                sleep(5);
+                $this->sleep();
                 $tries++;
             } 
             
@@ -135,6 +139,12 @@ class SyncEducationalInsitutions implements ShouldQueue
             }
         }
         return null;
+    }
+
+    protected function sleep(){
+        if($this->_sleep > 0){
+            sleep($this->_sleep);
+        }
     }
 
 }
