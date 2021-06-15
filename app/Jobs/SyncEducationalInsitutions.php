@@ -45,7 +45,7 @@ class SyncEducationalInsitutions implements ShouldQueue
     public function handle()
     {
         if($this->login()){
-            $this->sync(1);
+            $this->sync();
         }
     }
 
@@ -109,7 +109,7 @@ class SyncEducationalInsitutions implements ShouldQueue
 
     protected function _fetch(Request $request){
         try {
-            $response = $this->_client->send($request);
+            $response = $this->_client->send($request,['version' => 1.2]);
             if($response->getStatusCode() == "200"){
                 $responseData = json_decode($response->getBody());
                 return $responseData;
