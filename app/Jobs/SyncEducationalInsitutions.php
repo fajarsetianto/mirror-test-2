@@ -120,7 +120,7 @@ class SyncEducationalInsitutions implements ShouldQueue
 
     protected function _fetch(Request $request){
         try {
-            $response = $this->_client->send($request,['version' => 1.3,'timeout' => 3.14]);
+            $response = $this->_client->send($request,['version' => 1.3]);
             if($response->getStatusCode() == "200"){
                 $responseData = json_decode($response->getBody());
                 return $responseData;
