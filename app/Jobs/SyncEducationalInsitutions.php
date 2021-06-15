@@ -87,7 +87,15 @@ class SyncEducationalInsitutions implements ShouldQueue
                     'limit' => 30
                 ])
             );
-            $response = $this->_fetch($request);
+            $tries = 0;
+            while($tries < 5 ){
+                $response = $this->_fetch($request);
+                if($response != null){
+                    break;
+                }
+                $tries++;
+            } 
+            
             if($response != null){
                 $pages = $response->total_page;
                 $currentPage++;
@@ -112,7 +120,7 @@ class SyncEducationalInsitutions implements ShouldQueue
 
     protected function _fetch(Request $request){
         try {
-            $response = $this->_client->send($request,['version' => 1.2]);
+            $response = $this->_client->send($request,['version' => 1.3,'timeout' => 3.14]);
             if($response->getStatusCode() == "200"){
                 $responseData = json_decode($response->getBody());
                 return $responseData;
