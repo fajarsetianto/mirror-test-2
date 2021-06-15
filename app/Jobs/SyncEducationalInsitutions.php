@@ -61,6 +61,7 @@ class SyncEducationalInsitutions implements ShouldQueue
             if($response != null){
                 if($response->status == 200){
                     $this->_token = $response->data->token;
+                    Log::info('Log In Successfuly');
                     return true;
                     break;
                 }
@@ -75,6 +76,7 @@ class SyncEducationalInsitutions implements ShouldQueue
         $currentPage = 1;
         $pages = 1;
         while($currentPage <= $pages){
+            Log::info('Starting fetching page: '.$currentPage);
             sleep(5);
             $request = new Request(
                 'POST',
@@ -102,6 +104,7 @@ class SyncEducationalInsitutions implements ShouldQueue
                     $newItem['fax'] = $item->nomor_fax;
                     
                     EducationalInstitution::updateOrCreate(['sp_id' => $item->sp_id], $newItem);
+                    Log::info($item->nm_sp.' is updated or created');
                 }
             }
         }
