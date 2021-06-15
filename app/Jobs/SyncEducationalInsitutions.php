@@ -25,7 +25,7 @@ class SyncEducationalInsitutions implements ShouldQueue
     protected $_username = 'emonev@api';
     protected $_password = 'b,]ZLJ7\]MyMC$mr@!tr';
 
-    protected $_sleep = 10; // use > 0 to enable sleep
+    protected $_sleep = 0; // use > 0 to enable sleep
 
     // protected $_password = 'b,]ZLJ7\]MyMC$mr@!t';
     /**
@@ -38,7 +38,7 @@ class SyncEducationalInsitutions implements ShouldQueue
         $this->_client = new Client([
             'base_uri' => $this->_baseUri,
             'curl' => [
-                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_3
             ]
         ]);
     }
