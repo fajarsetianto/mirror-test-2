@@ -17,11 +17,11 @@ class InspectionController extends Controller
 
     public function detail(Request $request, Form $form){
         if($request->ajax()){
-            $data = $form->targets()->latest()->get();
+            $data = $form->targets()->latest();
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                return $row->nonSatuanPendidikan->name;
+                return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
                 return $row->officerName();
@@ -54,7 +54,7 @@ class InspectionController extends Controller
 
 
     public function data(){
-        $data = auth()->user()->forms()->published()->valid()->latest()->get();
+        $data = auth()->user()->forms()->published()->valid()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

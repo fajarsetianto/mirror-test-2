@@ -33,7 +33,7 @@ class FormController extends Controller
     }
 
     public function data(){
-        $data = auth('respondent')->user()->load('target.form.instruments')->target->form->instruments;
+        $data = auth('respondent')->user()->load('target.form.instruments')->target->form->instruments();
 
         return DataTables::of($data)
             ->addIndexColumn()

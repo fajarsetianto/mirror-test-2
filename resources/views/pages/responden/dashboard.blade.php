@@ -23,11 +23,11 @@
                         </div>
                         <div class="form-group row mb-0">
                             <label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
-                            <div class="col-md-9 col-6">{{$user->target->nonSatuanPendidikan->name}}</div>
+                            <div class="col-md-9 col-6">{{$user->target->institutionable->name}}</div>
                         </div>
                         <div class="form-group row mb-0">
                             <label class="col-md-3 col-6 font-weight-bold">Reponden</label>
-                            <div class="col-md-9 col-6">{{$user->name}} ({{$user->target->nonSatuanPendidikan->email}})</div>
+                            <div class="col-md-9 col-6">{{$user->name}} ({{$user->target->institutionable->email}})</div>
                         </div>
                         <div class="form-group row mb-0">
                             <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>

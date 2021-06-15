@@ -21,7 +21,7 @@ class InspectionController extends Controller
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                return $row->nonSatuanPendidikan->name;
+                return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
                 return $row->officerName();
@@ -58,8 +58,7 @@ class InspectionController extends Controller
                     ->forms()
                     // ->published()
                     // ->valid()
-                    ->latest()
-                    ->get();
+                    ->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

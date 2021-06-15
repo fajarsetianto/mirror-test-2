@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Form;
+use App\Models\Pivots\OfficerTarget;
 use Illuminate\Notifications\Notifiable;
 
 class Officer extends Authenticatable
@@ -43,7 +44,9 @@ class Officer extends Authenticatable
     }
 
     public function targets(){
-        return $this->hasMany(Target::class);
+        return $this->belongsToMany(Target::class,OfficerTarget::class)
+            ->withPivot(['is_leader'])
+            ->withTimestamps();
     }
 
     public function forms(){

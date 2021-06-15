@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Form;
-use App\Models\Institution;
+use App\Models\NonEducationalInstitution;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Models\Officer;
 use App\Policies\FormPolicy;
-use App\Policies\InstitutionPolicy;
+use App\Policies\NonEducationalInstitutionPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Policies\OfficerPolicy;
 
@@ -19,9 +19,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Officer::class => OfficerPolicy::class,
         Form::class => FormPolicy::class,
-        Institution::class => InstitutionPolicy::class,
+        Officer::class => OfficerPolicy::class,
+        NonEducationalInstitution::class => NonEducationalInstitutionPolicy::class,
     ];
 
     /**

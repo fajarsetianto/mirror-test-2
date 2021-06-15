@@ -52,7 +52,7 @@ class Respondent extends Authenticatable
     }
 
     public function routeNotificationForMail(){
-        return $this->target->nonSatuanPendidikan->email;
+        return $this->target->institutionable->email;
     }
 
 }

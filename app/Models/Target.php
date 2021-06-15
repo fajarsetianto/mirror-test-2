@@ -2,27 +2,38 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\OfficerTarget;
 use Illuminate\Database\Eloquent\Model;
 
 class Target extends Model
 {
+    public static $institutionalbeClass = [
+        'non satuan pendidikan' => NonEducationalInstitution::class,
+        'satuan pendidikan' => EducationalInstitution::class
+    ];
+    
     protected $guarded = [];
 
     public function form(){
         return $this->belongsTo(Form::class);
     }
 
-    public function officer(){
-        return $this->belongsTo(User::class, 'officer_id');
+    public function officers(){
+        return $this->belongsToMany(Officer::class,OfficerTarget::class)
+            ->withPivot(['is_leader'])
+            ->withTimestamps();
     }
 
-    public function institutionable()
-    {
+    public function officerLeader(){
+        return $this->officers()->whereIsLeader(true);
+    }
+
+    public function institutionable(){
         return $this->morphTo();
     }
 
     public function officerName(){
-        return $this->officer == null ? '-' : $this->officer->name;
+        return $this->officerLeader->isEmpty() ? '-' : $this->officerLeader->first()->name;
     }
 
     public function respondent(){

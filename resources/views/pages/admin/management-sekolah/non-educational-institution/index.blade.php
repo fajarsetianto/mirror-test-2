@@ -18,13 +18,12 @@
 					responsive: true,
 					ajax: '{!! route("institution.non-satuan.data",['$form->id']) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
 					},
 					{data: 'name', name: 'name'},
-					{data: 'npsn', name: 'npsn'},
                     {data: 'email', name: 'email'},
 					{data: 'address', name: 'address'},
 					{data: 'province', name: 'province'},
@@ -144,7 +143,6 @@
 				<tr>
 					<th>No</th>
 					<th>Nama</th>
-					<th>NPSN</th>
 					<th>Email</th>
 					<th>Alamat</th>
                     <th>Provinsi</th>

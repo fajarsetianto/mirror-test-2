@@ -7,7 +7,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
         Route::get('/create', 'FormController@create')->name('create');
         Route::post('/create', 'FormController@store')->name('store');
 
-        Route::group(['middleware' => 'can:manage,form'], function(){
+        Route::group([], function(){
             Route::get('{form}/edit', 'FormController@edit')->name('edit');
             Route::get('{form}/publish', 'FormController@publish')->name('publish');
             Route::post('{form}/publish', 'FormController@publishing')->name('publishing');
@@ -93,16 +93,22 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
 });
 
 Route::group(['prefix' => 'management-lembaga','as' => 'institution.'], function(){
+    Route::group(['prefix' => 'satuan-pendidikan','as' => 'satuan.'], function(){
+        Route::get('/', 'EducationalInstitutionController@index')->name('index');
+        Route::get('/data', 'EducationalInstitutionController@data')->name('data');
+        Route::get('/select2', 'EducationalInstitutionController@select2')->name('select2');
+    });
     Route::group(['prefix' => 'non-satuan-pendidikan','as' => 'non-satuan.'], function(){
-        Route::get('/', 'InstitutionController@index')->name('index');
-        Route::get('/data', 'InstitutionController@data')->name('data');
-        Route::get('/create', 'InstitutionController@create')->name('create');
-        Route::post('/create', 'InstitutionController@store')->name('store');
+        Route::get('/', 'NonEducationalInstitutionController@index')->name('index');
+        Route::get('/data', 'NonEducationalInstitutionController@data')->name('data');
+        Route::get('/select2', 'NonEducationalInstitutionController@select2')->name('select2');
+        Route::get('/create', 'NonEducationalInstitutionController@create')->name('create');
+        Route::post('/create', 'NonEducationalInstitutionController@store')->name('store');
 
-        Route::group(['middleware' => 'can:manage,institution'], function(){
-            Route::get('{institution}/edit', 'InstitutionController@edit')->name('edit');
-            Route::put('{institution}/update', 'InstitutionController@update')->name('update');
-            Route::delete('{institution}', 'InstitutionController@destroy')->name('destroy');
+        Route::group(['middleware' => 'can:manage,nonEducationalInstitution'], function(){
+            Route::get('{nonEducationalInstitution}/edit', 'NonEducationalInstitutionController@edit')->name('edit');
+            Route::put('{nonEducationalInstitution}/update', 'NonEducationalInstitutionController@update')->name('update');
+            Route::delete('{nonEducationalInstitution}', 'NonEducationalInstitutionController@destroy')->name('destroy');
         });
         
     });
@@ -112,6 +118,7 @@ Route::group(['prefix' => 'management-user','as' => 'management-user.'], functio
     Route::get('/', 'OfficerController@index')->name('index');
     Route::get('/data', 'OfficerController@data')->name('data');
     Route::get('/create', 'OfficerController@create')->name('create');
+    Route::get('/select2', 'OfficerController@select2')->name('select2');
     Route::post('/create', 'OfficerController@store')->name('store');
 
     Route::group(['middleware' => 'can:manage,officer'],function(){

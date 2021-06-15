@@ -12,7 +12,7 @@ use DataTables;
 class InstrumentController extends Controller
 {
     public function data(Form $form, Target $target){
-        $data = $form->instruments()->latest()->get();
+        $data = $form->instruments()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

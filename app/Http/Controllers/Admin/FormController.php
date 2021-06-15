@@ -37,6 +37,11 @@ class FormController extends Controller
             'supervision_end_date' => 'required|date|after_or_equal:supervision_start_date',
             'category' => 'required|string|in:satuan pendidikan,non satuan pendidikan'
         ]);
+
+        if($form->category != $request->category){
+            $form->targets()->delete();
+        }
+
         $form->update($request->only('name','description','supervision_start_date','supervision_end_date','category'));
 
         return response()->json([
@@ -96,7 +101,9 @@ class FormController extends Controller
         if($form->isPublishable()){
             $form->update(['status' => 'publish']);
             foreach($form->targets as $target){
-                $target->respondent->notify(new TokenNotification($target));
+                if($target->respondent()->exists()){
+                    $target->respondent->notify(new TokenNotification($target));
+                }
             }
             return redirect()->route('monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
         }
@@ -105,7 +112,7 @@ class FormController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->forms()->latest()->get();
+        $data = auth()->user()->forms();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

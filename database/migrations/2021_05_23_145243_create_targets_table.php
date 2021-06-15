@@ -19,7 +19,7 @@ class CreateTargetsTable extends Migration
             $table->unsignedBigInteger('officer_id')->nullable();
             $table->unsignedBigInteger('form_id')->nullable();
             $table->unsignedBigInteger('institutionable_id');
-            $table->unsignedBigInteger('institutionable_type');
+            $table->string('institutionable_type');
 
             $table->timestamps();
 

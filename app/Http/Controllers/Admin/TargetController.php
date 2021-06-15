@@ -3,8 +3,9 @@
 namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EducationalInstitution;
 use App\Models\Form;
-use App\Models\Institution;
+use App\Models\NonEducationalInstitution;
 use App\Models\Target;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class TargetController extends Controller
 {
     protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.sasaran-monitoring.";
 
+
     public function index(Form $form){
         return view($this->viewNamespace.'index', compact('form'));
     }
@@ -22,7 +24,7 @@ class TargetController extends Controller
         return view($this->viewNamespace.'form', [
             'url' => route('monev.form.target.store',[$form->id]),
             'form' => $form,
-            'institutions' => auth()->user()->institutions
+            'select2url' => $form->category == 'satuan pendidikan' ?  route('institution.satuan.select2') : route('institution.non-satuan.select2'),
         ]);
     }
 
@@ -30,29 +32,45 @@ class TargetController extends Controller
         return view($this->viewNamespace.'form', [
             'url' => route('monev.form.target.update',[$form->id, $target->id]),
             'form' => $form,
-            'institutions' => auth()->user()->institutions,
+            'select2url' => $form->category == 'satuan pendidikan' ? route('institution.satuan.select2') : route('institution.non-satuan.select2'),
             'item' => $target
         ]);
     }
 
     public function store(Request $request, Form $form){
+        $customValidator = '';
+        if($request->officer != null){
+            $customValidator = '|in:'.implode(',',$request->officers);
+        }
         $request->validate([
-            'type' => 'required|string|in:responden,petugas MONEV,responden & petugas MONEV',
-            'institution_id' => 'required|numeric|exists:institutions,id',
-            'officer_id' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric|exists:users,id',
+            'type' => 'required|string|in:responden,petugas MONEV,responden & petugas MONEV', 
+            'institution_id' => 'required|numeric|exists:'.Target::$institutionalbeClass[$form->category].',id',
+            'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
+            'officers.*'=> 'numeric|distinct|exists:users,id',
+            'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.$customValidator
         ]);
 
-        $newTarget = $form->targets()->create(
-            $request->only('type','institution_id','officer_id')
+        $newTarget = $form->targets()->make(
+            $request->only('type')
         );
-        // return response()->json($newTarget);
+        
+        $newTarget['institutionable_id'] = $request->institution_id;
+        $newTarget['institutionable_type'] = Target::$institutionalbeClass[$form->category];
+        $newTarget->save();
+        
+        if($request->type != 'responden'){
+            $newTarget->officers()->sync($request->officers);
+            $newTarget->officers()->updateExistingPivot($request->officer_leader,['is_leader' => true]);
+        }
 
-        $newToken = sha1(time());
-        $newTarget->respondent()->create([
-            'token' => Hash::make($newToken),
-            'plain_token' => $newToken,
-            'target_id' => $newTarget->id
-        ]);
+        if($request->type == 'responden' || $request->type == 'responden & petugas MONEV'){
+            $newToken = sha1(time());
+            $newTarget->respondent()->create([
+                'token' => Hash::make($newToken),
+                'plain_token' => $newToken,
+                'target_id' => $newTarget->id
+            ]);
+        }
 
         return response()->json([
             'status' => 1,
@@ -62,15 +80,37 @@ class TargetController extends Controller
     }
 
     public function update(Request $request, Form $form, Target $target){
+        $customValidator = '';
+        if($request->officer != null){
+            $customValidator = '|in:'.implode(',',$request->officers);
+        }
         $request->validate([
-            'type' => 'required|string|in:responden,petugas MONEV,responden & petugas MONEV',
-            'institution_id' => 'required|numeric|exists:institutions,id',
-            'officer_id' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric|exists:users,id',
+            'type' => 'required|string|in:responden,petugas MONEV,responden & petugas MONEV', 
+            'institution_id' => 'required|numeric|exists:'.Target::$institutionalbeClass[$form->category].',id',
+            'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
+            'officers.*'=> 'numeric|distinct|exists:users,id',
+            'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.$customValidator
         ]);
+        
+        $data = $request->only('type');
+        $data['institutionable_id'] = $request->institution_id;
+        $data['institutionable_type'] = Target::$institutionalbeClass[$form->category];
+        $target->update($data);
+        
+        $target->officers()->detach();
+        if($request->type != 'responden'){
+            $target->officers()->sync($request->officers);
+            $target->officers()->updateExistingPivot($request->officer_leader,['is_leader' => true]);
+        }
 
-        $target->update(
-            $request->only('type','institution_id','officer_id')
-        );
+        if($request->type == 'responden' || $request->type == 'responden & petugas MONEV' && !$target->respondent()->exists()){
+            $newToken = sha1(time());
+            $target->respondent()->create([
+                'token' => Hash::make($newToken),
+                'plain_token' => $newToken,
+                'target_id' => $target->id
+            ]);
+        }
 
         return response()->json([
             'status' => 1,
@@ -98,12 +138,12 @@ class TargetController extends Controller
     }
 
     public function data(Form $form){
-        $data = $form->targets()->latest()->get();
+        $data = $form->targets()->with('officers','institutionable')->latest();
         
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                return $row->nonSatuanPendidikan->name;
+                return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
                 return $row->officerName();

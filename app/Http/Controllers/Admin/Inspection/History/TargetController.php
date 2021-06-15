@@ -21,11 +21,11 @@ class TargetController extends Controller
     }
 
     public function data(Form $form){
-        $data = $form->targets()->latest()->get();
+        $data = $form->targets()->latest();
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($form){   
-                return $row->nonSatuanPendidikan->name;
+                return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
                 return $row->officerName();

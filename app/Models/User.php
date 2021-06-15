@@ -46,6 +46,6 @@ class User extends Authenticatable
     }
 
     public function institutions(){
-        return $this->hasMany(Institution::class,'created_by');
+        return $this->hasMany(NonEducationalInstitution::class,'created_by');
     }
 }

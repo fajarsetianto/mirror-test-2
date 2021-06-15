@@ -78,7 +78,7 @@ class OfficerController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->officers()->latest()->get();
+        $data = auth()->user()->officers()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', function($row){   
@@ -99,5 +99,14 @@ class OfficerController extends Controller
             })
             ->rawColumns(['actions'])
             ->make(true);
+    }
+
+    public function select2(Request $request){
+        $data = auth()->user()->officers()->select('id','name')
+                ->when($request->has('search'), function($query) use ($request){
+                    $query->where('name','like','%'.$request->search.'%');
+                })
+                ->paginate(10);
+        return response()->json($data);
     }
 }

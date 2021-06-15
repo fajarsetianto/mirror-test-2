@@ -73,7 +73,7 @@ class IndicatorController extends Controller
     }
 
     public function data(Form $form){
-        $data = $form->indicators()->latest()->get();
+        $data = $form->indicators();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('color', function($row){   

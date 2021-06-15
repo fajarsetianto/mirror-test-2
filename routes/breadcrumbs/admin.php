@@ -60,7 +60,7 @@ Breadcrumbs::for('admin.home', function ($trail) {
 
         Breadcrumbs::for('admin.monev.inspection-history.target.detail', function ($trail, $form, $target) {
             $trail->parent('admin.monev.inspection-history.target',$form);
-            $trail->push(ucwords($target->nonSatuanPendidikan->name), route('monev.inspection-history.target.detail',[$form->id, $target->id]));
+            $trail->push(ucwords($target->institutionable->name), route('monev.inspection-history.target.detail',[$form->id, $target->id]));
         });
 
     Breadcrumbs::for('admin.institution.non-satuan', function ($trail) {
