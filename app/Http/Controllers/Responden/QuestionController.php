@@ -41,9 +41,8 @@ class QuestionController extends Controller
     {
         $data   = $request->all();
         $userId = auth('respondent')->user()->id;
-        DB::beginTransaction();
-        try{
-            
+        // try{
+        //     DB::beginTransaction();
             $arr = array();
             foreach($instrument->questions()->get() as $key => $row):
                 UserAnswer::where('question_id', $row->id)->delete();
@@ -75,15 +74,15 @@ class QuestionController extends Controller
                 endif;
             endforeach;
             UserAnswer::created($arr);
-            DB::commit();
-        } catch(\Throwable $throwable){
-            DB::rollBack();
-            return response()->json([
-                'status' => 0,
-                'title' => 'Failed!',
-                'msg' => 'Data failed Updated!'
-            ],422);
-        }
+        //     DB::commit();
+        // } catch(\Throwable $throwable){
+        //     DB::rollBack();
+        //     return response()->json([
+        //         'status' => 0,
+        //         'title' => 'Failed!',
+        //         'msg' => 'Data failed Updated!'
+        //     ],422);
+        // }
 
 
         return response()->json([
