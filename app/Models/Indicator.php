@@ -27,7 +27,7 @@ class Indicator extends Model
                                     ->select(DB::raw('SUM(score) as score'));
                                 }
                     ])
-                    ->havingRaw('scores >= '.$min.' and scores >= '.$max)
+                    ->havingRaw('scores >= '.$min.' and scores >= '.$max);
                     // ->havingRaw('scores <= '.$max);
                     // ->having('scores', '>', $this->attributes['minimum'])
                     // ->having('scores', '<=',  $this->attributes['minimum']);
