@@ -33,6 +33,7 @@ class QuestionController extends Controller
         return view($this->viewNamespace.'question', [
             'form' => $user->target->form,
             'instrument' => $instrument,
+            'user' => $user,
             'url' => route('respondent.form.question.store', [$instrument->id])
         ]);
     }

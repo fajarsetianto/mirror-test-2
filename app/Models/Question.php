@@ -21,6 +21,6 @@ class Question extends Model
     }
 
     public function userAnswer(){
-        return $this->hasOne(UserAnswer::class);
+        return $this->hasOne(UserAnswer::class)->where('respondent_id',auth('respondent')->user()->id);
     }
 }
