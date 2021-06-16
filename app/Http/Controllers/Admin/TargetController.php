@@ -3,18 +3,15 @@
 namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\EducationalInstitution;
 use App\Models\Form;
-use App\Models\NonEducationalInstitution;
 use App\Models\Target;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use DataTables;
-
+use Illuminate\Validation\Rule;
 class TargetController extends Controller
 {
     protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.sasaran-monitoring.";
-
 
     public function index(Form $form){
         return view($this->viewNamespace.'index', compact('form'));
@@ -38,23 +35,25 @@ class TargetController extends Controller
     }
 
     public function store(Request $request, Form $form){
-        $customValidator = '';
-        if($request->officer != null){
-            $customValidator = '|in:'.implode(',',$request->officers);
-        }
         $request->validate([
             'type' => 'required|string|in:responden,petugas MONEV,responden & petugas MONEV', 
-            'institution_id' => 'required|numeric|exists:'.Target::$institutionalbeClass[$form->category].',id',
+            'institutionable_id' => [
+                'required',
+                'numeric',
+                'exists:'.Target::$institutionalbeClass[$form->category].',id',
+                Rule::unique('targets')->where(function($target) use ($form){
+                    return $target->whereFormId($form->id)
+                        ->whereInstitutionableType(Target::$institutionalbeClass[$form->category]);
+                })],
             'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
             'officers.*'=> 'numeric|distinct|exists:users,id',
-            'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.$customValidator
+            'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.($request->officer != null ? '|in:'.implode(',', $request->officers) : ''),
         ]);
 
         $newTarget = $form->targets()->make(
-            $request->only('type')
+            $request->only('type','institutionable_id')
         );
         
-        $newTarget['institutionable_id'] = $request->institution_id;
         $newTarget['institutionable_type'] = Target::$institutionalbeClass[$form->category];
         $newTarget->save();
         
@@ -80,20 +79,23 @@ class TargetController extends Controller
     }
 
     public function update(Request $request, Form $form, Target $target){
-        $customValidator = '';
-        if($request->officer != null){
-            $customValidator = '|in:'.implode(',',$request->officers);
-        }
         $request->validate([
             'type' => 'required|string|in:responden,petugas MONEV,responden & petugas MONEV', 
-            'institution_id' => 'required|numeric|exists:'.Target::$institutionalbeClass[$form->category].',id',
+            'institutionable_id' => [
+                'required',
+                'numeric',
+                'exists:'.Target::$institutionalbeClass[$form->category].',id',
+                Rule::unique('targets')->where(function($item) use ($form, $target){
+                    return $item->whereFormId($form->id)
+                        ->where('institutionable_id','<>',$target->institutionable_id)
+                        ->whereInstitutionableType(Target::$institutionalbeClass[$form->category]);
+                })],
             'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
             'officers.*'=> 'numeric|distinct|exists:users,id',
-            'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.$customValidator
+            'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.($request->officer != null ? '|in:'.implode(',', $request->officers) : ''),
         ]);
         
-        $data = $request->only('type');
-        $data['institutionable_id'] = $request->institution_id;
+        $data = $request->only('type','institutionable_id');
         $data['institutionable_type'] = Target::$institutionalbeClass[$form->category];
         $target->update($data);
         

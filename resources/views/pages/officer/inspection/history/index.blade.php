@@ -1,6 +1,6 @@
 @extends('layouts.officer.full')
 
-@section('site-title','Form Instrument Monitoring dan Evaluasi')
+@section('site-title','Daftar Riwayat Monitoring dan Evaluasi')
 
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
@@ -15,7 +15,7 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("officer.monev.inspection.data") !!}',
+					ajax: '{!! route("officer.monev.inspection-history.data") !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -26,7 +26,7 @@
 					{data: 'target_name', name: 'name'},
 					{data: 'category', name: 'form.category'},
 					{data: 'expired_date', searchable: false},
-					{data: 'status', name: 'form.status', searchable: false},
+					{data: 'status', name: 'form.status',searchable:false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -60,7 +60,7 @@
 <div class="content">
 	<div class="card">
 		<div class="card-header header-elements-inline">
-			<h6 class="card-title font-weight-semibold">Daftar Form Instrument Monitoring dan Evaluasi</h6>
+			<h6 class="card-title font-weight-semibold">Daftar Riwayat Monitoring dan Evaluasi</h6>
 		</div>
 		<hr class="m-0">
 		<div class="card-body">

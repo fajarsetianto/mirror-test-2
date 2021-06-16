@@ -45,11 +45,8 @@ class Officer extends Authenticatable
 
     public function targets(){
         return $this->belongsToMany(Target::class,OfficerTarget::class)
-            ->withPivot(['is_leader'])
+            ->withPivot(['id','is_leader','submited_at'])
             ->withTimestamps();
     }
 
-    public function forms(){
-        return $this->belongsToMany(Form::class,'targets','officer_id','form_id');
-    }
 }

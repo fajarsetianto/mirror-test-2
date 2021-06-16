@@ -112,7 +112,7 @@ class FormController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->forms();
+        $data = auth()->user()->forms()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
@@ -141,7 +141,6 @@ class FormController extends Controller
             })
             ->addColumn('status', function($row){
                 $btn = '<span class="badge badge'.($row->status == 'draft' ? '-warning' :  '-primary') .'">'.$row->status.'</span>';     
-                
                 return $btn;
             })
             ->rawColumns(['name','target','actions','status'])

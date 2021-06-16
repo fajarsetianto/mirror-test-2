@@ -27,6 +27,7 @@
 					{data: 'name', name: 'name'},
 					{data: 'officer_name', name: 'officer_name'},
                     {data: 'type', name: 'type'},
+					{data: 'status', name: 'status',searchable: false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -142,6 +143,7 @@
 					<th>Sasaran Monitoring</th>
                     <th>Nama Petugas</th>
                     <th>Pengisi Form</th>
+					<th>Status</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

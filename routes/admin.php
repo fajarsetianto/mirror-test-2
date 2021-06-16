@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Middleware;
+
 Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
     Route::group(['prefix' => 'form','as' => 'form.'],function(){
         Route::get('/', 'FormController@index')->name('index');
@@ -7,7 +9,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
         Route::get('/create', 'FormController@create')->name('create');
         Route::post('/create', 'FormController@store')->name('store');
 
-        Route::group([], function(){
+        Route::group(['middleware' => 'can:manage,form'], function(){
             Route::get('{form}/edit', 'FormController@edit')->name('edit');
             Route::get('{form}/publish', 'FormController@publish')->name('publish');
             Route::post('{form}/publish', 'FormController@publishing')->name('publishing');

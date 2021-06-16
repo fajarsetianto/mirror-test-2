@@ -1,13 +1,7 @@
-@extends('layouts.responden.full')
+@extends('layouts.officer.full')
 
-@section('site-title','Sistem Monitoring dan Evaluasi - '. $form->name)
-@push('css-top')
-	<style>
-		.sp-container{
-			z-index: 9999;
-		}
-	</style>
-@endpush
+@section('site-title','Form Instrument Monitoring dan Evaluasi')
+
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
@@ -16,13 +10,12 @@
 		$(document).ready(function(){
 				instrumentDatatable = $('#instrument-table').DataTable({
 					pageLength : 10,
-					// lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
 					serverSide: true,
 					responsive: true,
 					retrieve: true,
     				aaSorting: [],
-					ajax: '{!! route("respondent.form.data")!!}',
+					ajax: '{!! route("officer.monev.inspection-history.detail.index",[$item->id])!!}',
 					columns: [
 						{ "data": null,"sortable": false, searchable: false,
 							render: function (data, type, row, meta) {
@@ -62,36 +55,6 @@
 				});
 			
 		});
-		function component(y){
-					$.blockUI({ 
-						message: '<i class="icon-spinner4 spinner"></i>',
-						overlayCSS: {
-							backgroundColor: '#1b2024',
-							opacity: 0.8,
-							zIndex: 1200,
-							cursor: 'wait'
-						},
-						css: {
-							border: 0,
-							color: '#fff',
-							padding: 0,
-							zIndex: 1201,
-							backgroundColor: 'transparent'
-						},
-					});
-
-					$.get(y, function(data){
-						$('.modal').html(data);
-					}).done(function() {
-						$('.modal').modal('show');
-					})
-					.fail(function() {
-						alert( "Terjadi Kesalahan" );
-					})
-					.always(function() {
-						$.unblockUI();
-					});
-				}
 	</script>
 @endpush
 
@@ -102,55 +65,52 @@
 				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Sistem Monitoring dan Evaluasi</h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
-
-			<div class="header-elements d-none">
-				<div class="d-flex">
-					<button onclick="component('{{route('respondent.form.publish')}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Kirim</span></button>
-				</div>
-			</div>
 		</div>	
 	</div>
-	{{ Breadcrumbs::render('responden.home.form',$form) }}	
+	{{-- {{ Breadcrumbs::render('responden.home.form',$form) }}	 --}}
 @endsection
-
 @section('content')
 <div class="content">
-    <div class="card">
+	<div class="card">
         <div class="card-header bg-teal-600">
-            <h3 class="font-weight-bold mb-0">{{$user->target->form->name}}</h3>
+            <h3 class="font-weight-bold mb-0">{{$item->target->form->name}}</h3>
         </div>
         <div class="card-body">
-            <p>{{$user->target->form->description}}</p>
+            <p>{{$item->target->form->description}}</p>
         </div>
         <div class="card-footer">
             <h6 class="font-weight-bold">Informasi Pengisi Form Monitoring dan Evaluasi</h6>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Kategori Sasaran Monitoring</label>
-                <div class="col-md-9 col-6"><span class="badge badge-warning">{{$user->target->form->category}}</span></div>
+                <div class="col-md-9 col-6"><span class="badge badge-warning">{{$item->target->form->category}}</span></div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Pengisi Form Monev</label>
-                <div class="col-md-9 col-6">{{$user->target->type}}</div>
+                <div class="col-md-9 col-6">{{$item->target->type}}</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
-                <div class="col-md-9 col-6">{{$user->target->institutionable->name}}</div>
+                <div class="col-md-9 col-6">{{$item->target->institutionable->name}}</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Reponden</label>
-                <div class="col-md-9 col-6">{{$user->name}} ({{$user->target->institutionable->email}})</div>
+                <div class="col-md-9 col-6"> ({{$item->target->institutionable->email}})</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
-                <div class="col-md-9 col-6">{{$user->target->officerName()}}</div>
+                <div class="col-md-9 col-6">
+					@foreach ($item->target->officers as $officer)
+						{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif
+					@endforeach
+				</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Waktu Mulai</label>
-                <div class="col-md-9 col-6">{{$user->target->form->supervision_start_date->format('d/m/Y')}}</div>
+                <div class="col-md-9 col-6">{{$item->target->form->supervision_start_date->format('d/m/Y')}}</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Waktu Selesai</label>
-                <div class="col-md-9 col-6">{{$user->target->form->supervision_end_date->format('d/m/Y')}} <span class="badge badge-danger">Sisa Waktu : {{$user->target->form->supervisionDaysRemaining()}} Hari</span></div>
+                <div class="col-md-9 col-6">{{$item->target->form->supervision_end_date->format('d/m/Y')}}
             </div>
     
         </div>
@@ -179,8 +139,4 @@
     </div>
 </div>
 
-
 @endsection
-@push('scripts-bottom')
-	<x-modal></x-modal>
-@endpush

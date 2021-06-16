@@ -29,14 +29,27 @@ class InspectionController extends Controller
             ->addColumn('status', function($row){   
                 switch($row->type){
                     case 'responden':
-                        return '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        if($row->respondent->isSubmited()){
+                            return '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
+                        }else{
+                            return '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
+                        }
                         break;
                     case 'petugas MONEV':
                         return '<span class="badge badge-warning">Belum Dikerjakan</span>';
                         break;
                     case 'responden & petugas MONEV':
-                        $res =  '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
-                        $res.= '<br><span class="badge badge-warning">Petugas : Belum Dikerjakan</span>';
+                        if($row->respondent->isSubmited()){
+                            $res = '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
+                        }else{
+                            $res = '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
+                        }
+                        $res.= '</br>';
+                        if($row->isSubmitedByOfficer()){
+                            $res .= '<span class="badge badge-success">Petugas : Sudah Dikerjakan</span>';
+                        }else{
+                            $res .= '<span class="badge badge-warning">Petugas : Belum Dikerjakan</span>';
+                        }
                         return $res;
                         break;
                 }

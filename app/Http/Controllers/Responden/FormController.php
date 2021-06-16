@@ -5,20 +5,12 @@ namespace App\Http\Controllers\Responden;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DataTables;
+use Illuminate\Support\Carbon;
 
 class FormController extends Controller
 {
 
     protected $viewNamespace = 'pages.responden.';
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:respondent');
-    }
 
     /**
      * Show the application dashboard.
@@ -28,8 +20,26 @@ class FormController extends Controller
     public function index()
     {
         $user = auth('respondent')->user()->load('target.form');
-        
         return view($this->viewNamespace.'form', ['form' => $user->target->form,'user' => $user]);
+    }
+
+    public function publish(){
+        $user =  auth('respondent')->user();
+        $passed = $user->isAllQuestionsAnswered();
+        $failed_note = '';
+        if(!$passed){
+            $failed_note = "Anda belum menjawab semua pertanyaan. silahhkan cek kembali";
+        }
+        return view($this->viewNamespace.'publish', compact('passed','failed_note'));
+    }
+
+    public function publishing(){
+        $user =  auth('respondent')->user();
+        $passed = $user->isAllQuestionsAnswered();
+        if($passed){
+            $user->update(['submited_at'=> Carbon::now()]);
+        }
+        return redirect()->route('respondent.stop');
     }
 
     public function data(){
@@ -42,10 +52,14 @@ class FormController extends Controller
                 return $link;
             })
             ->addColumn('question', function($row){   
-                return '0/'.$row->questions()->count();
+                return auth()->user()->answeredQuestionsCountByInstrument($row).'/'.$row->questions()->count();
             })
-            ->addColumn('status', function($row){   
+            ->addColumn('status', function($row){
+                if(auth()->user()->answeredQuestionsCountByInstrument($row) == $row->questions()->count()){
+                    return '<span class="badge badge-success">Lengkap</span>';
+                }
                 return '<span class="badge badge-danger">Belum Lengkap</span>';
+                
             })
             ->addColumn('actions', function($row){   
                 $btn = '<div class="list-icons">

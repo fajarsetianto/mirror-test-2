@@ -15,17 +15,31 @@ class InspectionController extends Controller
         return view($this->viewNamespace.'index');
     }
 
-    public function detail(Request $request, Target $target){
-        if($request->ajax()){
-            $data = $target;
-            return DataTables::of($data)
+    public function data(){
+        $data = auth('officer')
+                    ->user()
+                    ->targets()
+                    ->wherePivotNull('submited_at')
+                    ->whereHas('form', function($item){
+                        $item->published()->valid();
+                    })
+                    ->with('form','institutionable');
+                    
+        return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
+                $link = $row->form->name;     
+                return $link;
+            })
+            ->addColumn('target_name', function($row){   
                 return $row->institutionable->name;
             })
-            ->addColumn('officer_name', function($row){   
-                return $row->officerName();
-            })
+            ->addColumn('category', function($row){   
+                return '<span class="badge badge-success">'.$row->form->category.'</span>';
+            })    
+            ->addColumn('expired_date', function($row){   
+                return $row->form->supervision_end_date->format('d/m/Y');
+            })         
             ->addColumn('status', function($row){   
                 switch($row->type){
                     case 'responden':
@@ -42,53 +56,13 @@ class InspectionController extends Controller
                 }
             })
             ->addColumn('actions', function($row){   
-                $btn = '<button class="btn btn-success"><i class="mi-visibility"></i> Lihat Detail</button>';     
+                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->id]).'" class="btn btn-primary btn-sm">
+                            <i class="mi-assignment"></i>
+                            Isi Form Monitoring
+                        </a>';
                 return $btn;
             })
-            
-            ->rawColumns(['status','actions'])
-            ->make(true);
-        }
-        return view($this->viewNamespace.'detail', compact('form'));
-    }
-
-    public function data(){
-        $data = auth('officer')
-                    ->user()
-                    ->forms()
-                    // ->published()
-                    // ->valid()
-                    ->latest();
-        return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.inspection.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
-                return $link;
-            })
-            ->addColumn('target', function($row){   
-                return '';
-            })
-            ->addColumn('actions', function($row){   
-                $btn = '<div class="list-icons">
-                <div class="dropdown">
-                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                        <i class="icon-menu9"></i>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('monev.inspection.detail',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
-                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
-                    </div>
-                </div>
-            </div>';     
-                return $btn;
-            })
-            ->addColumn('status', function($row){   
-                $btn = '<span class="badge badge-primary">'.$row->status.'</span>';     
-                return $btn;
-            })
-            ->rawColumns(['name','target','actions','status'])
+            ->rawColumns(['name','target','actions','status','category'])
             ->make(true);
     }
 

@@ -20,8 +20,12 @@ class Target extends Model
 
     public function officers(){
         return $this->belongsToMany(Officer::class,OfficerTarget::class)
-            ->withPivot(['is_leader'])
+            ->withPivot(['is_leader','submited_at'])
             ->withTimestamps();
+    }
+
+    public function isSubmitedByOfficer(){
+        return $this->officers()->whereNotNull('submited_at')->exists();
     }
 
     public function officerLeader(){

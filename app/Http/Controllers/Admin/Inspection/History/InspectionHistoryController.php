@@ -17,7 +17,11 @@ class InspectionHistoryController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->forms()->published()->expired()->latest();
+        $data = auth()->user()
+                    ->forms()
+                    ->published()
+                    ->expired()
+                    ->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

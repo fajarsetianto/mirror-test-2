@@ -17,6 +17,7 @@ class CreateOfficerTargetsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('officer_id');
             $table->unsignedBigInteger('target_id');
+            $table->date('submited_at')->nullable();
             $table->boolean('is_leader')->default(false);
             $table->timestamps();
 

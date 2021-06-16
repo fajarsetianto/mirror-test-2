@@ -29,7 +29,7 @@ class EducationalInstitutionController extends Controller
                     $query->where('name','like','%'.$request->search.'%');
                 })
                 ->whereNotNull('email')
-                ->paginate(10);
+                ->paginate(20);
         return response()->json($data);
     }
 

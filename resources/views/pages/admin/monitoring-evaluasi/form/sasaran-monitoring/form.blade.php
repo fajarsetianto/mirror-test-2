@@ -26,7 +26,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Pilih Lembaga</label>
                     <div class="col-md-9">
-                        <select class="form-control select2ajax" name="institution_id" required>
+                        <select class="form-control select2ajax" name="institutionable_id" required>
                             @isset($item)
                                 <option value="{{$item->institutionable->id}}" selected="selected">{{$item->institutionable->name}}</option>
                             @endisset
@@ -104,11 +104,11 @@
             }
         });
         reSyncRemoveButton();
-        
         @endif
     @endisset
     $('.select2target').select2();
     $('.select2ajax').select2({
+        minimumInputLength: 3,
         placeholder: 'Pilih Lembaga',
         ajax: {
             url: '{{$select2url}}',
@@ -197,9 +197,12 @@
        if($(this).val() === 'responden'){
             $('#dynamic-input-wrapper').hide()
             $('#dynamic-input-wrapper #dynamic-input-group select,#dynamic-input-wrapper #dynamic-input-group input').prop('required',false)
+            $('#dynamic-input-wrapper #dynamic-input-group select,#dynamic-input-wrapper #dynamic-input-group input').removeAttr('name');
        }else{
             $('#dynamic-input-wrapper').show()
             $('#dynamic-input-wrapper #dynamic-input-group select,#dynamic-input-wrapper #dynamic-input-group input').prop('required',true)
+            $('#dynamic-input-wrapper #dynamic-input-group select').attr('name','officers[]');
+            $('#dynamic-input-wrapper #dynamic-input-group input').attr('name','officer_leader');
             if(!$('#dynamic-input-wrapper #dynamic-input-group .input-group').length){
                 getInput()
             }

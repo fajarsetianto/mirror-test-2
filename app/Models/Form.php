@@ -42,6 +42,14 @@ class Form extends Model
         return $this->status == 'draft';
     }
 
+    public function isPublished(){
+        return $this->status == 'publish';
+    }
+
+    public function isExpired(){
+        return $this->supervision_end_date < Carbon::now();
+    }
+
     public function isPublishable(){
         return $this->questions()->exists() && !$this->instruments()->whereStatus('draft')->exists() && $this->targets()->exists();
     }

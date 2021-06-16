@@ -11,6 +11,6 @@ class OfficerPolicy
     {
         return $officer->createdBy->is($user)
             ? Response::allow()
-            : Response::deny('You do not own this post.');
+            : Response::deny('You do not own this officer.');
     }
 }
