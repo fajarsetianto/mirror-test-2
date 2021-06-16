@@ -25,18 +25,19 @@
 		<div class="row">
 			@foreach ($form->indicators as $indicator)
 				<div class="col-sm-6 col-xl-3">
-					<div class="card card-body has-bg-image" style="background-color:{{$indicator->color}}">
-						<div class="media">
-							<div class="mr-3 align-self-center">
-								<i class="icon-enter6 icon-3x opacity-75"></i>
-							</div>
-
-							<div class="media-body text-right">
-								<h6 class="mb-0">Minimal {{$indicator->minimum}}<br>Maksimal {{$indicator->maximum}}</h6>
-								<span class="text-uppercase font-size-xs">{{$indicator->description}}</span>
+					<a href="{{route('monev.indicator-report.detail.indicator',[$form->id, $indicator->id])}}">
+						<div class="card card-body has-bg-image" style="background-color:{{$indicator->color}}">
+							<div class="media">
+								<div class="align-self-center text-center">
+									<span class="mi-2x">{{$indicator->targetsWithScore()->count()}}</span>
+								</div>
+								<div class="media-body text-right">
+									<h6 class="mb-0">Minimal {{$indicator->minimum}}<br>Maksimal {{$indicator->maximum}}</h6>
+									<span class="text-uppercase font-size-xs">{{$indicator->description}}</span>
+								</div>
 							</div>
 						</div>
-					</div>
+					</a>
 				</div>
 			@endforeach
 		</div>

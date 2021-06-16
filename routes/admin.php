@@ -90,6 +90,8 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
         Route::get('/data', 'IndicatorReportController@data')->name('data');
         Route::group(['middleware' => 'can:manage,form'], function(){
             Route::get('{form}/detail', 'IndicatorReportController@detail')->name('detail');
+            Route::get('{form}/{indicator}', 'IndicatorReportController@detailIndicator')->name('detail.indicator');
+            Route::get('{form}/{indicator}/data', 'IndicatorReportController@detailIndicatorData')->name('detail.indicator.data');
         });
     });
 });
