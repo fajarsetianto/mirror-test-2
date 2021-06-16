@@ -64,7 +64,7 @@ class InspectionHistoryController extends Controller
                         $item->where(function($item){
                             $item->published();
                         })->orWhere(function($item){
-                            $item->published()->expired();
+                            // $item->published()->expired();
                         });
                     })
                     ->with('form','institutionable');
