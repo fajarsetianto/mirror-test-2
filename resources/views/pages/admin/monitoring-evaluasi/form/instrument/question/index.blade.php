@@ -269,7 +269,7 @@
 					</div>
 				`
 				
-			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
+			} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
 				questionType = 'Kotak Centang'
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1
