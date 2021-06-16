@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Instrument;
 use App\Models\UserAnswer;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -41,36 +41,49 @@ class QuestionController extends Controller
     {
         $data   = $request->all();
         $userId = auth('respondent')->user()->id;
-        foreach($instrument->questions()->get() as $key => $row):
-            UserAnswer::where('question_id', $row->id)->delete();
-            if($row->question_type_id == '1' || $row->question_type_id == '2'):
-                $userAnswer = new UserAnswer(array(
-                    'answer' => $data["answer_$key"],
-                    'offered_answer_id' => NULL,
-                    'question_id' => $row->id,
-                    'respondent_id' => $userId
-                ));
-            elseif ($row->question_type_id == '6'):
-                $file = $request->file("file_$key");
-                $fileName = time().'-'.$userId.'-'.$file->getClientOriginalName();
-                $userAnswer = new UserAnswer(array(
-                    'answer' => $fileName,
-                    'offered_answer_id' => NULL,
-                    'question_id' => $row->id,
-                    'respondent_id' => $userId
-                ));
-                $file->move("data_file",$fileName);
-            else:
-                $answer = explode("__", $data["answer_option_$key"]);
-                $userAnswer = new UserAnswer(array(
-                    'answer' => $answer[0],
-                    'offered_answer_id' => $answer[1],
-                    'question_id' => $row->id,
-                    'respondent_id' => $userId
-                ));
-            endif;
-            $userAnswer->save();
-        endforeach;
+        try{
+            DB::beginTransaction();
+            $arr = array();
+            foreach($instrument->questions()->get() as $key => $row):
+                UserAnswer::where('question_id', $row->id)->delete();
+                if($row->question_type_id == '1' || $row->question_type_id == '2'):
+                    array_push($arr, array(
+                        'answer' => $data["answer_$key"],
+                        'offered_answer_id' => NULL,
+                        'question_id' => $row->id,
+                        'respondent_id' => $userId
+                    ));
+                elseif ($row->question_type_id == '6'):
+                    $file = $request->file("file_$key");
+                    $fileName = time().'-'.$userId.'-'.$file->getClientOriginalName();
+                    array_push($arr, array(
+                        'answer' => $fileName,
+                        'offered_answer_id' => NULL,
+                        'question_id' => $row->id,
+                        'respondent_id' => $userId
+                    ));
+                    $file->move("data_file",$fileName);
+                else:
+                    $answer = explode("__", $data["answer_option_$key"]);
+                    array_push($arr, array(
+                        'answer' => $answer[0],
+                        'offered_answer_id' => $answer[1],
+                        'question_id' => $row->id,
+                        'respondent_id' => $userId
+                    ));
+                endif;
+            endforeach;
+            UserAnswer::created($arr);
+            DB::commit();
+        } catch(\Throwable $throwable){
+            DB::rollBack();
+            return response()->json([
+                'status' => 0,
+                'title' => 'Failed!',
+                'msg' => 'Data failed Updated!'
+            ],422);
+        }
+
 
         return response()->json([
             'status' => 1,

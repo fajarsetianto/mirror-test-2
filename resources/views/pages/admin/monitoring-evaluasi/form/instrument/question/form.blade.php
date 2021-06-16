@@ -19,10 +19,10 @@
                 <label class="text-secondary">PILIHAN</label>
                 <div class="form-group row pl-2">
                     <div class="col-md-6 cursor" id="ganda" onclick="clicked('ganda')">
-                        <i class="icon-radio-checked mr-2"></i> Multiple Choice
+                        <i class="icon-radio-checked mr-2"></i> Pilihan Ganda
                     </div>
                     <div class="col-md-6 cursor" id="multiple" onclick="clicked('multiple')">
-                        <i class="icon-checkbox-checked2 mr-2"></i> Checkbox
+                        <i class="icon-checkbox-checked2 mr-2"></i> Kotak Centang
                     </div>
                 </div>
                 <div class="form-group row pl-2">

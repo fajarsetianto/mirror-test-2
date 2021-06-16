@@ -229,7 +229,7 @@
 				</div>
 				`
 			} else if (typeClick == 'ganda'){
-				questionType = 'Ganda'
+				questionType = 'Pilihan Ganda'
 				icon = 'icon-circle'
 				countOption = 1
 				type = `
@@ -270,7 +270,7 @@
 				`
 				
 			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
-				questionType = 'Multiple Choice'
+				questionType = 'Kotak Centang'
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1
 				type = `
