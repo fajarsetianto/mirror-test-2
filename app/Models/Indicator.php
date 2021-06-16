@@ -21,8 +21,8 @@ class Indicator extends Model
         return $this->targets()->withAndWhereHas('respondent',function($q){
                     $q->withCount([
                         'answers as score' => function($q){
-                                $q->join('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
-                                    ->select(DB::raw('SUM(score)'));
+                                $q->leftJoin('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
+                                    ->select(DB::raw('SUM(score) as score'));
                                 }
                     ])
                     ->having('score', '>', 'indicators.minimum')
