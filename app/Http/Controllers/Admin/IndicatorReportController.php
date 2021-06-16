@@ -17,7 +17,7 @@ class IndicatorReportController extends Controller
     }
 
     public function detail(Form $form){
-        $form->load('indicators.targetsWithScore');
+        $form->load('indicators');
         return view($this->viewNamespace.'detail', compact('form'));
     }
 
