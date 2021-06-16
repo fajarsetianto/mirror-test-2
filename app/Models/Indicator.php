@@ -26,7 +26,7 @@ class Indicator extends Model
                                 }
                     ])
                     ->having('score', '>', 'indicators.minimum')
-                    ->having('score', '<=', '100');
+                    ->having('score', '<=', 'indicators.maximum');
                 });
     }
 
