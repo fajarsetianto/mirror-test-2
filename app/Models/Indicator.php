@@ -22,7 +22,7 @@ class Indicator extends Model
     }
 
     public function targetsWithScore(){
-        return $this->refrection()->with(['targets' => function($q){
+        return $this->reflection()->with(['targets' => function($q){
             $q->withAndWhereHas('respondent',function($q){
                 $q->withCount([
                     'answers as scores' => function($q){
