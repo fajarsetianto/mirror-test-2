@@ -27,7 +27,7 @@ class IndicatorReportController extends Controller
 
     public function data(){
         $data = auth()->user()
-                    ->forms();
+                    ->forms()
                     ->published()
                     ->expired();
         return DataTables::of($data)
