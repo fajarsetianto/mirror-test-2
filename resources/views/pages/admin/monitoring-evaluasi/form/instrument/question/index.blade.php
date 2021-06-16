@@ -228,7 +228,7 @@
 					</div>
 				</div>
 				`
-			} else if (typeClick == 'ganda'){
+			} else if (typeClick == 'pilihan ganda'){
 				questionType = 'Pilihan Ganda'
 				icon = 'icon-circle'
 				countOption = 1
