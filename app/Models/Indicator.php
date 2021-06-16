@@ -25,8 +25,8 @@ class Indicator extends Model
                                     ->select(DB::raw('SUM(score) as score'));
                                 }
                     ]);
-                    // ->having('score', '>', 'indicators.minimum')
-                    // ->having('score', '<=', 'indicators.maximum');
+                    ->having('respondent.score', '>', 'indicators.minimum')
+                    ->having('respondent.score', '<=', 'indicators.maximum');
                 });
     }
 
