@@ -61,11 +61,11 @@ class InspectionHistoryController extends Controller
                     ->targets()
                     ->wherePivotNotNull('submited_at')
                     ->whereHas('form', function($item){
-                        // $item->where(function($item){
-                        //     $item->published();
-                        // })->orWhere(function($item){
-                        //     // $item->published()->expired();
-                        // });
+                        $item->where(function($item){
+                            $item->published();
+                        })->orWhere(function($item){
+                            $item->published()->expired();
+                        });
                     })
                     ->with('form','institutionable');
                     
