@@ -100,7 +100,7 @@ class IndicatorReportController extends Controller
             //     return $btn;
             // })
             ->addColumn('score', function($row){
-                return $row->respondent->score;
+                return $row->respondent->scores;
             })
             ->addColumn('status', function($row){   
                 switch($row->type){
