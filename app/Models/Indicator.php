@@ -23,7 +23,7 @@ class Indicator extends Model
 
     public function targetsWithScore(){
         return $this->reflection()
-                    ->innerJoin('indicators as reflection', 'reflection.id','=','indicators.id')
+                    ->join('indicators as reflection', 'reflection.id','=','indicators.id')
                     ->with(['targets' => function($q){
                         $q->withAndWhereHas('respondent',function($q){
                             $q->withCount([
