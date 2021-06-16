@@ -26,13 +26,13 @@ class QuestionTypeSeeder extends Seeder
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ],[
-            'name' => 'Ganda',
+            'name' => 'Pilihan Ganda',
             'view_build_mode' => '',
             'view_live_mode' => '',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ],[
-            'name' => 'Multiple Choice',
+            'name' => 'Kotak Centang',
             'view_build_mode' => '',
             'view_live_mode' => '',
             'created_at' => date('Y-m-d H:i:s'),
