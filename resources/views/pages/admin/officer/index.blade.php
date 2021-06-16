@@ -18,7 +18,7 @@
 					serverSide: true,
 					ajax: '{!! route("management-user.data") !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
@@ -138,9 +138,9 @@
 				<tr>
 					<th>No</th>
 					<th>Nama</th>
-					{{-- <th>Email</th>
-					<th>Kategori Satuan Pendidikan</th>
-					<th>Status</th> --}}
+					<th>Email</th>
+					{{-- <th>Kategori Satuan Pendidikan</th> --}}
+					<th>Status</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

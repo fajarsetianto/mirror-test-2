@@ -28,7 +28,7 @@
 					serverSide: true,
 					ajax: '{!! route("monev.form.data",['$form->id']) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}

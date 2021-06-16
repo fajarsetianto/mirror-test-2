@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
-use App\Notifications\TokenNotification;
+use App\Notifications\Responden\TokenNotification;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -37,6 +37,11 @@ class FormController extends Controller
             'supervision_end_date' => 'required|date|after_or_equal:supervision_start_date',
             'category' => 'required|string|in:satuan pendidikan,non satuan pendidikan'
         ]);
+
+        if($form->category != $request->category){
+            $form->targets()->delete();
+        }
+
         $form->update($request->only('name','description','supervision_start_date','supervision_end_date','category'));
 
         return response()->json([
@@ -93,15 +98,21 @@ class FormController extends Controller
     }
 
     public function publishing(Form $form){
-        $form->update(['status' => 'publish']);
-        foreach($form->targets as $target){
-            $target->respondent->notify(new TokenNotification($target));
+        if($form->isPublishable()){
+            $form->update(['status' => 'publish']);
+            foreach($form->targets as $target){
+                if($target->respondent()->exists()){
+                    $target->respondent->notify(new TokenNotification($target));
+                }
+            }
+            return redirect()->route('monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
         }
-        return redirect()->route('monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
+        return abort(403,'Form is not publishable');
+       
     }
 
     public function data(){
-        $data = Form::latest()->get();
+        $data = auth()->user()->forms()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
@@ -130,7 +141,6 @@ class FormController extends Controller
             })
             ->addColumn('status', function($row){
                 $btn = '<span class="badge badge'.($row->status == 'draft' ? '-warning' :  '-primary') .'">'.$row->status.'</span>';     
-                
                 return $btn;
             })
             ->rawColumns(['name','target','actions','status'])

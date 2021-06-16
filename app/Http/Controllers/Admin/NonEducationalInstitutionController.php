@@ -3,14 +3,14 @@
 namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Institution;
+use App\Models\NonEducationalInstitution;
 use Illuminate\Http\Request;
 use DataTables;
 
-class InstitutionController extends Controller
+class NonEducationalInstitutionController extends Controller
 {
 
-    protected $viewNamespace = "pages.admin.management-sekolah.institution.";
+    protected $viewNamespace = "pages.admin.management-sekolah.non-educational-institution.";
 
     public function index(){
         return view($this->viewNamespace.'index');
@@ -22,17 +22,16 @@ class InstitutionController extends Controller
         ]);
     }
 
-    public function edit(Institution $institution){
+    public function edit(NonEducationalInstitution $nonEducationalInstitution){
         return view($this->viewNamespace.'form', [
-            'url' => route('institution.non-satuan.update',[$institution->id]),
-            'item' => $institution
+            'url' => route('institution.non-satuan.update',[$nonEducationalInstitution->id]),
+            'item' => $nonEducationalInstitution
         ]);
     }
 
     public function store(Request $request){
         $request->validate([
             'name' => 'required|string',
-            'npsn' => 'required|string',
             'email' => 'required|string|email',
             'address' => 'required|string',
             'province' => 'required|string',
@@ -40,7 +39,7 @@ class InstitutionController extends Controller
             'headmaster' => 'required|string',
         ]);
 
-        Institution::create(
+        auth()->user()->institutions()->create(
             $request->only('type','name','npsn','email','address','province','city','headmaster')
         );
 
@@ -51,10 +50,9 @@ class InstitutionController extends Controller
         ],200);
     }
 
-    public function update(Request $request, Institution $institution){
+    public function update(Request $request, NonEducationalInstitution $nonEducationalInstitution){
         $request->validate([
             'name' => 'required|string',
-            'npsn' => 'required|string',
             'email' => 'required|string|email',
             'address' => 'required|string',
             'province' => 'required|string',
@@ -62,7 +60,7 @@ class InstitutionController extends Controller
             'headmaster' => 'required|string',
         ]);
 
-        $institution->update(
+        $nonEducationalInstitution->update(
             $request->only('type','name','npsn','email','address','province','city','headmaster')
         );
 
@@ -73,8 +71,8 @@ class InstitutionController extends Controller
         ],200);
     }
 
-    public function destroy(Request $request, Institution $institution){
-        $institution->delete();
+    public function destroy(Request $request, NonEducationalInstitution $nonEducationalInstitution){
+        $nonEducationalInstitution->delete();
 
         return response()->json([
             'status' => 1,
@@ -84,7 +82,7 @@ class InstitutionController extends Controller
     }
 
     public function data(){
-        $data = Institution::latest()->get();
+        $data = auth()->user()->institutions()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', function($row){   
@@ -103,12 +101,19 @@ class InstitutionController extends Controller
             </div>';     
                 return $btn;
             })
-            ->addColumn('status', function($row){   
-                $btn = '<span class="badge badge-primary">'.$row->status.'</span>';     
-                return $btn;
-            })
-            ->rawColumns(['name','target','actions','status'])
+            ->rawColumns(['actions'])
             ->make(true);
+    }
+
+    public function select2(Request $request){
+        $data = auth()->user()
+                ->institutions()
+                ->select('id','name')
+                ->when($request->has('search'), function($query) use ($request){
+                    $query->where('name','like','%'.$request->search.'%');
+                })
+                ->paginate(10);
+        return response()->json($data);
     }
 
 }

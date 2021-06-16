@@ -6,6 +6,9 @@
 		.sp-container{
 			z-index: 9999;
 		}
+		#dynamic-input-wrapper .select2-selection--single{
+			border-radius: 0;
+		}
 	</style>
 @endpush
 @push('scripts-top')
@@ -21,17 +24,17 @@
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
-					responsive: true,
+					responsive: true, 
 					serverSide: true,
 					ajax: '{!! route("monev.form.target.data",[$form->id]) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
 					},
-					{data: 'name', name: 'name'},
-					{data: 'officer_name', name: 'officer_name'},
+					{data: 'name', name: 'institutionable.name'},
+					{data: 'officer_name', name: 'officers.name'},
                     {data: 'type', name: 'type'},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],

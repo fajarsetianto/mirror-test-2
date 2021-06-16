@@ -31,7 +31,7 @@ class Form extends Model
     }
 
     public function createdBy(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'created_by');
     }
 
     public function supervisionDaysRemaining(){
@@ -40,6 +40,14 @@ class Form extends Model
 
     public function isEditable(){
         return $this->status == 'draft';
+    }
+
+    public function isPublished(){
+        return $this->status == 'publish';
+    }
+
+    public function isExpired(){
+        return $this->supervision_end_date < Carbon::now();
     }
 
     public function isPublishable(){

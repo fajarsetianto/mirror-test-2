@@ -228,7 +228,7 @@
 					</div>
 				</div>
 				`
-			} else if (typeClick == 'ganda'){
+			} else if (typeClick == 'pilihan ganda'){
 				questionType = 'Pilihan Ganda'
 				icon = 'icon-circle'
 				countOption = 1
@@ -269,7 +269,7 @@
 					</div>
 				`
 				
-			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
+			} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
 				questionType = 'Kotak Centang'
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1

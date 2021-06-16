@@ -11,17 +11,10 @@
                 @isset($item)
                     @method('PUT')
                 @endisset
-                
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Nama Lembaga</label>
                     <div class="col-md-9">
                         <input type="text" required class="form-control" @isset($item) value="{{$item->name}}" @endisset name="name" placeholder="Nama Lembaga">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-md-3 col-form-label">NPSN</label>
-                    <div class="col-md-9">
-                        <input type="text" required class="form-control" @isset($item) value="{{$item->npsn}}" @endisset name="npsn" placeholder="NPSN">
                     </div>
                 </div>
                 <div class="form-group row">

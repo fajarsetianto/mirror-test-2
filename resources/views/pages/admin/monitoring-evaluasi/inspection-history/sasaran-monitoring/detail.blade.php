@@ -19,18 +19,14 @@
 					serverSide: true,
 					ajax: '{!! route("monev.inspection-history.target.instrument.data",[$form->id, $target->id]) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
 					},
 					{data: 'name', name: 'name'},
-					{data: null, render : function(){
-						return ''
-					}},
-                    {data: null, render : function(){
-						return ''
-					}},
+					{data: 'questions_count', searchable : false},
+					{data: 'score', searchable : false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -168,11 +164,11 @@
 		</div>
 		<div class="form-group row mb-0">
 			<label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
-			<div class="col-md-9 col-6">{{$target->nonSatuanPendidikan->name}}</div>
+			<div class="col-md-9 col-6">{{$target->institutionable->name}}</div>
 		</div>
 		<div class="form-group row mb-0">
 			<label class="col-md-3 col-6 font-weight-bold">Reponden</label>
-			<div class="col-md-9 col-6">{nama} {{$target->nonSatuanPendidikan->email}}</div>
+			<div class="col-md-9 col-6">{{$target->institutionable->email}}</div>
 		</div>
 		<div class="form-group row mb-0">
 			<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>

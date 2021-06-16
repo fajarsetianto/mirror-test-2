@@ -1,18 +1,33 @@
-@if($form->category == 'satuan pendidikan')
-    satuan pendidikan avaliable soon
-@else
+
+            <div class="input-group mb-3">
+                <span class="input-group-prepend">
+                    <span class="input-group-text">
+                        <input type="radio" name="officer_leader" required @isset($item)
+                            value="{{$item->id}}"
+                            @if($item->pivot->is_leader)
+                                checked
+                            @endif
+                        @endisset> 
+                        <label class="form-check-label ml-2" for="radio">Leader</label>
+                    </span>
+                </span>
+                <div class="flex-fill">
+                    <select class="form-control select2-officer" name="officers[]" data-fouc required>
+                        @isset($item)
+                            <option value="{{$item->id}}" selected="selected">{{$item->name}}</option>
+                        @endisset
+                    </select>
+                </div>
+                <span class="input-group-append">
+                    <span class="input-group-text bg-pink border-pink text-white remove-input-group">
+                        <i class="icon-trash"></i>
+                    </span>
+                </span>
+            </div>
+
     
-    <div class="form-group row">
-        <label class="col-md-3 col-form-label">Petugas Monev</label>
-        <div class="col-md-9">
-            <select class="form-control select2" name="officer_id" data-fouc>
-                <option value="" disabled selected>Pilih Petugas Monev</option>
-                @foreach (App\Models\User::all() as $user)
-                    <option value="{{$user->id}}" @isset($item) {{$item->officer_id == $user->id ?  'selected' : ''}} @endisset>{{$user->name}}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
     
-@endif
+
+    
+
 
