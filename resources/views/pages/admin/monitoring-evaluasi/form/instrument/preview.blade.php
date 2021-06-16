@@ -24,6 +24,8 @@
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/demo_pages/form_layouts.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/forms/styling/uniform.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/demo_pages/form_checkboxes_radios.js')}}"></script>
 	<script>
 		question = (typeClick, questionName, option, key, number) => {
 			let tempDataOption = ''
@@ -51,7 +53,7 @@
 					</div>
 					
 					`
-			} else if (typeClick == 'ganda'){
+			} else if (typeClick == 'ganda' || typeClick == 'pilihan ganda'){
 				questionType = 'Ganda'
 				icon = 'icon-circle'
 				countOption = 1
@@ -59,8 +61,8 @@
 				dataOption.forEach((element, key) => {
 					tempDataOption += `
 					<div class="form-check">
-						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqId}-${key}" checked>
-						<label class="form-check-label" for="flexRadioDefault-${uniqId}-${key}">
+						<label class="form-check-label">
+							<input type="radio" class="form-control form-check-input-styled" disabled name="stacked-radio-left" data-fouc>
 							${element.value}
 						</label>
 					</div>
@@ -74,15 +76,15 @@
 				</div>
 				`
 				
-			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
+			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'  || typeClick == 'kotak centang'){
 				questionType = 'Multiple Choice'
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1
 				dataOption.forEach(element => {
 					tempDataOption += `
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-						<label class="form-check-label" for="flexCheckChecked">
+						<label class="form-check-label">
+							<input type="checkbox" class="form-control form-check-input-styled" disabled data-fouc>
 							${element.value}
 						</label>
 					</div>
@@ -109,7 +111,7 @@
 				type = `
 				<div class="form-group">
 					<label class="d-block">Opsi Jawaban</label>
-					<select data-placeholder="Select option" class="form-control form-control-select2">
+					<select data-placeholder="Select option" disabled class="form-control form-control-select2">
 						<option>Select your option</option>
 						${tempDataOption}
 					</select>

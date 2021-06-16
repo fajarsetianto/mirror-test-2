@@ -106,7 +106,7 @@
 					</div>
 					
 					`
-			} else if (typeClick == 'ganda'){
+			} else if (typeClick == 'ganda' || typeClick == 'pilihan ganda'){
 				icon = 'icon-circle'
 				countOption = 1
 
@@ -128,7 +128,7 @@
 				</div>
 				`
 				
-			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'){
+			} else if (typeClick == 'multiple' || typeClick == 'multiple choice' || typeClick == 'kotak centang'){
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1
 				dataOption.forEach((element,key) => {
