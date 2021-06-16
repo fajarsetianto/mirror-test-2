@@ -19,8 +19,8 @@ class CreateRespondentsTable extends Migration
             $table->unsignedBigInteger('target_id');
             $table->string('token',100)->unique();
             $table->string('plain_token',100)->unique();
-            $table->date('start_working_at')->nullable();
-            $table->date('submited_at')->nullable();
+            $table->timestamp('start_working_at')->nullable();
+            $table->timestamp('submited_at')->nullable();
             $table->timestamps();
             $table->foreign('target_id')->references('id')->on('targets')->cascadeOnDelete();
         });

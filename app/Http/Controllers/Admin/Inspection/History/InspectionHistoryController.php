@@ -20,7 +20,7 @@ class InspectionHistoryController extends Controller
         $data = auth()->user()
                     ->forms()
                     ->published()
-                    // ->expired()
+                    ->expired()
                     ->latest();
         return DataTables::of($data)
             ->addIndexColumn()
