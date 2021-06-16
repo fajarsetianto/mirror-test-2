@@ -17,22 +17,27 @@ class Indicator extends Model
         return $this->hasManyThrough(Target::class,Form::class,'id','form_id','form_id','id');
     }
 
+    public function reflection(){
+        return $this->hasOne(Indicator::class,'id','id');
+    }
+
     public function targetsWithScore(){
-        $min = $this->attributes['minimum'];
-        $max = $this->attributes['maximum'];
-        $having = 'scores >= '.$min.' and scores >= '.$max;
-        return $this->targets()->withAndWhereHas('respondent',function($q) use ($having){
-                    $q->withCount([
-                        'answers as scores' => function($q){
-                                $q->join('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
-                                    ->select(DB::raw('SUM(score) as score'));
-                                }
-                    ])
-                    ->havingRaw($having);
-                    // ->havingRaw('scores <= '.$max);
-                    // ->having('scores', '>', $this->attributes['minimum'])
-                    // ->having('scores', '<=',  $this->attributes['minimum']);
-                });
+        return $this->reflection()
+                    ->innerJoin('indicators as reflection', 'reflection.id','=','indicators.id')
+                    ->with(['targets' => function($q){
+                        $q->withAndWhereHas('respondent',function($q){
+                            $q->withCount([
+                                'answers as score' => function($q){
+                                        $q->leftJoin('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
+                                            ->select(DB::raw('SUM(score)'));
+                                        }
+                            ])
+                            ->having('score', '>', 'reflection.minimum')
+                            ->having('score', '<=', 'reflection.maximum');
+                        });
+                    }]);
+
+        // targets()-
     }
 
     
