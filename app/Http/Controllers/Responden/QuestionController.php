@@ -41,8 +41,9 @@ class QuestionController extends Controller
     {
         $data   = $request->all();
         $userId = auth('respondent')->user()->id;
+        DB::beginTransaction();
         try{
-            DB::beginTransaction();
+            
             $arr = array();
             foreach($instrument->questions()->get() as $key => $row):
                 UserAnswer::where('question_id', $row->id)->delete();
