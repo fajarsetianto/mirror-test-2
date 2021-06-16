@@ -24,7 +24,7 @@ class Indicator extends Model
                                 $q->leftJoin('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
                                     ->select(DB::raw('SUM(score) as score'));
                                 }
-                    ]);
+                    ])
                     ->having('respondent.score', '>', 'indicators.minimum')
                     ->having('respondent.score', '<=', 'indicators.maximum');
                 });
