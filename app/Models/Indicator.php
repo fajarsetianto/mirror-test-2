@@ -18,17 +18,17 @@ class Indicator extends Model
     }
 
     public function targetsWithScore(){
-        $min = $this->attribute['minimum'];
-        $max = $this->attribute['maximum'];
-        return $this->targets()->withAndWhereHas('respondent',function($q) use ($min,$max){
+        $min = $this->minimum;
+        $max = $this->maximum;
+        $having = 'scores >= '.$min.' and scores <= '.$max;
+        return $this->targets()->withAndWhereHas('respondent',function($q) use ($having){
                     $q->withCount([
                         'answers as scores' => function($q){
                                 $q->leftJoin('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
                                     ->select(DB::raw('SUM(score)'));
                                 }
                     ])
-                    ->having('scores', '>=', $min)
-                    ->having('scores', '<=', $max);
+                    ->havingRaw($having);
                 });
     }
 
