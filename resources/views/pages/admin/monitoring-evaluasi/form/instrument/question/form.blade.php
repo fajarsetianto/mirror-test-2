@@ -18,10 +18,10 @@
                 </div>
                 <label class="text-secondary">PILIHAN</label>
                 <div class="form-group row pl-2">
-                    <div class="col-md-6 cursor" id="ganda" onclick="clicked('pilihan ganda')">
+                    <div class="col-md-6 cursor" id="ganda" onclick="clicked('ganda')">
                         <i class="icon-radio-checked mr-2"></i> Pilihan Ganda
                     </div>
-                    <div class="col-md-6 cursor" id="multiple" onclick="clicked('kotak centang')">
+                    <div class="col-md-6 cursor" id="kotak" onclick="clicked('kotak')">
                         <i class="icon-checkbox-checked2 mr-2"></i> Kotak Centang
                     </div>
                 </div>
