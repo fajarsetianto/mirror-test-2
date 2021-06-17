@@ -140,7 +140,7 @@
 					<th>Nama</th>
 					<th>Email</th>
 					{{-- <th>Kategori Satuan Pendidikan</th> --}}
-					<th>Status</th>
+					{{-- <th>Status</th> --}}
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>
