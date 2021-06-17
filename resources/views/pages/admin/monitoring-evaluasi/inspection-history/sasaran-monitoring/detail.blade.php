@@ -27,6 +27,7 @@
 					{data: 'name', name: 'name'},
 					{data: 'questions_count', searchable : false},
 					{data: 'score', searchable : false},
+					{data: 'max_score', searchable : false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -147,7 +148,7 @@
 	<div class="card-body bg-white ">
 		<div class="d-flex align-items-center">
 			<div class="mr-4">
-				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{bobot}</span>
+				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{{$target->respondent->score()}}</span>
 			</div>
 		</div>
 		
@@ -192,7 +193,8 @@
 					<th>No</th>
 					<th>Group Pertanyaan</th>
                     <th>Jumlah Pertanyaan</th>
-                    <th>Bobot Nilai</th>
+                    <th>Maks Skor</th>
+					<th>Skor</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

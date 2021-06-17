@@ -38,8 +38,11 @@ class FormController extends Controller
         $passed = $user->isAllQuestionsAnswered();
         if($passed){
             $user->update(['submited_at'=> Carbon::now()]);
+            return redirect()->route('respondent.stop');
         }
-        return redirect()->route('respondent.stop');
+        return redirect()->route('respondent.form.index');
+        
+        
     }
 
     public function data(){

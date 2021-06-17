@@ -17,6 +17,7 @@ class TargetController extends Controller
     }
 
     public function detail(Form $form, Target $target){
+        $target->load('respondent');
         return view($this->viewNamespace.'detail', compact('form','target'));
     }
 

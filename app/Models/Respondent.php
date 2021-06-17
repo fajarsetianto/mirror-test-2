@@ -67,6 +67,10 @@ class Respondent extends Authenticatable
         return $this->hasMany(UserAnswer::class);
     }
 
+    public function score(){
+        return $this->answers()->whereHas('offeredAnswer')->with('offeredAnswer')->get()->sum('offeredAnswer.score');
+    }
+
     public function scoreCountByInstrument(Instrument $instrument){    
         return $this->answers()->whereHas('instrument', function($item) use ($instrument){
             $item->where('instruments.id',$instrument->id);

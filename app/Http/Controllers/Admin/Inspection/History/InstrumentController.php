@@ -12,6 +12,7 @@ use DataTables;
 class InstrumentController extends Controller
 {
     public function data(Form $form, Target $target){
+        $target->load('respondent');
         $respondent = $target->respondent;
         $data = $form->instruments()->latest();
         return DataTables::of($data)
@@ -22,6 +23,9 @@ class InstrumentController extends Controller
             })
             ->addColumn('questions_count', function($row){   
                 return $row->questions()->count();
+            })
+            ->addColumn('max_score', function($row){   
+                return $row->maxScore();
             })
             ->addColumn('score', function($row) use ($respondent, $form){   
                 if($form->type != 'petugas MONEV'){

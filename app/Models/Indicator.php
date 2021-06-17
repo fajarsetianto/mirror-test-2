@@ -17,6 +17,8 @@ class Indicator extends Model
         return $this->hasManyThrough(Target::class,Form::class,'id','form_id','form_id','id');
     }
 
+    // PERHATIAN
+    // RELASI INI TIDAK BISA DIGUNAKAN BERSAMA EAGERLOAD
     public function targetsWithScore(){
         $min = $this->minimum;
         $max = $this->maximum;
