@@ -20,6 +20,9 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             if($guard == null || $guard == 'web'){
+                if(auth()->user()->isSuperAdmin()){
+                    return redirect()->route('superadmin.dashboard');
+                }
                 return redirect(RouteServiceProvider::HOME);
             }elseif($guard == 'respondent'){
                 return redirect()->route('respondent.dashboard');

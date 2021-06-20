@@ -46,6 +46,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapSuperAdminRoutes();
+
         $this->mapAdminRoutes();
         
         $this->mapRespondenRoutes();
@@ -82,6 +84,15 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapSuperAdminRoutes()
+    {
+        Route::middleware(['web','auth'])
+            ->name('superadmin.')
+            ->prefix('superadmin')
+            ->namespace($this->namespace.'\SuperAdmin')
+            ->group(base_path('routes/superadmin.php'));
     }
 
     protected function mapAdminRoutes()
