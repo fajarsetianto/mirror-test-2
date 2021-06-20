@@ -119,4 +119,20 @@ class InstrumentController extends Controller
             ->rawColumns(['status','actions', 'name'])
             ->make(true);
     }
+
+    public function reorder(Request $request, Form $form){
+        $request->validate([
+            'data' => 'required|array',
+            'data.*.id' => 'required|numeric',
+            'data.*.position' => 'required|numeric',
+        ]);
+        foreach($request->data as $row)
+        {
+            Instrument::whereId($row['id'])->update([
+                'position' => $row['position']
+            ]);
+        }
+
+        return response()->noContent();
+    }
 }

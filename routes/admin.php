@@ -22,6 +22,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
                 Route::get('/data', 'InstrumentController@data')->name('data');
                 Route::get('/create', 'InstrumentController@create')->name('create');
                 Route::post('/create', 'InstrumentController@store')->name('store');
+                Route::post('/reorder', 'InstrumentController@reorder')->name('reorder');
                 Route::get('{instrument}/edit', 'InstrumentController@edit')->name('edit');
                 Route::put('{instrument}/update', 'InstrumentController@update')->name('update');
                 Route::delete('{instrument}', 'InstrumentController@destroy')->name('destroy');

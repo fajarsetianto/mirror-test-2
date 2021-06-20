@@ -15,6 +15,7 @@
 @endpush
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
+	<script src="{{asset('assets/global/plugins/tables/datatables/extensions/row_reorder.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
@@ -25,31 +26,73 @@
 		$(document).ready(function(){
 				instrumentDatatable = $('#instrument-table').DataTable({
 					pageLength : 10,
-					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
 					serverSide: true,
 					responsive: true,
 					ajax: '{!! route("monev.form.instrument.data",[$form->id]) !!}',
 					columns: [
-						{ "data": null,"sortable": false, searchable: false,
-							render: function (data, type, row, meta) {
-								return meta.row + meta.settings._iDisplayStart + 1;
-							}
-						},
+						{ data: 'position', name: 'position'},
+						{ data: 'id', name: 'id',visible: false, searchable: false},
+						// { "data": null,"sortable": false, searchable: false,
+						// 	render: function (data, type, row, meta) {
+						// 		return meta.row + meta.settings._iDisplayStart + 1;
+						// 	}
+						// },
 						{data: 'name', name: 'instruments.name',searchable: true},
 						{data: 'questions', name: 'questions',searchable: false},
 						{data: 'max_score', name: 'max_score',searchable: false},
 						{data: 'status', name: 'status',searchable: false},
 						{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
+					order: [[ 0, 'asc' ]],
 					autoWidth: false,
-					dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-					language: {
-						search: '<span>Filter:</span> _INPUT_',
-						lengthMenu: '<span>Show:</span> _MENU_',
-						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
+					rowReorder: {
+						selector: 'tr',
+						dataSrc: 'position'
+					},
+				});
+				instrumentDatatable.on('row-reorder', function (e, details, edit) {
+					if(details.length) {
+						console.log(details)
+						let rows = [];
+						details.forEach(element => {
+							console.log(element);
+							rows.push({
+								id: instrumentDatatable.row(element.node).data().id,
+								position: element.newData
+							});
+						});
+						$.blockUI({ 
+							message: '<i class="icon-spinner4 spinner"></i>',
+							overlayCSS: {
+								backgroundColor: '#1b2024',
+								opacity: 0.8,
+								zIndex: 1200,
+								cursor: 'wait'
+							},
+							css: {
+								border: 0,
+								color: '#fff',
+								padding: 0,
+								zIndex: 1201,
+								backgroundColor: 'transparent'
+							},
+						});
+						$.ajax({
+							method: 'POST',
+							url: "{!! route("monev.form.instrument.reorder",[$form->id]) !!}",
+							data: {
+								'_token' : '{{csrf_token()}}',
+								'data' : rows 
+							}
+						})
+						.done(function () { 
+							instrumentDatatable.ajax.reload()
+							$.unblockUI();
+						});
 					}
 				});
+
                 indicatorDatatable = $('#indicator-table').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
@@ -202,6 +245,7 @@
 			<thead>
 				<tr>
 					<th>No</th>
+					<th>id</th>
 					<th>Group Pertanyaan</th>
 					<th>Jumlah Pertanyaan</th>
 					<th>Total Maksimal Skor</th>
