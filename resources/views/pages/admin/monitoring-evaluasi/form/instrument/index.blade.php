@@ -29,7 +29,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.form.instrument.data",[$form->id]) !!}',
+					ajax: '{!! route("admin.monev.form.instrument.data",[$form->id]) !!}',
 					columns: [
 						{ "data": null,"sortable": false, searchable: false,
 							render: function (data, type, row, meta) {
@@ -56,7 +56,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.form.indicator.data",[$form->id]) !!}',
+					ajax: '{!! route("admin.monev.form.indicator.data",[$form->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -165,11 +165,11 @@
 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					<a href="{{route('monev.form.instrument.preview',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></a>
-					<button onclick="component('{{route('monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
+					<a href="{{route('admin.monev.form.instrument.preview',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></a>
+					<button onclick="component('{{route('admin.monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
 					@if($form->isEditable())
 						<button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan Draft</span></button>
-						<button onclick="component('{{route('monev.form.publish',[$form->id])}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
+						<button onclick="component('{{route('admin.monev.form.publish',[$form->id])}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
 					@endif
 				</div>
 			</div>
@@ -192,7 +192,7 @@
 		<h6 class="card-title">Daftar Group Pertanyaan</h6>
 		@if($form->isEditable())
 			<div class="header-elements">
-				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Group Pertanyaan</button>
+				<button class="btn bg-purple-400" onclick="component('{{route('admin.monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Group Pertanyaan</button>
 			</div>
 		@endif
 	</div>
@@ -219,7 +219,7 @@
 		<h6 class="card-title">Manajemen Indikator</h6>
 		@if($form->isEditable())
 			<div class="header-elements">
-				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.indicator.create',[$form->id])}}')"><i class="mi-info"></i> Tambah Indikator</button>
+				<button class="btn bg-purple-400" onclick="component('{{route('admin.monev.form.indicator.create',[$form->id])}}')"><i class="mi-info"></i> Tambah Indikator</button>
 			</div>
 		@endif
 	</div>

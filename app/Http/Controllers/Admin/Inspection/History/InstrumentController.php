@@ -18,7 +18,7 @@ class InstrumentController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('questions_count', function($row){   

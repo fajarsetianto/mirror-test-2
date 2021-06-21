@@ -33,7 +33,7 @@ class IndicatorReportController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.indicator-report.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.indicator-report.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   

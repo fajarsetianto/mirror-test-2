@@ -20,7 +20,7 @@ class OfficerController extends Controller
 
     public function create(){
         return view($this->viewNamespace.'form',[
-            'url' => route('management-user.store')
+            'url' => route('admin.management-user.store')
         ]);
     }
 
@@ -47,7 +47,7 @@ class OfficerController extends Controller
     public function edit(Officer $officer){
         return view($this->viewNamespace.'form',[
             'item' => $officer,
-            'url' => route('management-user.update',[$officer->id])
+            'url' => route('admin.management-user.update',[$officer->id])
         ]);
     }
 
@@ -89,8 +89,8 @@ class OfficerController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('management-user.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('management-user.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="#" class="dropdown-item" onclick="component(`'.route('admin.management-user.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.management-user.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>

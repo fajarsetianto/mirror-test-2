@@ -16,7 +16,7 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("management-user.data") !!}',
+					ajax: '{!! route("admin.management-user.data") !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -128,7 +128,7 @@
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title font-weight-semibold">Daftar Petugas Monev</h6>
 		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('management-user.create')}}')"><i class="icon-add-to-list"></i> Tambah Petugas Monev</button>
+			<button class="btn bg-purple-400" onclick="component('{{route('admin.management-user.create')}}')"><i class="icon-add-to-list"></i> Tambah Petugas Monev</button>
 		</div>
 	</div>
 	<hr class="m-0">

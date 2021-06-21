@@ -43,11 +43,11 @@ class Form extends Model
     }
 
     public function isPublished(){
-        return $this->status == 'publish';
+    return $this->status == 'publish';
     }
 
     public function isExpired(){
-        return $this->supervision_end_date < Carbon::now();
+        return $this->supervision_end_date > Carbon::now();
     }
 
     public function isPublishable(){

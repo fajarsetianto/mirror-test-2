@@ -16,7 +16,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("institution.non-satuan.data",['$form->id']) !!}',
+					ajax: '{!! route("admin.institution.non-satuan.data",['$form->id']) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -133,7 +133,7 @@
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title font-weight-semibold">Daftar Lembaga Non Satuan Pendidikan</h6>
 		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('institution.non-satuan.create')}}')"><i class="icon-add-to-list"></i> Buat Lembaga Baru</button>
+			<button class="btn bg-purple-400" onclick="component('{{route('admin.institution.non-satuan.create')}}')"><i class="icon-add-to-list"></i> Buat Lembaga Baru</button>
 		</div>
 	</div>
 	<hr class="m-0">

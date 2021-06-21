@@ -105,7 +105,7 @@
                         text: data.msg,
                         addclass: 'bg-success border-success',
                     });
-                    var redirectUrl = "{{route('monev.form.instrument.index',['$1'])}}";
+                    var redirectUrl = "{{route('admin.monev.form.instrument.index',['$1'])}}";
                     window.location.replace(redirectUrl.replace("%241",data.item.id));
 			   }else{
                 location.reload();

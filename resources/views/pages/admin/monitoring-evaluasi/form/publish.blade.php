@@ -12,7 +12,7 @@
             <div class="d-flex align-items-center justify-content-end">
                 <button class="btn bg-secondary" data-dismiss="modal">Batal</button>
                 <button class="btn bg-success ml-2" onclick="event.preventDefault(); document.getElementById('modal-form').submit();"><i class="icon-checkmark3 font-size-base mr-1"></i> Lanjutkan</button>
-                <form id="modal-form" action="{{ route('monev.form.publishing',[$form->id]) }}" method="POST" class="d-none">
+                <form id="modal-form" action="{{ route('admin.monev.form.publishing',[$form->id]) }}" method="POST" class="d-none">
                     @csrf
                 </form>
             </div>

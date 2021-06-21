@@ -88,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapSuperAdminRoutes()
     {
-        Route::middleware(['web','auth'])
+        Route::middleware(['web','auth','admin.eligible'])
             ->name('superadmin.')
             ->prefix('superadmin')
             ->namespace($this->namespace.'\SuperAdmin')
@@ -97,7 +97,9 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapAdminRoutes()
     {
-        Route::middleware(['web','auth'])
+        Route::middleware(['web','auth','admin.eligible'])
+            ->name('admin.')
+            ->prefix('admin')
             ->namespace($this->namespace.'\Admin')
             ->group(base_path('routes/admin.php'));
     }

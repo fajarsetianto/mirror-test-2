@@ -14,13 +14,13 @@ class IndicatorController extends Controller
 
     public function create(Form $form){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.indicator.create',[$form->id]),
+            'url' => route('admin.monev.form.indicator.create',[$form->id]),
         ]);
     }
 
     public function edit(Form $form, Indicator $indicator){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.indicator.update',[$form->id, $indicator->id]),
+            'url' => route('admin.monev.form.indicator.update',[$form->id, $indicator->id]),
             'item' => $indicator
         ]);
     }
@@ -87,8 +87,8 @@ class IndicatorController extends Controller
                         <i class="icon-menu9"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.indicator.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`indicator`,`'.route('monev.form.indicator.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('admin.monev.form.indicator.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`indicator`,`'.route('admin.monev.form.indicator.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>

@@ -44,6 +44,6 @@ class LoginController extends Controller
         if ( $user->isSuperAdmin() ) {
             return redirect()->route('superadmin.dashboard');
         }
-        return redirect('/home');
+        return redirect('/');
     }
 }

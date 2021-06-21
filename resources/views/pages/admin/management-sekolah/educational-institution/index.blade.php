@@ -15,7 +15,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("institution.satuan.data") !!}',
+					ajax: '{!! route("admin.institution.satuan.data") !!}',
 					columns: [
 						{data: null,sortable: false, searchable: false,
 							render: function (data, type, row, meta) {

@@ -142,7 +142,7 @@
 		}
         function destroy(x,y){
 			let csrf_token = "{{csrf_token()}}"
-			let urlActionDelete = `${'{{route('monev.form.instrument.question.destroy',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',y)}`
+			let urlActionDelete = `${'{{route('admin.monev.form.instrument.question.destroy',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',y)}`
             Swal.fire({
                     title: 'Are you sure?',
 	                text: "You won't be able to revert this!",
@@ -360,7 +360,7 @@
 				`
 			}
 
-			let urlActionUpdate = `${'{{route('monev.form.instrument.question.update',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}?_method=PUT`
+			let urlActionUpdate = `${'{{route('admin.monev.form.instrument.question.update',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}?_method=PUT`
 			$('#content').append(`
 				<div id="form-card-${uniqId}">
 				@csrf
@@ -529,23 +529,23 @@
 					<h6 class="card-title">ACTION</h6>
 				</div>
 				<div class="card-body">
-					<button class="btn btn-block btn-success text-left" onclick="component('addQuestion',`{{route('monev.form.instrument.question.create',[$form->id, $instrument->id])}}`)"><i class="icon-bubble-lines3 mr-2"></i> Tambah Pertanyaan</button>
+					<button class="btn btn-block btn-success text-left" onclick="component('addQuestion',`{{route('admin.monev.form.instrument.question.create',[$form->id, $instrument->id])}}`)"><i class="icon-bubble-lines3 mr-2"></i> Tambah Pertanyaan</button>
 				</div>
 			</div>
 			<div class="card mt-0">
 				<div class="card-body">
-					<form method="POST" action="{{route('monev.form.instrument.question.changestatus',[$form->id,$instrument->id])}}" class="form-inline">
+					<form method="POST" action="{{route('admin.monev.form.instrument.question.changestatus',[$form->id,$instrument->id])}}" class="form-inline">
 						@csrf
 						<input type="hidden" name="status" value="draft">
 						<button class="btn btn-block bg-purle text-left mb-3" type="submit"><i class="icon-file-text3 mr-2"></i>Tandai Sebagai Draft</button>
 					</form>
-					<form method="POST" action="{{route('monev.form.instrument.question.changestatus',[$form->id,$instrument->id])}}" class="form-inline">
+					<form method="POST" action="{{route('admin.monev.form.instrument.question.changestatus',[$form->id,$instrument->id])}}" class="form-inline">
 						@csrf
 						<input type="hidden" name="status" value="ready">
 						<button class="btn btn-block btn-primary text-left mb-5" type="submit"><i class="icon-file-text mr-2"></i>Tandai Sudah Selesai</button>
 					</form>
-					{{-- <button class="btn btn-block bg-purle text-left mb-3" onclick="saveDraft('{{route('monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button> --}}
-					{{-- <button class="btn btn-block btn-primary text-left mb-5" onclick="component('public','{{route('monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button> --}}
+					{{-- <button class="btn btn-block bg-purle text-left mb-3" onclick="saveDraft('{{route('admin.monev.form.instrument.question.store',[$form->id, $instrument->id])}}')"><i class="icon-file-text3 mr-2"></i> Simpan Sebagai Draft</button> --}}
+					{{-- <button class="btn btn-block btn-primary text-left mb-5" onclick="component('public','{{route('admin.monev.form.instrument.create',[$form->id])}}')"><i class="icon-file-text mr-2"></i> Publikasikan</button> --}}
 				</div>
 			</div>
 		</div>
@@ -559,7 +559,7 @@
 							<div class="instrument-header d-flex">
 								<h4><span class="font-weight-semibold">{{$instrument->name}}</span></h4>
 								<div class="instrument-action ml-auto">
-									<a href="#" onclick="component('instrument',`{{route('monev.form.instrument.edit',[$form->id,$instrument->id])}}`)" class="mr-"><i class="icon-pencil mr-1"></i> Edit</a>
+									<a href="#" onclick="component('instrument',`{{route('admin.monev.form.instrument.edit',[$form->id,$instrument->id])}}`)" class="mr-"><i class="icon-pencil mr-1"></i> Edit</a>
 								</div>
 							</div>
 							<div class="instrument-description">

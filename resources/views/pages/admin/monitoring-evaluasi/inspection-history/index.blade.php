@@ -18,7 +18,7 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.inspection-history.data") !!}',
+					ajax: '{!! route("admin.monev.inspection-history.data") !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {

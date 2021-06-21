@@ -17,7 +17,7 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.inspection-history.target.instrument.data",[$form->id, $target->id]) !!}',
+					ajax: '{!! route("admin.monev.inspection-history.target.instrument.data",[$form->id, $target->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -137,7 +137,7 @@
 		<h3 class="card-title font-weight-semibold">{{ strtoupper($form->name)}}</h3>
         @isset($editable)
             <div class="header-elements">
-                <button type="button" onclick="component('{{route('monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
+                <button type="button" onclick="component('{{route('admin.monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
             </div>
         @endisset
 	</div>

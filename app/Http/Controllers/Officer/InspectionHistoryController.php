@@ -72,7 +72,7 @@ class InspectionHistoryController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.inspection.detail',[$row->id]).'">'.strtoupper($row->form->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.inspection.detail',[$row->id]).'">'.strtoupper($row->form->name).'</a>';     
                 return $link;
             })
             ->addColumn('target_name', function($row){   

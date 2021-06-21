@@ -18,7 +18,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.indicator-report.detail.indicator.data",[$form->id,$indicator->id]) !!}',
+					ajax: '{!! route("admin.monev.indicator-report.detail.indicator.data",[$form->id,$indicator->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {

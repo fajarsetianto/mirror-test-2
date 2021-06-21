@@ -71,11 +71,11 @@ class InspectionController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.inspection.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.inspection.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
-                $link = '<button onclick="component(`'.route('monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
+                $link = '<button onclick="component(`'.route('admin.monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
                 return $link;
             })
             ->addColumn('actions', function($row){   
@@ -86,8 +86,8 @@ class InspectionController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('monev.inspection.detail',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="#" class="dropdown-item" onclick="component(`'.route('admin.monev.inspection.detail',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>

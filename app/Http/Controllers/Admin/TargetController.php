@@ -19,17 +19,17 @@ class TargetController extends Controller
 
     public function create(Form $form){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.target.store',[$form->id]),
+            'url' => route('admin.monev.form.target.store',[$form->id]),
             'form' => $form,
-            'select2url' => $form->category == 'satuan pendidikan' ?  route('institution.satuan.select2') : route('institution.non-satuan.select2'),
+            'select2url' => $form->category == 'satuan pendidikan' ?  route('admin.institution.satuan.select2') : route('admin.institution.non-satuan.select2'),
         ]);
     }
 
     public function edit(Form $form, Target $target){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.target.update',[$form->id, $target->id]),
+            'url' => route('admin.monev.form.target.update',[$form->id, $target->id]),
             'form' => $form,
-            'select2url' => $form->category == 'satuan pendidikan' ? route('institution.satuan.select2') : route('institution.non-satuan.select2'),
+            'select2url' => $form->category == 'satuan pendidikan' ? route('admin.institution.satuan.select2') : route('admin.institution.non-satuan.select2'),
             'item' => $target
         ]);
     }
@@ -157,8 +157,8 @@ class TargetController extends Controller
                         <i class="icon-menu9"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.target.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.target.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('admin.monev.form.target.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.monev.form.target.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
