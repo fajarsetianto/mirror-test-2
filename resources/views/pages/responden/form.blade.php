@@ -142,7 +142,11 @@
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
-                <div class="col-md-9 col-6">{{$user->target->officerName()}}</div>
+                <div class="col-md-9 col-6">
+					@foreach ($user->target->officers as $officer)
+						{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
+					@endforeach
+				</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Waktu Mulai</label>
@@ -150,7 +154,7 @@
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Waktu Selesai</label>
-                <div class="col-md-9 col-6">{{$user->target->form->supervision_end_date->format('d/m/Y')}} <span class="badge badge-danger">Sisa Waktu : {{$user->target->form->supervisionDaysRemaining()}} Hari</span></div>
+                <div class="col-md-9 col-6">{{$user->target->form->supervision_end_date->format('d/m/Y')}} <span class="badge badge-danger">Sisa Waktu : {{$user->target->form->supervisionDaysRemainingRender()}} Hari</span></div>
             </div>
     
         </div>

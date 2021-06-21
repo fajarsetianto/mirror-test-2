@@ -38,7 +38,8 @@ class HomeController extends Controller
                 ->whereHas('form', function($item){
                     $item->published();
                 })
-                ->with('form','institutionable');
+                ->with(['form','institutionable','respondent'])
+                ->select(['targets.*','officer_targets.id as pivot_id']);
                 
         return DataTables::of($data)
         ->addIndexColumn()
@@ -85,13 +86,13 @@ class HomeController extends Controller
         })
         ->addColumn('actions', function($row){   
             if($row->isSubmitedByOfficer() || $row->form->isExpired()){
-                $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->id]).'" class="btn btn-success btn-sm">
+                $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->pivot_id]).'" class="btn btn-success btn-sm">
                     <i class="mi-visibility"></i>
                     Lihat Detail
                 </a>';
                 
             }else{
-                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->id]).'" class="btn btn-primary btn-sm">
+                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->pivot_id]).'" class="btn btn-primary btn-sm">
                         <i class="mi-assignment"></i>
                         Isi Form Monitoring
                     </a>';
@@ -111,7 +112,8 @@ class HomeController extends Controller
                 ->whereHas('form', function($item){
                     $item->published();
                 })
-                ->with('form','institutionable');
+                ->with('form','institutionable')
+                ->select(['targets.*','officer_targets.id as pivot_id']);
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
@@ -156,14 +158,15 @@ class HomeController extends Controller
                 }
             })
             ->addColumn('actions', function($row){
+                dd($row);
                 if($row->isSubmitedByOfficer() || $row->form->isExpired()){
-                    $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->id]).'" class="btn btn-success btn-sm">
+                    $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->pivot_id]).'" class="btn btn-success btn-sm">
                         <i class="mi-visibility"></i>
                         Lihat Detail
                     </a>';
                     
                 }else{
-                    $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->id]).'" class="btn btn-primary btn-sm">
+                    $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->pivot_id]).'" class="btn btn-primary btn-sm">
                             <i class="mi-assignment"></i>
                             Isi Form Monitoring
                         </a>';

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\NotificationController;
+
 Route::group(['prefix' => 'auth'], function(){
     Auth::routes([
         'register' => false,
@@ -8,6 +10,11 @@ Route::group(['prefix' => 'auth'], function(){
 });
 
 Route::group(['middleware' => ['auth:officer']], function(){
+    Route::group(['prefix' => 'notification', 'as'=> 'notification.'], function(){
+        Route::get('/read/{notification}',[NotificationController::class, 'read'])->name('read');
+        Route::get('/markallread/{guard}',[NotificationController::class, 'markAllRead'])->name('markallread');
+    });
+
     Route::get('/','HomeController@index')->name('dashboard');
     Route::get('/respondentData','HomeController@respondentData')->name('dashboard.data.respondent');
     Route::get('/officerData','HomeController@officerData')->name('dashboard.data.officer');

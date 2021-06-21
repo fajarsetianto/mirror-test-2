@@ -23,7 +23,8 @@ class InspectionController extends Controller
                     ->whereHas('form', function($item){
                         $item->published()->valid();
                     })
-                    ->with('form','institutionable');
+                    ->with('form','institutionable')
+                    ->select(['targets.*','officer_targets.id as pivot_id']);
                     
         return DataTables::of($data)
             ->addIndexColumn()
@@ -69,7 +70,7 @@ class InspectionController extends Controller
                 }
             })
             ->addColumn('actions', function($row){   
-                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->id]).'" class="btn btn-primary btn-sm">
+                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->pivot_id]).'" class="btn btn-primary btn-sm">
                             <i class="mi-assignment"></i>
                             Isi Form Monitoring
                         </a>';

@@ -34,8 +34,13 @@ class Form extends Model
         return $this->belongsTo(User::class,'created_by');
     }
 
-    public function supervisionDaysRemaining(){
-        return $this->supervision_start_date->diffInDays($this->supervision_end_date);
+    public function supervisionDaysRemaining(bool $unsigned = true){
+        return $this->supervision_end_date->diffInDays(Carbon::now(), $unsigned);
+    }
+
+    public function supervisionDaysRemainingRender(){
+        $remaining = $this->supervisionDaysRemaining(false);
+        return $remaining > 0 ? 'expired' : abs($remaining);
     }
 
     public function isEditable(){
@@ -47,11 +52,15 @@ class Form extends Model
     }
 
     public function isExpired(){
-        return $this->supervision_end_date > Carbon::now();
+        return $this->supervision_end_date < Carbon::now();
     }
 
     public function isPublishable(){
-        return $this->questions()->exists() && !$this->instruments()->whereStatus('draft')->exists() && $this->targets()->exists();
+        return $this->questions()->exists() 
+                && !$this->instruments()->whereStatus('draft')->exists() 
+                && $this->targets()->exists()
+                && $this->supervisionDaysRemaining(false) <= 0;
+                
     }
 
     public function scopeExpired($query)

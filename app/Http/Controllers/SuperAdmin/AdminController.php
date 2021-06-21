@@ -4,7 +4,7 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\Officer\AccountCreated;
+use App\Notifications\Admin\AccountCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use DataTables;

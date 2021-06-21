@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Responden;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Notifications\Admin\RespondentSubmitedAnswer as AdminRespondentSubmitedAnswer;
+use App\Notifications\Officer\RespondentSubmitedAnswer;
 use DataTables;
 use Illuminate\Support\Carbon;
 
@@ -19,7 +21,7 @@ class FormController extends Controller
      */
     public function index()
     {
-        $user = auth('respondent')->user()->load('target.form');
+        $user = auth('respondent')->user()->load('target.form','target.officers');
         return view($this->viewNamespace.'form', ['form' => $user->target->form,'user' => $user]);
     }
 
@@ -34,14 +36,17 @@ class FormController extends Controller
     }
 
     public function publishing(){
-        $user =  auth('respondent')->user();
+        $user =  auth('respondent')->user()->load('target.officers','target.form.createdBy');
         $passed = $user->isAllQuestionsAnswered();
         if($passed){
             $user->update(['submited_at'=> Carbon::now()]);
+            foreach($user->target->officers as $officer){
+                $officer->notify(new RespondentSubmitedAnswer($officer->pivot));
+            }
+            $user->target->form->createdBy->notify(new AdminRespondentSubmitedAnswer($user->target));
             return redirect()->route('respondent.stop');
         }
         return redirect()->route('respondent.form.index');
-        
         
     }
 

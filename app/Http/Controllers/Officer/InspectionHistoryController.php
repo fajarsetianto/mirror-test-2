@@ -59,7 +59,7 @@ class InspectionHistoryController extends Controller
         $data = auth('officer')
                     ->user()
                     ->targets()
-                    // ->wherePivotNotNull('submited_at')
+                    ->wherePivotNotNull('submited_at')
                     ->whereHas('form', function($item){
                         $item->where(function($item){
                             $item->published();
@@ -67,12 +67,13 @@ class InspectionHistoryController extends Controller
                             $item->published()->expired();
                         });
                     })
-                    ->with('form','institutionable');
+                    ->with('form','institutionable')
+                    ->select(['targets.*','officer_targets.id as pivot_id']);
                     
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('admin.monev.inspection.detail',[$row->id]).'">'.strtoupper($row->form->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.inspection.form.index',[$row->id]).'">'.strtoupper($row->form->name).'</a>';     
                 return $link;
             })
             ->addColumn('target_name', function($row){   
@@ -110,7 +111,7 @@ class InspectionHistoryController extends Controller
                 }
             })
             ->addColumn('actions', function($row){   
-                $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->id]).'" class="btn btn-primary btn-sm">
+                $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->pivot_id]).'" class="btn btn-primary btn-sm">
                             <i class="mi-visibility"></i>
                             Lihat Detail
                         </a>';     

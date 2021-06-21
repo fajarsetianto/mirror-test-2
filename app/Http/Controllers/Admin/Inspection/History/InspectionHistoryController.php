@@ -20,12 +20,12 @@ class InspectionHistoryController extends Controller
         $data = auth()->user()
                     ->forms()
                     ->published()
-                    ->expired()
+                    // ->expired()
                     ->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('admin.monev.inspection-history.target.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.inspection-history.form.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
@@ -40,7 +40,7 @@ class InspectionHistoryController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="'.route('admin.monev.inspection-history.target.index',[$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
+                        <a href="'.route('admin.monev.inspection-history.form.index',[$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
                         <a href="javascript:void(0)" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
                         <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                     </div>

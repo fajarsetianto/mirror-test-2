@@ -43,9 +43,9 @@ Breadcrumbs::for('admin.home', function ($trail) {
         $trail->push('Pemeriksaan', route('admin.monev.inspection.index'));
     });
 
-        Breadcrumbs::for('admin.monev.inspection.detail', function ($trail, $form) {
+        Breadcrumbs::for('admin.monev.inspection.form.index', function ($trail, $form) {
             $trail->parent('admin.monev.inspection');
-            $trail->push(ucwords($form->name), route('admin.monev.inspection.detail',[$form->id]));
+            $trail->push(ucwords($form->name), route('admin.monev.inspection.form.index',[$form->id]));
         });
 
     Breadcrumbs::for('admin.monev.inspection-history', function ($trail) {
@@ -53,14 +53,14 @@ Breadcrumbs::for('admin.home', function ($trail) {
         $trail->push('Riwayat Pemeriksaan', route('admin.monev.inspection-history.index'));
     });
 
-        Breadcrumbs::for('admin.monev.inspection-history.target', function ($trail, $form) {
+        Breadcrumbs::for('admin.monev.inspection-history.form', function ($trail, $form) {
             $trail->parent('admin.monev.inspection-history');
-            $trail->push(ucwords($form->name), route('admin.monev.inspection.detail',[$form->id]));
+            $trail->push(ucwords($form->name), route('admin.monev.inspection.form.index',[$form->id]));
         });
 
-        Breadcrumbs::for('admin.monev.inspection-history.target.detail', function ($trail, $form, $target) {
-            $trail->parent('admin.monev.inspection-history.target',$form);
-            $trail->push(ucwords($target->institutionable->name), route('admin.monev.inspection-history.target.detail',[$form->id, $target->id]));
+        Breadcrumbs::for('admin.monev.inspection-history.form.detail', function ($trail, $form, $target) {
+            $trail->parent('admin.monev.inspection-history.form',$form);
+            $trail->push(ucwords($target->institutionable->name), route('admin.monev.inspection-history.form.detail',[$form->id, $target->id]));
         });
 
     Breadcrumbs::for('admin.institution.non-satuan', function ($trail) {
