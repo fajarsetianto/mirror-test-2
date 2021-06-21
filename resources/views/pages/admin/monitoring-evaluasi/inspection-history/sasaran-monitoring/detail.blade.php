@@ -26,8 +26,8 @@
 					},
 					{data: 'name', name: 'name'},
 					{data: 'questions_count', searchable : false},
-					{data: 'score', searchable : false},
 					{data: 'max_score', searchable : false},
+					{data: 'score', searchable : false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
