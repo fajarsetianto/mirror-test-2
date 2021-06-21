@@ -80,7 +80,7 @@
 						});
 						$.ajax({
 							method: 'POST',
-							url: "{!! route("monev.form.instrument.reorder",[$form->id]) !!}",
+							url: "{!! route("admin.monev.form.instrument.reorder",[$form->id]) !!}",
 							data: {
 								'_token' : '{{csrf_token()}}',
 								'data' : rows 
