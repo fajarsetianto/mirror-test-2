@@ -47,7 +47,7 @@
 					order: [[ 0, 'asc' ]],
 					autoWidth: false,
 					rowReorder: {
-						selector: 'tr',
+						selector: 'td:nth-child(1)',
 						dataSrc: 'position'
 					},
 				});
