@@ -15,7 +15,7 @@
 @endpush
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
-	<script src="{{asset('assets/global/plugins/tables/datatables/extensions/row_reorder.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/row_reorder.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
