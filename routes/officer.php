@@ -27,7 +27,10 @@ Route::group(['middleware' => ['auth:officer']], function(){
                 [
                     'as' => 'do.',
                     'prefix' => 'mengerjakan/{officerTarget}',
-                    'middleware' => ['can:manage,officerTarget' ,'can:do,officerTarget' ]
+                    'middleware' => [
+                        'can:manage,officerTarget' ,
+                        // 'can:do,officerTarget' 
+                    ]
                 ], function(){
                 Route::get('/','DoController@index')->name('index');
                 Route::get('data','DoController@data')->name('data');
