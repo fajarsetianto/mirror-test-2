@@ -44,10 +44,8 @@ class DoController extends Controller
             'pdf_1' => 'required|mimetypes:application/pdf|max:10000'
         ]);
 
-        $data['location'] = '';
         $data               = $request->only('ipaddr','location','note','photo_1','photo_2','photo_3','photo_4','photo_5','pdf_1');
-        $ipaddr             = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$data['ipaddr']));
-        $data['location']   =  $ipaddr['geoplugin_latitude'].', '.$ipaddr['geoplugin_longitude'];
+
         try{
             DB::beginTransaction();
             $arr = array();
@@ -107,7 +105,6 @@ class DoController extends Controller
         $data = $officerTarget->load('target.form')
                     ->target->form
                     ->instruments();
-
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($officerTarget){   
@@ -115,7 +112,7 @@ class DoController extends Controller
                 return $link;
             })
             ->addColumn('question', function($row){   
-                return '0/'.$row->questions()->count();
+                return $row->officerAnswer()->distinct('question_id')->count().'/'.$row->questions()->count();
             })
             ->addColumn('status', function($row){   
                 return '<span class="badge badge-danger">Belum Lengkap</span>';

@@ -64,6 +64,8 @@
 					}
 
 				});
+
+			
 			
 			isLeader()
 		});
@@ -117,14 +119,12 @@
 		upload = (name) => {
 			let file = $(`#${name}`).prop('files')[0]
 			let indexName = name.replace("-", "_")
-			console.log(name)
 			formData.delete(`${indexName}`)
 			formData.append(`${indexName}`, file)
 		}
 		isLeader = () => {
 			let status = "{{$item->is_leader}}"
 			if(status != '1'){
-			console.log(status)
 				$(".leader").prop('disabled', true);
 			}
 		}
@@ -134,8 +134,41 @@
 		}
 
 		function locations(){
-			$('#geolocation').val(`${geoplugin_latitude()}, ${geoplugin_longitude()}`)
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} else {
+				$('.geolocation').val("Geolocation is not supported by this browser.")
+				$('.geolocation').html("Geolocation is not supported by this browser.")
+			}
+
+			
+			
 			$('#ip-addr').val(geoplugin_request())
+		}
+
+		function showPosition(position) {
+			$.ajax({
+				url: `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.coords.latitude}&lon=${position.coords.longitude}&accept-language=id`,
+				type: "GET",
+				success: function (data) {
+					new PNotify({
+						title: "Success",
+						text: "Success Get You're Location",
+						addclass: 'bg-success border-success',
+					});
+					$('.geolocation').val(`${position.coords.latitude}, ${position.coords.longitude} - ${data.display_name}`)
+					$('.geolocation').html(`${position.coords.latitude}, ${position.coords.longitude} - ${data.display_name}`)
+
+				},
+				error: function (data) {
+					new PNotify({
+						title: 'Error',
+						text: "Error Get You're location",
+						addclass: 'bg-danger border-danger',
+					});
+
+				}
+			})
 		}
 
 	</script>
@@ -237,7 +270,8 @@
 			<p class="font-weight-bold">Ambil Lokasi Terkini</p>
 			<div class="d-flex">
 				<button onclick="locations()" class="btn btn-success mr-2 leader">Ambil Lokasi</button>
-				<input name="location" class="d-flex align-self-center m-0 text-secondary border-0 not-allowed input" id="geolocation" value="@isset($item->officerNote[7]->value){{$item->officerNote[7]->value}}@endisset" readonly>
+				<span class="d-flex align-self-center m-0 text-secondary geolocation">@isset($item->officerNote[7]->value){{$item->officerNote[7]->value}}@endisset</span>
+				<input type="hidden" name="location" class="d-flex align-self-center m-0 text-secondary border-0 not-allowed input geolocation" value="@isset($item->officerNote[7]->value){{$item->officerNote[7]->value}}@endisset" readonly>
 			</div>
 			<div class="mt-2 form-group">
 				<label for="noted" class="py-2 font-weight-bold">Tambah Catatan</label>

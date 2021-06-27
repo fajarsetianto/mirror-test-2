@@ -49,4 +49,8 @@ class Officer extends Authenticatable
             ->withTimestamps();
     }
 
+    public function answers(){
+        return $this->hasMany(OfficerAnswer::class);
+    }
+
 }
