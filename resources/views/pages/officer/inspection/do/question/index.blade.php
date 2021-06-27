@@ -487,12 +487,12 @@
 	@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
 		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
 	@endforeach
-	@if(count($officerTarget->officer->answers()->get()) < 1)
+	@if(count($officerTarget->answers()->get()) < 1)
 		@foreach($item->questions()->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->officerAnswerOfficer)}}',)</script>
 		@endforeach
 	@else
-		@foreach($officerTarget->officer->answers()->byInstrumentId($item->id)->get() as $key => $row)
+		@foreach($officerTarget->answers()->byInstrumentId($item->id)->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}')</script>
 		@endforeach
 	@endif
