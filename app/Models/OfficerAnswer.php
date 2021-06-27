@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserAnswer extends Model
+class OfficerAnswer extends Model
 {
     protected $guarded = [];
     

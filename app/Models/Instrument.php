@@ -16,6 +16,10 @@ class Instrument extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function officerAnswer(){
+        return $this->hasManyThrough(OfficerAnswer::class, Question::class, 'instrument_id', 'question_id');
+    }
+
     public function maxScore(){
         return $this->questions()->whereHas('offeredAnswer')->get()->sum(function($item){
             if($item->questionType->name == "Kotak Centang"){

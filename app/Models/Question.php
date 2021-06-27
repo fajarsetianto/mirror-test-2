@@ -23,12 +23,16 @@ class Question extends Model
     public function userAnswerRespondent(){
         return $this->hasOne(UserAnswer::class)->where('respondent_id',auth('respondent')->user()->id);
     }
-
-    public function userAnswerOfficer(){
-        return $this->hasOne(UserAnswer::class)->where('respondent_id',auth('officer')->user()->id);
-    }
     
     public function userAnswer(){
         return $this->hasOne(UserAnswer::class);
+    }
+
+    public function officerAnswer(){
+        return $this->hasMany(OfficerAnswer::class);
+    }
+    
+    public function officerAnswerOfficer(){
+        return $this->hasOne(OfficerAnswer::class)->where('officer_id',auth('officer')->user()->id);;
     }
 }

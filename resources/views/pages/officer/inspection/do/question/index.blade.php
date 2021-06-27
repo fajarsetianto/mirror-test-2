@@ -22,7 +22,15 @@
 <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
 <script>
 	let formData = new FormData()
+	let countQuestionRespondent = [];
+	let countQuestionOfficer = [];
+	let numberRespodent = 1;
+	let numberOfficer = 1;
+	let arrOfferIdOfficer = [];
 
+	$(document).ready(function(){
+	});
+	
 	save = () => {
 		let csrf_token = "{{csrf_token()}}"
 		formData.delete('_token')
@@ -63,18 +71,61 @@
 			}
 		})
 	}
+	
+	submit = () => {
+		let csrf_token = "{{csrf_token()}}"
+		formData.delete('_token')
+		formData.append('_token', csrf_token)
+		$(`.input`).serializeArray().forEach(function(elem){
+			formData.delete(elem.name)
+			formData.append(elem.name, elem.value)
+		})
+		$.ajax({
+			url: '{{$submit}}',
+			type: "POST",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (data) {
+				new PNotify({
+					title: data.title,
+					text: data.msg,
+					addclass: 'bg-success border-success',
+				});
 
-	question = (typeClick, questionName, option, answer, number) => {
-		let tempDataOption = ''
+			},
+			error: function (data) {
+				if(data.status == 422){
+					new PNotify({
+						title: data.responseJSON.message,
+						text: 'please check your input',
+						addclass: 'bg-danger border-danger',
+					});
+				}else{
+					new PNotify({
+						title: data.statusText,
+						text: data.responseJSON.message,
+						addclass: 'bg-danger border-danger',
+					});
+				}
+
+			}
+		})
+	}
+
+	questionRespondent = (id, typeClick, questionName, option, answer) => {
 		let tempDataOptionResponden = ''
 		let typeRespoden = ''
-		let typeOfficer = ''
-		let tempDataOptionOfficer = ''
 		let uniqId = (new Date()).getTime()
 		let checked = ''
 		let nameAnswer = ''
 		let offerId = ''
 		let fileName = ''
+		if(countQuestionRespondent.indexOf(id) !== -1){
+			return
+		}
+		countQuestionRespondent.push(id)
+
 		if(option != null){
 			dataOption = JSON.parse(option.replace(/&quot;/g, '\"'))
 		}
@@ -85,7 +136,8 @@
 			offerId 	= dataAnswer.offered_answer_id
 			fileName 	= typeof nameAnswer.split('-')[2] != undefined ? nameAnswer.split('-')[2] : ''
 		}
-		let row = number - 1
+		
+		let row = numberRespodent - 1
 		if(typeClick == 'singkat'){
 			questionType = 'Singkat'
 			
@@ -93,12 +145,6 @@
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
 					<input type="text" disabled class="alpaca-control form-control" value="${nameAnswer}" placeholder="Jawaban ${questionType}"  autocomplete="off">
-				</div>
-			`
-			typeOfficer = `
-				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-					<input type="text" class="alpaca-control form-control input" name="answer_${row}"  placeholder="Jawaban ${questionType}"  autocomplete="off">
 				</div>
 			`
 		} else if (typeClick == 'paraghraf'){
@@ -110,15 +156,8 @@
 					<textarea rows="5" disabled cols="5" class="form-control" placeholder="Jawaban ${questionType}">${nameAnswer}</textarea>
 				</div>
 			`
-			typeOfficer = `
-				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-					<textarea rows="5" cols="5" name="answer_${row}" class="form-control input" placeholder="Jawaban ${questionType}"></textarea>
-				</div>
-			`
 		} else if (typeClick == 'pilihan ganda'){
 			questionType = 'Ganda'
-			icon = 'icon-circle'
 
 			dataOption.forEach((element, key) => {
 				checked = (offerId == element.id) ? 'checked' : ''
@@ -130,14 +169,6 @@
 					</label>
 				</div>
 				`
-				tempDataOptionOfficer += `
-				<div class="form-check">
-					<label class="form-check-label">
-						<input type="radio" class="form-control form-check-input-styled input" value="${element.value}__${element.id}" name="answer_option_${row}" data-fouc>
-						${element.value}
-					</label>
-				</div>
-				`
 			});
 
 			typeRespoden = `
@@ -146,18 +177,11 @@
 					${tempDataOptionResponden}
 				</div>
 			`
-			typeOfficer = `
-				<div class="form-group">
-					<label class="d-block">Opsi Jawaban</label>
-					${tempDataOptionOfficer}
-				</div>
-			`
 			
 		} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
 			questionType = 'Multiple Choice'
-			icon = 'icon-checkbox-unchecked'
 			
-			dataOption.forEach(element => {
+			dataOption.forEach((element,key) => {
 				checked = (offerId == element.id) ? 'checked' : ''
 				tempDataOptionResponden += `
 				<div class="form-check">
@@ -167,26 +191,12 @@
 					</label>
 				</div>
 				`
-				tempDataOptionOfficer += `
-				<div class="form-check">
-					<label class="form-check-label">
-						<input type="checkbox" name="answer_option_${row}" value="${element.value}__${element.id}" class="form-control form-check-input-styled input" data-fouc>
-						${element.value}
-					</label>
-				</div>
-				`
 			});
 
 			typeRespoden = `
 				<div class="form-group">
 					<label class="d-block">Opsi Jawaban</label>
 					${tempDataOptionResponden}
-				</div>
-			`
-			typeOfficer = `
-				<div class="form-group">
-					<label class="d-block">Opsi Jawaban</label>
-					${tempDataOptionOfficer}
 				</div>
 			`
 		} else if (typeClick == 'dropdown') {
@@ -197,9 +207,6 @@
 				checked = (offerId == element.id) ? 'selected' : ''
 				tempDataOptionResponden += `
 					<option ${checked} value="${element.value}">${element.value}</option>
-				`
-				tempDataOptionOfficer += `
-					<option value="${element.value}__${element.id}">${element.value}</option>
 				`
 			});
 
@@ -212,42 +219,27 @@
 					</select>
 				</div>
 			`
-			typeOfficer = `
-				<div class="form-group">
-					<label class="d-block">Opsi Jawaban</label>
-					<select data-placeholder="Select option" name="answer_option_${row}"  class="form-control form-control-select2 input">
-						<option>Select your option</option>
-						${tempDataOptionOfficer}
-					</select>
-				</div>
-			`
 
 		} else if (typeClick == 'file-upload' || typeClick == 'file upload'){
 			questionType = 'File Upload'
 			typeRespoden = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label d-block alpaca-control-label">Berkas File Upload</label>
-					<button disabled class="btn btn-light text-left mb-3 text-primary"><i class="icon-upload4 mr-2"></i>File Upload</button>
-				</div>
-			`
-			typeOfficer = `
-				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
-					<label class="pt-2 control-label d-block alpaca-control-label">Berkas File Upload</label>
 					<div tabindex="500" class="btn btn-light text-left text-primary btn-file">
 						<i class="icon-upload4 mr-2"></i>
 						<span class="hidden-xs">File Upload</span>
-						<input type="file" class="file-input" id="files-${number}" name="file_${row}" data-show-caption="true" data-show-upload="true" data-fouc>
+						<input type="file" class="file-input" disabled data-fouc>
 					</div>
-					<span class='ml-1 label label-info' id="upload-file-info-${number}">
-						<a target="_blank" href="#"></a>
+					<span class='ml-1 label label-info'>
+						<a target="_blank" href="{{route('officer.monev.inspection.do.question.show',[$officerTarget->id,$item->id])}}?file=${fileName}&type=respondent">${fileName}</a>
 					</span>
 				</div>
 			`
 		}
 
-		$(`#question-officer`).append(`
-			<div class="card card-body">
-				<div class="row">
+		$(`#question-content`).append(`
+			<div class="card card-body" id="card-${row}">
+				<div class="row" id="row-${row}">
 					<div class="col-md-6">
 						<div class="card border-left-teal">
 							<div class="card-body">
@@ -256,7 +248,7 @@
 										<p class="text-secondary">Responden</p>
 									</div>
 									<div class="col-lg-1">
-										<span class="question-number">${number}</span>
+										<span class="question-number">${numberRespodent}</span>
 									</div>
 									<div class="col-lg-11">
 										<label>Pertanyaan - ${questionType}</label>
@@ -269,43 +261,178 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<div class="card border-left-teal">
-							<div class="card-body">
-								<div class="row">
-									<div class="col-lg-12">
-										<p class="text-secondary">Petugas Monitoring dan Evaluasi</p>
-									</div>
-									<div class="col-lg-1">
-										<span class="question-number">${number}</span>
-									</div>
-									<div class="col-lg-11">
-										<label>Pertanyaan - ${questionType}</label>
-										<input class="alpaca-control form-control flex-1 mr-3" readonly value="${questionName}" placeholder="Pertanyaan - ${questionType}">
-										${typeOfficer}
-									</div>
-								</div>
-								<div id="field-other" class="row"></div>
-
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label for="">Perbedaan</label>
-					<textarea rows="3" name="different_${row}" cols="3" class="form-control input" id="different" placeholder="Perbedaan"></textarea>
 				</div>
 
 			</div>
 		`)
+		numberRespodent++
+	}
+
+	checkboxHandling = (id) => {
+		$(`#checkbox-${numberOfficer-1}-${id}`).prop('checked', true);
+	}
+
+	questionOfficer = (id=null, typeClick, questionName, option, answer) => {
+		let typeOfficer = ''
+		let tempDataOptionOfficer = ''
+		let uniqId = (new Date()).getTime()
+		let checkedOfficer = ''
+		let nameAnswerOfficer = ''
+		let offerIdOfficer = ''
+		let discrepancy = ''
+		let fileNameOfficer = ''
+
+		if(answer != 'null'){
+			dataAnswerOfficer	= JSON.parse(answer.replace(/&quot;/g, '\"'))
+			nameAnswerOfficer 	= dataAnswerOfficer.answer
+			discrepancy 		= dataAnswerOfficer.discrepancy
+			offerIdOfficer 		= dataAnswerOfficer.offered_answer_id
+			fileNameOfficer 	= typeof nameAnswerOfficer.split('-')[2] != undefined ? nameAnswerOfficer.split('-')[2] : ''
+		}
+
+		if(countQuestionOfficer.indexOf(id) !== -1 && id != null){
+			if(typeClick == 'kotak centang') checkboxHandling(offerIdOfficer)
+			return
+		}
+
+		countQuestionOfficer.push(id)
+
+		if(option != null){
+			dataOption = JSON.parse(option.replace(/&quot;/g, '\"'))
+		}
+		
+	
+
+		let row = numberOfficer - 1
+		if(typeClick == 'singkat'){
+			typeOfficer = `
+				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
+					<input type="text" class="alpaca-control form-control input" name="answer_${row}" value="${nameAnswerOfficer}" placeholder="Jawaban ${questionType}"  autocomplete="off">
+				</div>
+			`
+		} else if (typeClick == 'paraghraf'){
+			typeOfficer = `
+				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
+					<textarea rows="5" cols="5" name="answer_${row}" value="${nameAnswerOfficer}" class="form-control input" placeholder="Jawaban ${questionType}">${nameAnswerOfficer}</textarea>
+				</div>
+			`
+		} else if (typeClick == 'pilihan ganda'){
+
+			dataOption.forEach((element, key) => {
+				checkedOfficer = (offerIdOfficer == element.id) ? 'checked' : ''
+				tempDataOptionOfficer += `
+				<div class="form-check">
+					<label class="form-check-label">
+						<input type="radio" ${checkedOfficer} class="form-control form-check-input-styled input" value="${element.value}__${element.id}" name="answer_option_${row}" data-fouc>
+						${element.value}
+					</label>
+				</div>
+				`
+			});
+
+			typeOfficer = `
+				<div class="form-group">
+					<label class="d-block">Opsi Jawaban</label>
+					${tempDataOptionOfficer}
+				</div>
+			`
+			
+		} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
+			dataOption.forEach((element,key) => {
+				checkedOfficer = (offerIdOfficer == element.id) ? 'checked' : ''
+				tempDataOptionOfficer += `
+				<div class="form-check">
+					<label class="form-check-label">
+						<input id="checkbox-${numberOfficer}-${element.id}" type="checkbox" ${checkedOfficer} name="answer_option_${row}_${key}" value="${element.value}__${element.id}" class="form-control form-check-input-styled input" data-fouc>
+						${element.value}
+					</label>
+				</div>
+				`
+			});
+
+			typeOfficer = `
+				<div class="form-group">
+					<label class="d-block">Opsi Jawaban</label>
+					${tempDataOptionOfficer}
+				</div>
+			`
+		} else if (typeClick == 'dropdown') {
+			icon = 'icon-circle-down2'
+
+			dataOption.forEach(element => {
+				checkedOfficer = (offerIdOfficer == element.id) ? 'selected' : ''
+				tempDataOptionOfficer += `
+					<option ${checkedOfficer} value="${element.value}__${element.id}">${element.value}</option>
+				`
+			});
+
+			typeOfficer = `
+				<div class="form-group">
+					<label class="d-block">Opsi Jawaban</label>
+					<select data-placeholder="Select option" name="answer_option_${row}"  class="form-control form-control-select2 input">
+						<option>Select your option</option>
+						${tempDataOptionOfficer}
+					</select>
+				</div>
+			`
+
+		} else if (typeClick == 'file-upload' || typeClick == 'file upload'){
+			typeOfficer = `
+				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
+					<label class="pt-2 control-label d-block alpaca-control-label">Berkas File Upload</label>
+					<div tabindex="500" class="btn btn-light text-left text-primary btn-file">
+						<i class="icon-upload4 mr-2"></i>
+						<span class="hidden-xs">File Upload</span>
+						<input type="file" class="file-input" id="files-${row}" name="file_${row}" onchange="upload(${row},$(this).val())" data-show-caption="true" data-show-upload="true" data-fouc>
+					</div>
+					<span class='ml-1 label label-info' id="upload-file-info-${row}">
+						<a target="_blank" href="{{route('officer.monev.inspection.do.question.show',[$officerTarget->id,$item->id])}}?file=${fileNameOfficer}&type=officer">${fileNameOfficer}</a>
+					</span>
+				</div>
+			`
+		}
+
+		$(`#row-${row}`).append(`
+			<div class="col-md-6">
+				<div class="card border-left-teal">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<p class="text-secondary">Petugas Monitoring dan Evaluasi</p>
+							</div>
+							<div class="col-lg-1">
+								<span class="question-number">${numberOfficer}</span>
+							</div>
+							<div class="col-lg-11">
+								<label>Pertanyaan - ${questionType}</label>
+								<input class="alpaca-control form-control flex-1 mr-3" readonly value="${questionName}" placeholder="Pertanyaan - ${questionType}">
+								${typeOfficer}
+							</div>
+						</div>
+						<div id="field-other" class="row"></div>
+
+					</div>
+				</div>
+			</div>
+		`)
+		$(`#card-${row}`).append(`
+			<div class="form-group">
+				<label for="">Perbedaan</label>
+				<textarea rows="3" name="discrepancy_${row}" cols="3" class="form-control input" id="discrepancy" placeholder="Perbedaan">${discrepancy}</textarea>
+			</div>
+		`)
+
+		numberOfficer++
 	}
 	
-	upload = (row,uniqId,name) => {
-		$(`#upload-file-info-${uniqId}`).html(name.split('\\').pop())
-		let file = $(`#files-${uniqId}`).prop('files')[0]
-		formData.delete(`file_${row}`)
-		formData.append(`file_${row}`, file)
+
+	upload = (numberOfficer,name) => {
+		$(`#upload-file-info-${numberOfficer}`).html(name.split('\\').pop())
+		let file = $(`#files-${numberOfficer}`).prop('files')[0]
+		formData.delete(`file_${numberOfficer}`)
+		formData.append(`file_${numberOfficer}`, file)
 	}
 </script>
 @endpush
@@ -324,9 +451,9 @@
             <div class="d-flex">
 
                 <button href="#" onclick="save()" class="mr-3 btn bg-indigo-400 mx-y button"><i class="mi-description"></i>
-                    <span>Simpan Sebaga Draft</span>
+                    <span>Simpan Sebagai Draft</span>
 				</button>
-                <button href="#" class="btn btn-primary button"><i class="mi-assignment"></i> <span>Kirim</span></button>
+                <button href="#" onclick="submit()" class="btn btn-primary button"><i class="mi-assignment"></i> <span>Kirim</span></button>
             </div>
         </div>
     </div>
@@ -350,10 +477,20 @@
             </div>
         </div>
     </div>
-	<div id="question-officer"></div>
-	@foreach($item->questions()->get() as $key => $row)
-		<script>question('{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->userAnswer)}}', {{$key+1}})</script>
+	<div id="question-content"></div>
+	@foreach($officerTarget->target->respondent->answers()->get() as $key => $row)
+		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer)}}', '{{json_encode($row)}}')</script>
 	@endforeach
+	@if(count($officerTarget->officer->answers()->get()) < 1)
+		@foreach($item->questions()->get() as $key => $row)
+			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->officerAnswerOfficer)}}',)</script>
+		@endforeach
+	@else
+		@foreach($officerTarget->officer->answers()->get() as $key => $row)
+			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer)}}', '{{json_encode($row)}}')</script>
+		@endforeach
+	@endif
+	
 </div>
 
 
