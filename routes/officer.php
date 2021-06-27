@@ -41,7 +41,6 @@ Route::group(['middleware' => ['auth:officer']], function(){
                     Route::get('/','QuestionController@index')->name('index');
                     Route::post('/','QuestionController@store')->name('store');
                     Route::get('/show','QuestionController@show')->name('show');
-                    Route::post('/submit','QuestionController@submit')->name('submit');
                 });
             });
         });

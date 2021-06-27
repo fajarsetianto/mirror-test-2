@@ -71,47 +71,6 @@
 			}
 		})
 	}
-	
-	submit = () => {
-		let csrf_token = "{{csrf_token()}}"
-		formData.delete('_token')
-		formData.append('_token', csrf_token)
-		$(`.input`).serializeArray().forEach(function(elem){
-			formData.delete(elem.name)
-			formData.append(elem.name, elem.value)
-		})
-		$.ajax({
-			url: '{{$submit}}',
-			type: "POST",
-			data: formData,
-			processData: false,
-			contentType: false,
-			success: function (data) {
-				new PNotify({
-					title: data.title,
-					text: data.msg,
-					addclass: 'bg-success border-success',
-				});
-
-			},
-			error: function (data) {
-				if(data.status == 422){
-					new PNotify({
-						title: data.responseJSON.message,
-						text: 'please check your input',
-						addclass: 'bg-danger border-danger',
-					});
-				}else{
-					new PNotify({
-						title: data.statusText,
-						text: data.responseJSON.message,
-						addclass: 'bg-danger border-danger',
-					});
-				}
-
-			}
-		})
-	}
 
 	questionRespondent = (id, typeClick, questionName, option, answer) => {
 		let tempDataOptionResponden = ''
@@ -456,10 +415,9 @@
         <div class="header-elements border-top-0 bg-white pl-4 pt-0">
             <div class="d-flex">
 
-                <button href="#" onclick="save()" class="mr-3 btn bg-indigo-400 mx-y button"><i class="mi-description"></i>
-                    <span>Simpan Sebagai Draft</span>
+                <button href="#" onclick="save()" class="mr-3 btn bg-primary mx-y button"><i class="mi-description"></i>
+                    <span>Simpan</span>
 				</button>
-                <button href="#" onclick="submit()" class="btn btn-primary button"><i class="mi-assignment"></i> <span>Kirim</span></button>
             </div>
         </div>
     </div>

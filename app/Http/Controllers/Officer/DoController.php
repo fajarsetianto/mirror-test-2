@@ -113,8 +113,12 @@ class DoController extends Controller
             ->addColumn('question', function($row){   
                 return $row->officerAnswer()->distinct('question_id')->count().'/'.$row->questions()->count();
             })
-            ->addColumn('status', function($row){   
-                return '<span class="badge badge-danger">Belum Lengkap</span>';
+            ->addColumn('status', function($row){  
+                if($row->officerAnswer()->distinct('question_id')->count() == $row->questions()->count()){
+                    return '<span class="badge badge-success">Lengkap</span>';
+                } else {
+                    return '<span class="badge badge-danger">Belum Lengkap</span>';
+                }
             })
             ->addColumn('actions', function($row){   
                 $btn = '<div class="list-icons">
