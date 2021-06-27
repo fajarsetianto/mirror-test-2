@@ -50,7 +50,7 @@ class Officer extends Authenticatable
     }
 
     public function answers(){
-        return $this->hasMany(OfficerAnswer::class);
+        return $this->hasMany(OfficerAnswer::class)->orderBy('question_id','asc');
     }
 
 }
