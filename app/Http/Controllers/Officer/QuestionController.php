@@ -31,8 +31,7 @@ class QuestionController extends Controller
         return view($this->viewNamespace.'index', [
             'item' => $instrument,
             'officerTarget' => $officerTarget,
-            'url' => route('officer.monev.inspection.do.question.store',[$officerTarget->id, $instrument->id]),
-            'submit' => route('officer.monev.inspection.do.question.submit',[$officerTarget->id, $instrument->id]),
+            'url' => route('officer.monev.inspection.do.question.store',[$officerTarget->id, $instrument->id])
         ]);
     }
 

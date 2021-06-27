@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:officer']], function(){
                 Route::get('/','DoController@index')->name('index');
                 Route::get('data','DoController@data')->name('data');
                 Route::post('/create','DoController@store')->middleware('can:leader,officerTarget')->name('store');
+                Route::post('/send','DoController@send')->middleware('can:leader,officerTarget')->name('store');
                 Route::get('/show','DoController@show')->name('show');
 
                 Route::group(['prefix' => 'pertanyaan/{instrument}','as' => 'question.'],function(){

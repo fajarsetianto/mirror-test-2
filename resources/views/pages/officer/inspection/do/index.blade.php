@@ -116,6 +116,52 @@
 
 		}
 
+		send = () => {
+			$('button[type="submit"]', this).html('<i class="icon-spinner2 spinner"></i> Please wait...')
+			let csrf_token = "{{csrf_token()}}"
+			formData.delete('_token')
+			formData.append('_token', csrf_token)
+			$(`.input`).serializeArray().forEach(function(elem){
+				formData.delete(elem.name)
+				formData.append(elem.name, elem.value)
+			})
+
+			$.ajax({
+				url: "{{$urlSend}}",
+				type: "POST",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function (data) {
+					new PNotify({
+						title: data.title,
+						text: data.msg,
+						addclass: 'bg-success border-success',
+					});
+
+				},
+				error: function (data) {
+					if(data.status == 422){
+						new PNotify({
+							title: data.responseJSON.message,
+							text: 'please check your input',
+							addclass: 'bg-danger border-danger',
+						});
+					}else{
+						new PNotify({
+							title: data.statusText,
+							text: data.responseJSON.message,
+							addclass: 'bg-danger border-danger',
+						});
+					}
+
+				}
+			})
+
+			return false
+
+		}
+
 		upload = (name) => {
 			let file = $(`#${name}`).prop('files')[0]
 			let indexName = name.replace("-", "_")
@@ -186,7 +232,7 @@
 				<div class="d-flex">
 					
 					<button href="#" onclick="save()" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan</span></button>
-					<button href="#" class="btn btn-info"><i class="mi-assignment"></i> <span>Kirim</span></button>
+					<button href="#" onclick="send()" class="btn btn-info"><i class="mi-assignment"></i> <span>Kirim</span></button>
 				</div>
 			</div>
 		</div>	
