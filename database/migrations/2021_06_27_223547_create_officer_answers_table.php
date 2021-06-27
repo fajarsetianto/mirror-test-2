@@ -19,7 +19,7 @@ class CreateOfficerAnswersTable extends Migration
             $table->unsignedBigInteger(('offered_answer_id'));
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('target_id');
-            $table->unsignedBigInteger('respondent_id');
+            $table->unsignedBigInteger('officer_id');
             $table->timestamps();
 
             $table->foreign('offered_answer_id')->references('id')->on('offered_answers')->cascadeOnDelete();
