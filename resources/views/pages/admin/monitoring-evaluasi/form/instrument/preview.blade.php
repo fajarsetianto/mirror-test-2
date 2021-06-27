@@ -76,7 +76,7 @@
 				</div>
 				`
 				
-			} else if (typeClick == 'multiple' || typeClick == 'multiple choice'  || typeClick == 'kotak centang'){
+			} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
 				questionType = 'Multiple Choice'
 				icon = 'icon-checkbox-unchecked'
 				countOption = 1

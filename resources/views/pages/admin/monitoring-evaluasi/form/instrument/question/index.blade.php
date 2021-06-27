@@ -415,7 +415,9 @@
 					}
 				});
 			}
-
+			if(status){
+				$(`.remove-field-${uniqId}`).addClass('d-none')
+			}
 			number++;
 		}
 

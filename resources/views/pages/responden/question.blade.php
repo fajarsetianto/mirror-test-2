@@ -84,7 +84,6 @@
 				nameAnswer 	= dataAnswer.answer
 				offerId 	= dataAnswer.offered_answer_id
 				fileName 	= typeof nameAnswer.split('-')[2] != undefined ? nameAnswer.split('-')[2] : ''
-				console.log(nameAnswer)
 			}
 
 			let row = number - 1
@@ -108,7 +107,6 @@
 					`
 			} else if (typeClick == 'ganda' || typeClick == 'pilihan ganda'){
 				icon = 'icon-circle'
-				countOption = 1
 
 				dataOption.forEach((element, key) => {
 					checked = (offerId == element.id) ? 'checked' : ''
@@ -128,9 +126,13 @@
 				</div>
 				`
 				
+<<<<<<< HEAD
 			} else if (typeClick == 'multiple' || typeClick == 'multiple choice' || typeClick == 'kotak centang'){
+=======
+			} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
+>>>>>>> e70016408bd47beb42f0e693a901c2a0b7495f0f
 				icon = 'icon-checkbox-unchecked'
-				countOption = 1
+
 				dataOption.forEach((element,key) => {
 					checked = (offerId == element.id) ? 'checked' : ''
 					tempDataOption += `
@@ -150,7 +152,7 @@
 				`
 			} else if (typeClick == 'dropdown') {
 				icon = 'icon-circle-down2'
-				countOption = 1
+				
 				dataOption.forEach(element => {
 					checked = (offerId == element.id) ? 'selected' : ''
 					tempDataOption += `
@@ -276,7 +278,7 @@
 				</form>
 				@foreach($instrument->questions()->get() as $number => $question)
 					<script>
-						question('{{strtolower($question->questionType->name)}}', '{{$question->content}}', '{{json_encode($question->offeredAnswer)}}', '{{json_encode($question->userAnswer)}}', {{$number+1}})
+						question('{{strtolower($question->questionType->name)}}', '{{$question->content}}', '{{json_encode($question->offeredAnswer)}}', '{{json_encode($question->userAnswerRespondent)}}', {{$number+1}})
 					</script>
 				@endforeach
 			</div>
