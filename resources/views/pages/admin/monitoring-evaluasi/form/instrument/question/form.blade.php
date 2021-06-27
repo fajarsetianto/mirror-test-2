@@ -18,7 +18,7 @@
                 </div>
                 <label class="text-secondary">PILIHAN</label>
                 <div class="form-group row pl-2">
-                    <div class="col-md-6 cursor" id="ganda" onclick="clicked('ganda')">
+                    <div class="col-md-6 cursor" id="pilihan-ganda" onclick="clicked('pilihan-ganda')">
                         <i class="icon-radio-checked mr-2"></i> Pilihan Ganda
                     </div>
                     <div class="col-md-6 cursor" id="kotak" onclick="clicked('kotak')">

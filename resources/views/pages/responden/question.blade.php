@@ -76,6 +76,7 @@
 			let nameAnswer = ''
 			let offerId = ''
 			let fileName = ''
+			
 			if(option != null){
 				dataOption = JSON.parse(option.replace(/&quot;/g, '\"'))
 			}
@@ -105,7 +106,7 @@
 					</div>
 					
 					`
-			} else if (typeClick == 'ganda' || typeClick == 'pilihan ganda'){
+			} else if (typeClick == 'pilihan ganda' || typeClick == 'pilihan-ganda'){
 				icon = 'icon-circle'
 
 				dataOption.forEach((element, key) => {

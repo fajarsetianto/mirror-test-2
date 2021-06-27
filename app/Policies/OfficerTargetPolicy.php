@@ -35,6 +35,13 @@ class OfficerTargetPolicy
             : Response::deny('You can not view history of this monitoring');
     }
 
+    public function leader(Officer $user, OfficerTarget $officerTarget){
+        $this->_load($officerTarget);
+        return $officerTarget->is_leader == 1
+            ? Response::allow()
+            : Response::deny("You're not leader!");
+    }
+
     protected function _load(OfficerTarget $officerTarget)
     {
         $officerTarget->load('target.form','officer');

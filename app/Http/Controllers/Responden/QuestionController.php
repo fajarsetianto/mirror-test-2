@@ -46,7 +46,10 @@ class QuestionController extends Controller
             DB::beginTransaction();
             $arr = array();
             foreach($instrument->questions()->get() as $key => $row):
-                UserAnswer::where('question_id', $row->id)->delete();
+                UserAnswer::where([
+                    ['question_id', $row->id],
+                    ['respondent_id', $userId]
+                ])->delete();
                 if($row->question_type_id == '1' || $row->question_type_id == '2'):
                     array_push($arr, array(
                         'answer' => $data["answer_$key"],

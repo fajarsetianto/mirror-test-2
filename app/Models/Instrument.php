@@ -28,6 +28,10 @@ class Instrument extends Model
     public function offeredAnswers(){
         return $this->hasManyThrough(OfferedAnswer::class, Question::class,'instrument_id','question_id');
     }
+    
+    public function officerAnswer(){
+        return $this->hasManyThrough(OfficerAnswer::class, Question::class, 'instrument_id', 'question_id');
+    }
 
     public function maxScore(){
         return $this->questions()->whereHas('offeredAnswer')->get()->sum(function($item){
