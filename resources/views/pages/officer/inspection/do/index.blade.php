@@ -231,8 +231,8 @@
 			<div class="header-elements d-none">
 				<div class="d-flex">
 					
-					<button href="#" onclick="save()" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan</span></button>
-					<button href="#" onclick="send()" class="btn btn-info"><i class="mi-assignment"></i> <span>Kirim</span></button>
+					<button href="#" onclick="save()" class="mr-3 btn bg-purple-400 mx-y leader"><i class="mi-description"></i> <span>Simpan</span></button>
+					<button href="#" onclick="send()" class="btn btn-info leader"><i class="mi-assignment"></i> <span>Kirim</span></button>
 				</div>
 			</div>
 		</div>	

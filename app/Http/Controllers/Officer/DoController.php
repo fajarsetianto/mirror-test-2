@@ -91,46 +91,9 @@ class DoController extends Controller
     }
 
     public function send(Request $request,OfficerTarget $officerTarget){
-        $this->validate($request, [
-            'ipaddr' => 'required|string',
-            'note' => 'required|string',
-            'photo_1' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_2' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_3' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_4' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_5' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'pdf_1' => 'required|mimetypes:application/pdf|max:10000'
-        ]);
-
-        $data               = $request->only('ipaddr','note','photo_1','photo_2','photo_3','photo_4','photo_5','pdf_1');
-
         try{
             DB::beginTransaction();
-            $arr = array();
-            $userId = auth('officer')->user()->id;
-            OfficerNote::where([
-                ['officer_target_id', $officerTarget->id],
-                ['officer_id', $officerTarget->officer_id], 
-                ['target_id', $officerTarget->target_id]
-            ])->delete();
-            foreach($data as $key => $row):
-                $ex = explode('_',$key);
-                if($request->hasFile($key)){
-                    $file = $request->file($key);
-                    $fileName = time().'-'.rand().$userId.'-'.$file->getClientOriginalName();
-                    $file->move("data_file_note",$fileName);
-                    $row = $fileName;
-                }
-                array_push($arr, array(
-                    'value' => $row,
-                    'type' => trim($ex[0]),
-                    'officer_target_id' => $officerTarget->id,
-                    'officer_id' => $officerTarget->officer_id,
-                    'target_id' => $officerTarget->target_id 
-                ));
-            endforeach;
-            OfficerNote::insert($arr);
-            $officerTarget->update(['submited_at' => 'Y-m-d']);
+            $officerTarget->update(['submited_at' => date('Y-m-d')]);
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();
