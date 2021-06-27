@@ -76,11 +76,11 @@ class QuestionController extends Controller
                         $file->move("data_file",$fileName);
                     endif;
                 elseif($row->question_type_id == '4'):
+                    OfficerAnswer::where([
+                        ['question_id', $row->id],
+                        ['officer_id', $userId]
+                    ])->delete();
                     foreach($row->offeredAnswer()->get() as $nm => $checkbox):
-                        OfficerAnswer::where([
-                            ['question_id', $row->id],
-                            ['officer_id', $userId]
-                        ])->delete();
                         if(array_key_exists("answer_option_".$key."_".$nm, $data)):
                             $answer = explode("__", $data["answer_option_".$key."_".($nm)]);
                             OfficerAnswer::updateOrCreate(

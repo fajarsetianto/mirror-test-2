@@ -211,7 +211,7 @@
 									</div>
 									<div class="col-lg-11">
 										<label>Pertanyaan - ${questionType}</label>
-										<input class="alpaca-control form-control flex-1 mr-3" readonly value="${questionName}" placeholder="Pertanyaan - ${questionType}">
+										<span class="d-block mb-2 text-justify" >${questionName}</span>
 										${typeRespoden}
 									</div>
 								</div>
@@ -249,6 +249,7 @@
 			fileNameOfficer 	= typeof nameAnswerOfficer.split('-')[2] != undefined ? nameAnswerOfficer.split('-')[2] : ''
 		}
 
+		console.log(id)
 		if(countQuestionOfficer.indexOf(id) !== -1 && id != null){
 			if(typeClick == 'kotak centang') checkboxHandling(offerIdOfficer)
 			return
@@ -372,7 +373,7 @@
 							</div>
 							<div class="col-lg-11">
 								<label>Pertanyaan - ${questionType}</label>
-								<input class="alpaca-control form-control flex-1 mr-3" readonly value="${questionName}" placeholder="Pertanyaan - ${questionType}">
+								<span class="d-block mb-2 text-justify" >${questionName}</span>
 								${typeOfficer}
 							</div>
 						</div>
@@ -445,12 +446,12 @@
 	@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
 		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
 	@endforeach
-	@if(count($officerTarget->answers()->get()) < 1)
+	@if(count($officerTarget->officer->answers()->byInstrumentId($item->id)->get()) < 1)
 		@foreach($item->questions()->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->officerAnswerOfficer)}}',)</script>
 		@endforeach
 	@else
-		@foreach($officerTarget->answers()->byInstrumentId($item->id)->get() as $key => $row)
+		@foreach($officerTarget->officer->answers()->byInstrumentId($item->id)->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}')</script>
 		@endforeach
 	@endif
