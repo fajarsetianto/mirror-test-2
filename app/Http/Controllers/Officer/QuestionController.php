@@ -200,7 +200,6 @@ class QuestionController extends Controller
                     );
                 endif;
             endforeach;
-            $officerTarget->update(['submited_at'=> date('Y-m-d')]);
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();

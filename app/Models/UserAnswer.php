@@ -22,6 +22,16 @@ class UserAnswer extends Model
         return $this->belongsTo(Question::class);
     }
 
+    public function scopeByInstrumentId($query, $id){
+        return $query->whereHas('question.instrument', function($q) use($id){
+            $q->where('id',$id);
+        });
+    }
+
+    public function questionInstrument($id){
+        return $this->question()->where('instrument_id',$id)->first();
+    }
+
     public function getScoreAttribute(){
         return $this->offeredAnswer()->exists() ? $this->offeredAnswer->score : 0;
     }
