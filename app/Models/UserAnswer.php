@@ -28,10 +28,6 @@ class UserAnswer extends Model
         });
     }
 
-    public function questionInstrument($id){
-        return $this->question()->where('instrument_id',$id)->first();
-    }
-
     public function getScoreAttribute(){
         return $this->offeredAnswer()->exists() ? $this->offeredAnswer->score : 0;
     }
