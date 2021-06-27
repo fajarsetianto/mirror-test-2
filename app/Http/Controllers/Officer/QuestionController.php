@@ -45,18 +45,13 @@ class QuestionController extends Controller
         try{
             DB::beginTransaction();
             $arr = array();
-            foreach($instrument->questions()->get() as $key => $row):
-                // OfficerAnswer::where([
-                //     ['question_id', $row->id],
-                //     ['officer_id', $userId]
-                // ])->delete();
-                
+            foreach($instrument->questions()->get() as $key => $row):                
                 if($row->question_type_id == '1' || $row->question_type_id == '2'):
                     OfficerAnswer::updateOrCreate(
                         ['question_id'=> $row->id, 'officer_id'=> $userId],
                         [
                             'answer' => $data["answer_$key"],
-                            'discrepancy' => $data["discrepancy_$key"],
+                            'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
                             'offered_answer_id' => NULL,
                             'target_id' => $officerTarget->target->id,
                             'question_id' => $row->id,
@@ -69,10 +64,10 @@ class QuestionController extends Controller
                         $file = $request->file("file_$key");
                         $fileName = time().'-'.$userId.'-'.$file->getClientOriginalName();
                         OfficerAnswer::updateOrCreate(
-                            ['question_id'=> $row->id, 'officer_id'=> $userId],
+                            ['question_id'=> $row->id, 'officer_id' => $userId],
                             [
                                 'answer' => $fileName,
-                                'discrepancy' => $data["discrepancy_$key"],
+                                'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
                                 'offered_answer_id' => NULL,
                                 'target_id' => $officerTarget->target->id,
                                 'question_id' => $row->id,
@@ -83,13 +78,17 @@ class QuestionController extends Controller
                     endif;
                 elseif($row->question_type_id == '4'):
                     foreach($row->offeredAnswer()->get() as $nm => $checkbox):
+                        OfficerAnswer::where([
+                            ['question_id', $row->id],
+                            ['officer_id', $userId]
+                        ])->delete();
                         if(array_key_exists("answer_option_".$key."_".$nm, $data)):
                             $answer = explode("__", $data["answer_option_".$key."_".($nm)]);
                             OfficerAnswer::updateOrCreate(
                                 ['question_id'=> $row->id, 'officer_id'=> $userId, 'offered_answer_id' => $answer[1]],
                                 [
                                     'answer' => $answer[0],
-                                    'discrepancy' => $data["discrepancy_$key"],
+                                    'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
                                     'offered_answer_id' => $answer[1],
                                     'target_id' => $officerTarget->target->id,
                                     'question_id' => $row->id,
@@ -104,11 +103,11 @@ class QuestionController extends Controller
                         ['question_id'=> $row->id, 'officer_id'=> $userId],
                         [
                             'answer' => $answer[0],
-                        'discrepancy' => $data["discrepancy_$key"],
-                        'offered_answer_id' => $answer[1],
-                        'target_id' => $officerTarget->target->id,
-                        'question_id' => $row->id,
-                        'officer_id' => $userId
+                            'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
+                            'offered_answer_id' => $answer[1],
+                            'target_id' => $officerTarget->target->id,
+                            'question_id' => $row->id,
+                            'officer_id' => $userId
                         ]
                     );
                 endif;
