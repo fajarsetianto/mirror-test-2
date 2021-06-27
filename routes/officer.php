@@ -24,6 +24,13 @@ Route::group(['middleware' => ['auth:officer']], function(){
                 ], function(){
                 Route::get('/','DoController@index')->name('index');
                 Route::get('data','DoController@data')->name('data');
+                Route::post('/create','DoController@store')->name('store');
+                Route::get('/show','DoController@show')->name('show');
+
+                Route::group(['prefix' => 'pertanyaan/{instrument}','as' => 'question.'],function(){
+                    Route::get('/','QuestionController@index')->name('index');
+                    Route::post('/','QuestionController@store')->name('store');
+                });
             });
         });
         Route::group(['prefix' => 'riwayat-pemeriksaan','as' => 'inspection-history.'],function(){

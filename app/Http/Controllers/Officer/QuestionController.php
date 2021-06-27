@@ -1,47 +1,50 @@
 <?php
 
-namespace App\Http\Controllers\Responden;
+namespace App\Http\Controllers\Officer;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Instrument;
+use App\Models\Pivots\OfficerTarget;
+use App\Models\OfficerNote;
 use App\Models\UserAnswer;
 use Illuminate\Support\Facades\DB;
+use DataTables;
 
 class QuestionController extends Controller
 {
 
-    protected $viewNamespace = 'pages.responden.';
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:respondent');
-    }
+    protected $viewNamespace = 'pages.officer.inspection.do.question.';
 
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(Instrument $instrument)
+    public function index(OfficerTarget $officerTarget, Instrument $instrument)
     {
-        $user = auth('respondent')->user()->load('target.form');
-        return view($this->viewNamespace.'question', [
-            'form' => $user->target->form,
-            'instrument' => $instrument,
-            'user' => $user,
-            'url' => route('respondent.form.question.store', [$instrument->id])
+        $officerTarget->load(['target.form','target.officers','target.institutionable','officer']);
+
+        return view($this->viewNamespace.'index', [
+            'item' => $instrument,
+            'officerTarget' => $officerTarget,
+            'url' => route('officer.monev.inspection.do.question.store',[$officerTarget->id, $instrument->id]),
         ]);
     }
 
-    public function store(Request $request, Instrument $instrument)
+    
+
+    public function store(Request $request,OfficerTarget $officerTarget, Instrument $instrument)
     {
         $data   = $request->all();
-        $userId = auth('respondent')->user()->id;
+        $userId = auth('officer')->user()->id;
+        if($officerTarget->is_leader != 1)
+        return response()->json([
+            'status' => 0,
+            'title' => 'Failed!',
+            'msg' => "You're not leader!"
+        ],500);
+
         try{
             DB::beginTransaction();
             $arr = array();
@@ -81,7 +84,7 @@ class QuestionController extends Controller
             return response()->json([
                 'status' => 0,
                 'title' => 'Failed!',
-                'msg' => 'Data failed Updated!'
+                'msg' => 'Data failed Updated!'.$throwable->getMessage()
             ],422);
         }
 
@@ -93,13 +96,14 @@ class QuestionController extends Controller
         ],200);
     }
 
-    public function show(Request $request, Instrument $instrument){
+    public function show(Request $request,OfficerTarget $officerTarget){
         $file = $request->get('file');
-        $fileName = UserAnswer::where([
-            ['answer','like',"%$file%"],
-            ['respondent_id', auth('respondent')->user()->id]
+        $userId = auth('officer')->user()->id;
+        $fileName = OfficerNote::where([
+            ['id', $file],
+            ['officer_id', $userId]
         ])->first();
-        $filePath = public_path('data_file/'.$fileName->answer);
-        return response()->download($filePath, $file);
+        $filePath = public_path('data_file_note/'.$fileName->value);
+        return response()->download($filePath, explode('-',$fileName->value)[2]);
     }
 }

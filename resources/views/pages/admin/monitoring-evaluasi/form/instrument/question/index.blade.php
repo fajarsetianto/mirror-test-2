@@ -29,6 +29,7 @@
 		removeOption = (questionId,uniqId) => {
 			let number = 1
 			$(`#row-${uniqId}`).remove()
+			$(`.remove-field-${questionId}`).addClass('d-none')
 			$(`.option-question-${questionId}`).each((key, elem) => {
 				$(`.option-number-${questionId}`).eq(key).text(`Opsi ${number++}`)
 			})
@@ -38,6 +39,7 @@
 			newUniqId = (new Date()).getTime()
 			optionNumber = ++($(`.option-${uniqId}`).length)
 			optionAnother = $(`.option-another-${uniqId}`).length
+			$(`.remove-field-${uniqId}`).removeClass('d-none')
 
 			if(optionNumber == 2){
 				$(`#row-option-${uniqId}`).append(`
@@ -79,6 +81,8 @@
 		}
 
 		addOptionAnother = (icon, uniqId, score=null, questionId=0) => {
+			
+			$(`.remove-field-${uniqId}`).removeClass('d-none')
 			if($(`.option-another-${uniqId}`).length < 1){
 				$(`#count-option-${uniqId}`).val(parseInt($(`#count-option-${uniqId}`).val())+1)
 			}
@@ -411,7 +415,9 @@
 					}
 				});
 			}
-
+			if(status){
+				$(`.remove-field-${uniqId}`).addClass('d-none')
+			}
 			number++;
 		}
 

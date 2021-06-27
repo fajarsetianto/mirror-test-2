@@ -20,6 +20,14 @@ class Question extends Model
         return $this->belongsTo(QuestionType::class);
     }
 
+    public function userAnswerRespondent(){
+        return $this->hasOne(UserAnswer::class)->where('respondent_id',auth('respondent')->user()->id);
+    }
+
+    public function userAnswerOfficer(){
+        return $this->hasOne(UserAnswer::class)->where('respondent_id',auth('officer')->user()->id);
+    }
+    
     public function userAnswer(){
         return $this->hasOne(UserAnswer::class);
     }
