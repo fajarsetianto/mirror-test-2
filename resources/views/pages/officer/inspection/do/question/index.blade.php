@@ -179,7 +179,7 @@
 			`
 			
 		} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
-			questionType = 'Multiple Choice'
+			questionType = 'Kotak Centang'
 			
 			dataOption.forEach((element,key) => {
 				checked = (offerId == element.id) ? 'checked' : ''
@@ -305,6 +305,7 @@
 
 		let row = numberOfficer - 1
 		if(typeClick == 'singkat'){
+			questionType = 'Singkat'
 			typeOfficer = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
@@ -312,6 +313,7 @@
 				</div>
 			`
 		} else if (typeClick == 'paraghraf'){
+			questionType = 'Paraghraf'
 			typeOfficer = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
@@ -319,6 +321,7 @@
 				</div>
 			`
 		} else if (typeClick == 'pilihan ganda'){
+			questionType = 'Ganda'
 
 			dataOption.forEach((element, key) => {
 				checkedOfficer = (offerIdOfficer == element.id) ? 'checked' : ''
@@ -340,6 +343,7 @@
 			`
 			
 		} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
+			questionType = 'Kotak Centang'
 			dataOption.forEach((element,key) => {
 				checkedOfficer = (offerIdOfficer == element.id) ? 'checked' : ''
 				tempDataOptionOfficer += `
@@ -359,6 +363,7 @@
 				</div>
 			`
 		} else if (typeClick == 'dropdown') {
+			questionType = 'Dropdown'
 			icon = 'icon-circle-down2'
 
 			dataOption.forEach(element => {
@@ -379,6 +384,7 @@
 			`
 
 		} else if (typeClick == 'file-upload' || typeClick == 'file upload'){
+			questionType = 'File Upload'
 			typeOfficer = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label d-block alpaca-control-label">Berkas File Upload</label>

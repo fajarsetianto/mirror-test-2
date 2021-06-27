@@ -33,7 +33,6 @@ class DoController extends Controller
 
     public function store(Request $request,OfficerTarget $officerTarget){
         $this->validate($request, [
-            'location' => 'required|string',
             'ipaddr' => 'required|string',
             'note' => 'required|string',
             'photo_1' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -44,7 +43,7 @@ class DoController extends Controller
             'pdf_1' => 'required|mimetypes:application/pdf|max:10000'
         ]);
 
-        $data               = $request->only('ipaddr','location','note','photo_1','photo_2','photo_3','photo_4','photo_5','pdf_1');
+        $data               = $request->only('ipaddr','note','photo_1','photo_2','photo_3','photo_4','photo_5','pdf_1');
 
         try{
             DB::beginTransaction();
