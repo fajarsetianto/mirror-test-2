@@ -126,11 +126,7 @@
 				</div>
 				`
 				
-<<<<<<< HEAD
-			} else if (typeClick == 'multiple' || typeClick == 'multiple choice' || typeClick == 'kotak centang'){
-=======
 			} else if (typeClick == 'kotak' || typeClick == 'kotak centang'){
->>>>>>> e70016408bd47beb42f0e693a901c2a0b7495f0f
 				icon = 'icon-checkbox-unchecked'
 
 				dataOption.forEach((element,key) => {
