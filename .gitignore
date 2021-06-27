@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /data_file
+/data_file_note
 /storage/*.key
 /vendor
 .env
