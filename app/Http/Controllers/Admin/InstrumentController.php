@@ -71,7 +71,8 @@ class InstrumentController extends Controller
     public function destroy(Form $form, Instrument $instrument){
         $position = $instrument->position;
         $instrument->delete();
-        $form->instruments()->where('position','>',$position)
+        $form->instruments()
+            ->where('position','>',$position)
             ->decrement('position',1);
         
         return response()->json([
