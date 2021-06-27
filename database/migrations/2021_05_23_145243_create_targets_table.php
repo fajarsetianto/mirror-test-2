@@ -16,14 +16,12 @@ class CreateTargetsTable extends Migration
         Schema::create('targets', function (Blueprint $table) {
             $table->id();
             $table->enum('type',['responden', 'petugas MONEV', 'responden & petugas MONEV' ])->default('responden');
-            $table->unsignedBigInteger('officer_id')->nullable();
             $table->unsignedBigInteger('form_id')->nullable();
             $table->unsignedBigInteger('institutionable_id');
             $table->string('institutionable_type');
 
             $table->timestamps();
 
-            $table->foreign('officer_id')->references('id')->on('officers')->cascadeOnDelete();
             $table->foreign('form_id')->references('id')->on('forms')->cascadeOnDelete();
         });
     }

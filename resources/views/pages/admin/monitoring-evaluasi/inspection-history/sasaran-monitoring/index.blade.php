@@ -17,7 +17,7 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.inspection-history.target.data",[$form->id]) !!}',
+					ajax: '{!! route("admin.monev.inspection-history.form.data",[$form->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -123,7 +123,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('admin.monev.inspection-history.target',$form) }}				
+		{{ Breadcrumbs::render('admin.monev.inspection-history.form',$form) }}				
 	</div>
 @endsection
 @section('content')

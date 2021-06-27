@@ -26,7 +26,9 @@ class EducationalInstitutionController extends Controller
     public function select2(Request $request){
         $data = EducationalInstitution::select('id','name')
                 ->when($request->has('search'), function($query) use ($request){
-                    $query->where('name','like','%'.$request->search.'%');
+                    $query->where('name','like','%'.$request->search.'%')
+                        ->orWhere('npsn','like','%'.$request->search.'%');
+                    
                 })
                 ->whereNotNull('email')
                 ->paginate(20);

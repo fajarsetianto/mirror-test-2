@@ -18,7 +18,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.indicator-report.data") !!}',
+					ajax: '{!! route("admin.monev.indicator-report.data") !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {

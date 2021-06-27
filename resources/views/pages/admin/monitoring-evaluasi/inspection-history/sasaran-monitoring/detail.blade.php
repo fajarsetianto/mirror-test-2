@@ -17,7 +17,7 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.inspection-history.target.instrument.data",[$form->id, $target->id]) !!}',
+					ajax: '{!! route("admin.monev.inspection-history.form.instrument.data",[$form->id, $target->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -26,6 +26,7 @@
 					},
 					{data: 'name', name: 'name'},
 					{data: 'questions_count', searchable : false},
+					{data: 'max_score', searchable : false},
 					{data: 'score', searchable : false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
@@ -127,7 +128,7 @@
 				</div>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('admin.monev.inspection-history.target.detail',$form, $target) }}				
+		{{ Breadcrumbs::render('admin.monev.inspection-history.form.detail',$form, $target) }}				
 	</div>
 @endsection
 @section('content')
@@ -136,7 +137,7 @@
 		<h3 class="card-title font-weight-semibold">{{ strtoupper($form->name)}}</h3>
         @isset($editable)
             <div class="header-elements">
-                <button type="button" onclick="component('{{route('monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
+                <button type="button" onclick="component('{{route('admin.monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
             </div>
         @endisset
 	</div>
@@ -147,7 +148,7 @@
 	<div class="card-body bg-white ">
 		<div class="d-flex align-items-center">
 			<div class="mr-4">
-				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{bobot}</span>
+				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{{$target->respondent->score()}}</span>
 			</div>
 		</div>
 		
@@ -172,7 +173,11 @@
 		</div>
 		<div class="form-group row mb-0">
 			<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
-			<div class="col-md-9 col-6">{{$target->officerName()}}</div>
+			<div class="col-md-9 col-6">
+				@foreach ($target->officers as $officer)
+					{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
+				@endforeach
+			</div>
 		</div>
 
 	</div>
@@ -192,7 +197,8 @@
 					<th>No</th>
 					<th>Group Pertanyaan</th>
                     <th>Jumlah Pertanyaan</th>
-                    <th>Bobot Nilai</th>
+                    <th>Maks Skor</th>
+					<th>Skor</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

@@ -49,6 +49,10 @@ class Officer extends Authenticatable
             ->withTimestamps();
     }
 
+    public function officerTargets(){
+        return $this->hasMany(OfficerTarget::class);
+    }
+    
     public function answers(){
         return $this->hasMany(OfficerAnswer::class)->orderBy('question_id','asc');
     }

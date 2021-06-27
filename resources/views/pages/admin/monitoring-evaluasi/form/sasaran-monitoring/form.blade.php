@@ -36,7 +36,7 @@
                             <div class="form-group text-center text-muted content-divider mb-0">
                                 <span class="px-2">atau</span>
                             </div>
-                            <button type="button" class="btn btn-light w-100" onclick="component('{{route('institution.non-satuan.create')}}')"><i class="mi-assignment-turned-in"></i> Tambah Lembaga Baru</button>
+                            <button type="button" class="btn btn-light w-100" onclick="component('{{route('admin.institution.non-satuan.create')}}')"><i class="mi-assignment-turned-in"></i> Tambah Lembaga Baru</button>
                         @endif
                     </div>
                 </div>
@@ -77,7 +77,7 @@
             $('.select2-officer').select2({
                 placeholder: 'Pilih Petugas',
                 ajax: {
-                    url: '{{route('management-user.select2')}}',
+                    url: '{{route('admin.management-user.select2')}}',
                     data: function (params) {
                         var query = {
                             search: params.term,
@@ -257,7 +257,7 @@
 						},
 					});
 
-                    url = "{{route('monev.form.target.input',[$form->id])}}"
+                    url = "{{route('admin.monev.form.target.input',[$form->id])}}"
 
 					$.get(url, function(data){
                         $('#dynamic-input-group').append(data);
@@ -266,7 +266,7 @@
 						$('.select2-officer').select2({
                             placeholder: 'Pilih Petugas',
                             ajax: {
-                                url: '{{route('management-user.select2')}}',
+                                url: '{{route('admin.management-user.select2')}}',
                                 data: function (params) {
                                     var query = {
                                         search: params.term,

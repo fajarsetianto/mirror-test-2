@@ -1,6 +1,10 @@
 <?php
+use App\Http\Controllers\NotificationController;
 
-use GuzzleHttp\Middleware;
+Route::group(['prefix' => 'notification', 'as'=> 'notification.'], function(){
+    Route::get('/read/{notification}',[NotificationController::class, 'read'])->name('read');
+    Route::get('/markallread/{guard}',[NotificationController::class, 'markAllRead'])->name('markallread');
+});
 
 Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
     Route::group(['prefix' => 'form','as' => 'form.'],function(){
@@ -22,6 +26,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
                 Route::get('/data', 'InstrumentController@data')->name('data');
                 Route::get('/create', 'InstrumentController@create')->name('create');
                 Route::post('/create', 'InstrumentController@store')->name('store');
+                Route::post('/reorder', 'InstrumentController@reorder')->name('reorder');
                 Route::get('{instrument}/edit', 'InstrumentController@edit')->name('edit');
                 Route::put('{instrument}/update', 'InstrumentController@update')->name('update');
                 Route::delete('{instrument}', 'InstrumentController@destroy')->name('destroy');
@@ -66,15 +71,20 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
         Route::group(['prefix' => 'pemeriksaan','as' => 'inspection.'], function(){
             Route::get('/', 'InspectionController@index')->name('index');
             Route::get('/data', 'InspectionController@data')->name('data');
-            Route::group(['middleware' => 'can:manage,form'], function(){
-                Route::get('{form}/detail', 'InspectionController@detail')->name('detail');
+            Route::group(['prefix' => '{form}', 'as' => 'form.', 'middleware' => 'can:manage,form'], function(){
+                Route::get('/', 'TargetController@index')->name('index');
+                Route::get('data', 'TargetController@data')->name('data');
+                Route::get('/sasaran-monitoring/{target}', 'TargetController@detail')->name('detail');
+                Route::group(['prefix' => '{target}', 'as' => 'instrument.'], function(){
+                    Route::get('data', 'InstrumentController@data')->name('data');
+                });
             });
         });
     
         Route::group(['namespace' => 'History','prefix' => 'riwayat-pemeriksaan','as' => 'inspection-history.'], function(){
             Route::get('/', 'InspectionHistoryController@index')->name('index');
             Route::get('/data', 'InspectionHistoryController@data')->name('data');
-            Route::group(['prefix' => '{form}', 'as' => 'target.', 'middleware' => 'can:manage,form'], function(){
+            Route::group(['prefix' => '{form}', 'as' => 'form.', 'middleware' => 'can:manage,form'], function(){
                 Route::get('/', 'TargetController@index')->name('index');
                 Route::get('data', 'TargetController@data')->name('data');
                 Route::get('/sasaran-monitoring/{target}', 'TargetController@detail')->name('detail');

@@ -8,6 +8,15 @@ class Instrument extends Model
 {
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        Instrument::creating(function ($model) {
+            $model->position = Instrument::whereFormId($model->form_id)->max('position') + 1;
+        });
+    }
+
     public function form(){
         return $this->belongsTo(Form::class);
     }
@@ -16,6 +25,10 @@ class Instrument extends Model
         return $this->hasMany(Question::class)->orderBy('id');
     }
 
+    public function offeredAnswers(){
+        return $this->hasManyThrough(OfferedAnswer::class, Question::class,'instrument_id','question_id');
+    }
+    
     public function officerAnswer(){
         return $this->hasManyThrough(OfficerAnswer::class, Question::class, 'instrument_id', 'question_id');
     }

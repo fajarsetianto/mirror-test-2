@@ -50,4 +50,12 @@ class User extends Authenticatable
     public function institutions(){
         return $this->hasMany(NonEducationalInstitution::class,'created_by');
     }
+
+    public function isSuperAdmin(){
+        return $this->type == 'super admin';
+    }
+
+    public function admins(){
+        return $this->isSuperAdmin() ? User::query() : null ;
+    }
 }

@@ -53,7 +53,7 @@
 					</div>
 					
 					`
-			} else if (typeClick == 'pilihan ganda'){
+			} else if (typeClick == 'ganda' || typeClick == 'pilihan ganda'){
 				questionType = 'Ganda'
 				icon = 'icon-circle'
 				countOption = 1

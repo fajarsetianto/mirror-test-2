@@ -3,6 +3,7 @@
 namespace App\Models\Pivots;
 
 use App\Models\Officer;
+use App\Models\OfficerAnswer;
 use App\Models\OfficerNote;
 use App\Models\Target;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -31,6 +32,10 @@ class OfficerTarget extends Pivot
     
     public function isLeader(){
         return $this->is_leader == '1';
+    }
+
+    public function answers(){
+        return $this->hasMany(OfficerAnswer::class,'officer_id')->whereTargetId($this->id);
     }
 
     public function isSubmited(){

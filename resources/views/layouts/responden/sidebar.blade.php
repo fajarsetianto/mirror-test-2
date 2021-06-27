@@ -57,16 +57,16 @@
                 <li class="nav-item nav-item-submenu {{ (request()->is('monitoring-evaluasi/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
                     <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Monitoring & Evaluasi</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                        <li class="nav-item"><a href="{{route('monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
-                        <li class="nav-item"><a href="{{route('monev.inspection.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/pemeriksaan*')) ? 'active' : '' }}">Pemeriksaan</a></li>
-                        <li class="nav-item"><a href="{{route('monev.inspection-history.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/riwayat-pemeriksaan*')) ? 'active' : '' }}">Riwayat Pemeriksaan</a></li>
-                        <li class="nav-item"><a href="{{route('monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/laporan-indikator*')) ? 'active' : '' }}">Laporan Indikator</a></li>
+                        <li class="nav-item"><a href="{{route('admin.monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
+                        <li class="nav-item"><a href="{{route('admin.monev.inspection.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/pemeriksaan*')) ? 'active' : '' }}">Pemeriksaan</a></li>
+                        <li class="nav-item"><a href="{{route('admin.monev.inspection-history.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/riwayat-pemeriksaan*')) ? 'active' : '' }}">Riwayat Pemeriksaan</a></li>
+                        <li class="nav-item"><a href="{{route('admin.monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/laporan-indikator*')) ? 'active' : '' }}">Laporan Indikator</a></li>
                     </ul>
                 </li>
                 <li class="nav-item nav-item-submenu {{ (request()->is('management-user*')) ? 'nav-item-expanded nav-item-open' : '' }}">
                     <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Manajemen User</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                        <li class="nav-item"><a href="{{route('management-user.index')}}" class="nav-link {{ (request()->is('management-user*')) ? 'active' : '' }}">List User</a></li>
+                        <li class="nav-item"><a href="{{route('admin.management-user.index')}}" class="nav-link {{ (request()->is('management-user*')) ? 'active' : '' }}">List User</a></li>
                     </ul>
                 </li>
                 <!-- /page kits -->

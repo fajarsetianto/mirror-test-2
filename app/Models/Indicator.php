@@ -17,16 +17,20 @@ class Indicator extends Model
         return $this->hasManyThrough(Target::class,Form::class,'id','form_id','form_id','id');
     }
 
+    // PERHATIAN
+    // RELASI INI TIDAK BISA DIGUNAKAN BERSAMA EAGERLOAD
     public function targetsWithScore(){
-        return $this->targets()->withAndWhereHas('respondent',function($q){
+        $min = $this->minimum;
+        $max = $this->maximum;
+        $having = 'scores >= '.$min.' and scores <= '.$max;
+        return $this->targets()->withAndWhereHas('respondent',function($q) use ($having){
                     $q->withCount([
-                        'answers as score' => function($q){
+                        'answers as scores' => function($q){
                                 $q->leftJoin('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
                                     ->select(DB::raw('SUM(score)'));
                                 }
                     ])
-                    ->having('score', '>', 'indicators.minimum')
-                    ->having('score', '<=', 'indicators.maximum');
+                    ->havingRaw($having);
                 });
     }
 

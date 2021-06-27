@@ -25,7 +25,7 @@
 		<div class="row">
 			@foreach ($form->indicators as $indicator)
 				<div class="col-sm-6 col-xl-3">
-					<a href="{{route('monev.indicator-report.detail.indicator',[$form->id, $indicator->id])}}">
+					<a href="{{route('admin.monev.indicator-report.detail.indicator',[$form->id, $indicator->id])}}">
 						<div class="card card-body has-bg-image" style="background-color:{{$indicator->color}}">
 							<div class="media">
 								<div class="align-self-center text-center">

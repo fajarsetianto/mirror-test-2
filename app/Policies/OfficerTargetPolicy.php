@@ -8,7 +8,8 @@ use Illuminate\Auth\Access\Response;
 
 class OfficerTargetPolicy
 {
-    protected $form,$officer;
+    protected $form;
+    protected $officer;
 
     public function manage(Officer $user, OfficerTarget $officerTarget)
     {

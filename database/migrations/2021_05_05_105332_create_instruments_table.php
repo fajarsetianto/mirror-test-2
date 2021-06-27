@@ -18,6 +18,7 @@ class CreateInstrumentsTable extends Migration
             $table->text('name');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('form_id');
+            $table->unsignedBigInteger('position');
             $table->enum('status',['draft','ready'])->default('draft');
             $table->timestamps();
 

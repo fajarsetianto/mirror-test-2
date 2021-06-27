@@ -23,7 +23,8 @@ class InspectionController extends Controller
                     ->whereHas('form', function($item){
                         $item->published()->valid();
                     })
-                    ->with('form','institutionable');
+                    ->with('form','institutionable')
+                    ->select(['targets.*','officer_targets.id as pivot_id']);
                     
         return DataTables::of($data)
             ->addIndexColumn()
@@ -43,20 +44,33 @@ class InspectionController extends Controller
             ->addColumn('status', function($row){   
                 switch($row->type){
                     case 'responden':
-                        return '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        if($row->respondent->isSubmited()){
+                            return '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
+                        }else{
+                            return '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
+                        }
                         break;
                     case 'petugas MONEV':
                         return '<span class="badge badge-warning">Belum Dikerjakan</span>';
                         break;
                     case 'responden & petugas MONEV':
-                        $res =  '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
-                        $res.= '<br><span class="badge badge-warning">Petugas : Belum Dikerjakan</span>';
+                        if($row->respondent->isSubmited()){
+                            $res = '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
+                        }else{
+                            $res = '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
+                        }
+                        $res.= '</br>';
+                        if($row->isSubmitedByOfficer()){
+                            $res .= '<span class="badge badge-success">Petugas : Sudah Dikerjakan</span>';
+                        }else{
+                            $res .= '<span class="badge badge-warning">Petugas : Belum Dikerjakan</span>';
+                        }
                         return $res;
                         break;
                 }
             })
             ->addColumn('actions', function($row){   
-                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->id]).'" class="btn btn-primary btn-sm">
+                $btn = '<a href="'.route('officer.monev.inspection.do.index',[$row->pivot_id]).'" class="btn btn-primary btn-sm">
                             <i class="mi-assignment"></i>
                             Isi Form Monitoring
                         </a>';

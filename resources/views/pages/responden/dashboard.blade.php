@@ -39,7 +39,7 @@
                         </div>
                         <div class="form-group row mb-0">
                             <label class="col-md-3 col-6 font-weight-bold">Waktu Selesai</label>
-                            <div class="col-md-9 col-6">{{$user->target->form->supervision_end_date->format('d/m/Y')}} <span class="badge badge-danger">Sisa Waktu : {{$user->target->form->supervisionDaysRemaining()}} Hari</span></div>
+                            <div class="col-md-9 col-6">{{$user->target->form->supervision_end_date->format('d/m/Y')}} <span class="badge badge-danger">Sisa Waktu : {{$user->target->form->supervisionDaysRemainingRender()}} Hari</span></div>
                         </div>
 
                         <div class="form-group mb-0 text-center my-3">

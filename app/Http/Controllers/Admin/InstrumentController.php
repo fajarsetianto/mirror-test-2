@@ -23,13 +23,13 @@ class InstrumentController extends Controller
 
     public function create(Form $form){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.instrument.store',[$form->id]),
+            'url' => route('admin.monev.form.instrument.store',[$form->id]),
         ]);
     }
 
     public function edit(Form $form, Instrument $instrument){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.instrument.update',[$form->id, $instrument->id]),
+            'url' => route('admin.monev.form.instrument.update',[$form->id, $instrument->id]),
             'item' => $instrument
         ]);
     }
@@ -69,8 +69,12 @@ class InstrumentController extends Controller
     }
 
     public function destroy(Form $form, Instrument $instrument){
+        $position = $instrument->position;
         $instrument->delete();
-
+        $form->instruments()
+            ->where('position','>',$position)
+            ->decrement('position',1);
+        
         return response()->json([
             'status' => 1,
             'title' => 'Successful!',
@@ -83,7 +87,7 @@ class InstrumentController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('questions', function($row){   
@@ -109,8 +113,8 @@ class InstrumentController extends Controller
                         <i class="icon-menu9"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.instrument.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`instrument`,`'.route('monev.form.instrument.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('admin.monev.form.instrument.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`instrument`,`'.route('admin.monev.form.instrument.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                     </div>
                 </div>
             </div>';    
@@ -118,5 +122,21 @@ class InstrumentController extends Controller
             })
             ->rawColumns(['status','actions', 'name'])
             ->make(true);
+    }
+
+    public function reorder(Request $request, Form $form){
+        $request->validate([
+            'data' => 'required|array',
+            'data.*.id' => 'required|numeric',
+            'data.*.position' => 'required|numeric',
+        ]);
+        foreach($request->data as $row)
+        {
+            Instrument::whereId($row['id'])->update([
+                'position' => $row['position']
+            ]);
+        }
+
+        return response()->noContent();
     }
 }

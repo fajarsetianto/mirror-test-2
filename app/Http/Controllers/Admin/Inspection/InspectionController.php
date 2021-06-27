@@ -15,55 +15,7 @@ class InspectionController extends Controller
         return view($this->viewNamespace.'index');
     }
 
-    public function detail(Request $request, Form $form){
-        if($request->ajax()){
-            $data = $form->targets()->latest();
-            return DataTables::of($data)
-            ->addIndexColumn()
-            ->addColumn('name', function($row){   
-                return $row->institutionable->name;
-            })
-            ->addColumn('officer_name', function($row){   
-                return $row->officerName();
-            })
-            ->addColumn('status', function($row){   
-                switch($row->type){
-                    case 'responden':
-                        if($row->respondent->isSubmited()){
-                            return '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
-                        }else{
-                            return '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
-                        }
-                        break;
-                    case 'petugas MONEV':
-                        return '<span class="badge badge-warning">Belum Dikerjakan</span>';
-                        break;
-                    case 'responden & petugas MONEV':
-                        if($row->respondent->isSubmited()){
-                            $res = '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
-                        }else{
-                            $res = '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
-                        }
-                        $res.= '</br>';
-                        if($row->isSubmitedByOfficer()){
-                            $res .= '<span class="badge badge-success">Petugas : Sudah Dikerjakan</span>';
-                        }else{
-                            $res .= '<span class="badge badge-warning">Petugas : Belum Dikerjakan</span>';
-                        }
-                        return $res;
-                        break;
-                }
-            })
-            ->addColumn('actions', function($row) use ($form){   
-                $btn = '<button class="btn btn-success"><i class="mi-visibility"></i> Lihat Detail</button>';     
-                return $btn;
-            })
-            
-            ->rawColumns(['status','actions'])
-            ->make(true);
-        }
-        return view($this->viewNamespace.'detail', compact('form'));
-    }
+    
 
 
     public function data(){
@@ -71,11 +23,11 @@ class InspectionController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.inspection.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.inspection.form.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
-                $link = '<button onclick="component(`'.route('monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
+                $link = '<button onclick="component(`'.route('admin.monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
                 return $link;
             })
             ->addColumn('actions', function($row){   
@@ -86,8 +38,8 @@ class InspectionController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('monev.inspection.detail',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="#" class="dropdown-item" onclick="component(`'.route('admin.monev.inspection.form.index',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>

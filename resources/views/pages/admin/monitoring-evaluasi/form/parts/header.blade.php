@@ -4,7 +4,7 @@
         @isset($editable)
 			@if($form->isEditable())
 				<div class="header-elements">
-					<button type="button" onclick="component('{{route('monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
+					<button type="button" onclick="component('{{route('admin.monev.form.edit',[$form->id])}}')" class="btn bg-success-400 btn-icon"><i class="icon-pencil"></i></button>
 				</div>
 			@endif
         @endisset

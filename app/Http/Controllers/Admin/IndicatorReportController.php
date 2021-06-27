@@ -17,7 +17,7 @@ class IndicatorReportController extends Controller
     }
 
     public function detail(Form $form){
-        $form->load('indicators.targetsWithScore');
+        $form->load('indicators');
         return view($this->viewNamespace.'detail', compact('form'));
     }
 
@@ -33,7 +33,7 @@ class IndicatorReportController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.indicator-report.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.indicator-report.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
@@ -100,7 +100,7 @@ class IndicatorReportController extends Controller
             //     return $btn;
             // })
             ->addColumn('score', function($row){
-                return $row->respondent->score;
+                return $row->respondent->scores;
             })
             ->addColumn('status', function($row){   
                 switch($row->type){

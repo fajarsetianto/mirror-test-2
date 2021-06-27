@@ -26,7 +26,7 @@
 					processing: true,
 					responsive: true, 
 					serverSide: true,
-					ajax: '{!! route("monev.form.target.data",[$form->id]) !!}',
+					ajax: '{!! route("admin.monev.form.target.data",[$form->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -131,9 +131,9 @@
 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					<a href="{{route('monev.form.instrument.index',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Detail Form</span></a>
+					<a href="{{route('admin.monev.form.instrument.index',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Detail Form</span></a>
 					@if($form->isEditable())
-						<button  class="btn btn-info" onclick="component('{{route('monev.form.publish',[$form->id])}}')" ><i class="mi-assignment"></i> <span>Publish</span></button>
+						<button  class="btn btn-info" onclick="component('{{route('admin.monev.form.publish',[$form->id])}}')" ><i class="mi-assignment"></i> <span>Publish</span></button>
 					@endif
 				</div>
 			</div>
@@ -149,7 +149,7 @@
 		<h6 class="card-title">Daftar Sasaran Monitoring</h6>
 		@if($form->isEditable())
 			<div class="header-elements">
-				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
+				<button class="btn bg-purple-400" onclick="component('{{route('admin.monev.form.target.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Sasaran Monitoring</button>
 			</div>
 		@endif
 	</div>

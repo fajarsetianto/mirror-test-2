@@ -24,8 +24,8 @@
                     {data: 'target_name', name: 'name'},
                     {data: 'category', name: 'form.category'},
                     {data: 'expired_date', searchable: false},
-                    {data: 'status', name: 'form.status', searchable: false},
-                    {data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
+                    {data: 'status', searchable: false},
+                    {data: 'actions', className: "text-center", orderable: false, searchable: false}
 				],
 				autoWidth: false,
 				dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',

@@ -15,6 +15,7 @@
 @endpush
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/row_reorder.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/global/js/plugins/pickers/color/spectrum.js')}}"></script>
@@ -25,38 +26,80 @@
 		$(document).ready(function(){
 				instrumentDatatable = $('#instrument-table').DataTable({
 					pageLength : 10,
-					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.form.instrument.data",[$form->id]) !!}',
+					ajax: '{!! route("admin.monev.form.instrument.data",[$form->id]) !!}',
 					columns: [
-						{ "data": null,"sortable": false, searchable: false,
-							render: function (data, type, row, meta) {
-								return meta.row + meta.settings._iDisplayStart + 1;
-							}
-						},
+						{ data: 'position', name: 'position'},
+						{ data: 'id', name: 'id',visible: false, searchable: false},
+						// { "data": null,"sortable": false, searchable: false,
+						// 	render: function (data, type, row, meta) {
+						// 		return meta.row + meta.settings._iDisplayStart + 1;
+						// 	}
+						// },
 						{data: 'name', name: 'instruments.name',searchable: true},
 						{data: 'questions', name: 'questions',searchable: false},
 						{data: 'max_score', name: 'max_score',searchable: false},
 						{data: 'status', name: 'status',searchable: false},
 						{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
+					order: [[ 0, 'asc' ]],
 					autoWidth: false,
-					dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
-					language: {
-						search: '<span>Filter:</span> _INPUT_',
-						lengthMenu: '<span>Show:</span> _MENU_',
-						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
+					rowReorder: {
+						selector: 'td:nth-child(1)',
+						dataSrc: 'position'
+					},
+				});
+				instrumentDatatable.on('row-reorder', function (e, details, edit) {
+					if(details.length) {
+						console.log(details)
+						let rows = [];
+						details.forEach(element => {
+							console.log(element);
+							rows.push({
+								id: instrumentDatatable.row(element.node).data().id,
+								position: element.newData
+							});
+						});
+						$.blockUI({ 
+							message: '<i class="icon-spinner4 spinner"></i>',
+							overlayCSS: {
+								backgroundColor: '#1b2024',
+								opacity: 0.8,
+								zIndex: 1200,
+								cursor: 'wait'
+							},
+							css: {
+								border: 0,
+								color: '#fff',
+								padding: 0,
+								zIndex: 1201,
+								backgroundColor: 'transparent'
+							},
+						});
+						$.ajax({
+							method: 'POST',
+							url: "{!! route("admin.monev.form.instrument.reorder",[$form->id]) !!}",
+							data: {
+								'_token' : '{{csrf_token()}}',
+								'data' : rows 
+							}
+						})
+						.done(function () { 
+							instrumentDatatable.ajax.reload()
+							$.unblockUI();
+						});
 					}
 				});
+
                 indicatorDatatable = $('#indicator-table').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.form.indicator.data",[$form->id]) !!}',
+					ajax: '{!! route("admin.monev.form.indicator.data",[$form->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -165,11 +208,11 @@
 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					<a href="{{route('monev.form.instrument.preview',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></a>
-					<button onclick="component('{{route('monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
+					<a href="{{route('admin.monev.form.instrument.preview',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></a>
+					<button onclick="component('{{route('admin.monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
 					@if($form->isEditable())
 						<button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan Draft</span></button>
-						<button onclick="component('{{route('monev.form.publish',[$form->id])}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
+						<button onclick="component('{{route('admin.monev.form.publish',[$form->id])}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
 					@endif
 				</div>
 			</div>
@@ -192,7 +235,7 @@
 		<h6 class="card-title">Daftar Group Pertanyaan</h6>
 		@if($form->isEditable())
 			<div class="header-elements">
-				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Group Pertanyaan</button>
+				<button class="btn bg-purple-400" onclick="component('{{route('admin.monev.form.instrument.create',[$form->id])}}')"><i class="mi-assignment-turned-in"></i> Tambah Group Pertanyaan</button>
 			</div>
 		@endif
 	</div>
@@ -202,6 +245,7 @@
 			<thead>
 				<tr>
 					<th>No</th>
+					<th>id</th>
 					<th>Group Pertanyaan</th>
 					<th>Jumlah Pertanyaan</th>
 					<th>Total Maksimal Skor</th>
@@ -219,7 +263,7 @@
 		<h6 class="card-title">Manajemen Indikator</h6>
 		@if($form->isEditable())
 			<div class="header-elements">
-				<button class="btn bg-purple-400" onclick="component('{{route('monev.form.indicator.create',[$form->id])}}')"><i class="mi-info"></i> Tambah Indikator</button>
+				<button class="btn bg-purple-400" onclick="component('{{route('admin.monev.form.indicator.create',[$form->id])}}')"><i class="mi-info"></i> Tambah Indikator</button>
 			</div>
 		@endif
 	</div>

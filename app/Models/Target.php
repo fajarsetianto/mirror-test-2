@@ -20,7 +20,7 @@ class Target extends Model
 
     public function officers(){
         return $this->belongsToMany(Officer::class,OfficerTarget::class)
-            ->withPivot(['is_leader','submited_at'])
+            ->withPivot(['id','is_leader','submited_at'])
             ->withTimestamps();
     }
 
@@ -41,7 +41,7 @@ class Target extends Model
     }
 
     public function respondent(){
-        return $this->hasOne(Respondent::class,'target_id');
+        return $this->hasOne(Respondent::class,'target_id','id');
     }
 
     public function scopeWithAndWhereHas($query, $relation, $constraint){

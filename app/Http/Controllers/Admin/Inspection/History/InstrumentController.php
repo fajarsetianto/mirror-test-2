@@ -12,16 +12,20 @@ use DataTables;
 class InstrumentController extends Controller
 {
     public function data(Form $form, Target $target){
+        $target->load('respondent');
         $respondent = $target->respondent;
         $data = $form->instruments()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('questions_count', function($row){   
                 return $row->questions()->count();
+            })
+            ->addColumn('max_score', function($row){   
+                return $row->maxScore();
             })
             ->addColumn('score', function($row) use ($respondent, $form){   
                 if($form->type != 'petugas MONEV'){

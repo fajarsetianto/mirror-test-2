@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
+use App\Notifications\Officer\NewFormAssigned;
 use App\Notifications\Responden\TokenNotification;
 use Illuminate\Http\Request;
 use DataTables;
@@ -18,13 +19,13 @@ class FormController extends Controller
 
     public function create(){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.store'),
+            'url' => route('admin.monev.form.store'),
         ]);
     }
 
     public function edit(Form $form){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.update',[$form->id]),
+            'url' => route('admin.monev.form.update',[$form->id]),
             'item' => $form
         ]);
     }
@@ -90,22 +91,28 @@ class FormController extends Controller
                 $failed_note = "Form in belum memiliki pertanyaan, silahkan tambahkan pertanyaan";
             }elseif($form->instruments()->whereStatus('draft')->exists()){
                 $failed_note = "Terdapat group pertanyaan dengan status draf, silahkan periksa kembali";
-            }else{
+            }elseif(!$form->targets()->exists()){
                 $failed_note = "Form ini belum memiliki sasaran monitoring, silahkan tambahkan sasaran monitoring";
+            }else{
+                $failed_note = "Tanggal berakhirnya supervisi (".$form->supervision_end_date->format('d-m-Y').") sudah lewat, silahkan periska kembali";
             }
         }
         return view($this->viewNamespace.'publish', compact('form','passed','failed_note'));
     }
 
     public function publishing(Form $form){
+        $form->load(['targets.institutionable','targets.respondent','targets.officers']);
         if($form->isPublishable()){
             $form->update(['status' => 'publish']);
             foreach($form->targets as $target){
                 if($target->respondent()->exists()){
                     $target->respondent->notify(new TokenNotification($target));
                 }
+                foreach($target->officers as $officer){
+                    $officer->notify(new NewFormAssigned($target));
+                }
             }
-            return redirect()->route('monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
+            return redirect()->route('admin.monev.form.instrument.index',[$form->id])->with('message' ,'Form telah berhasil di publish');
         }
         return abort(403,'Form is not publishable');
        
@@ -116,11 +123,11 @@ class FormController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.form.instrument.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.form.instrument.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
-                $link = '<button onclick="component(`'.route('monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
+                $link = '<button onclick="component(`'.route('admin.monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
                 return $link;
             })
             ->addColumn('actions', function($row){   
@@ -131,8 +138,8 @@ class FormController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`'.route('admin.monev.form.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>
