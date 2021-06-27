@@ -51,6 +51,11 @@ return [
             'driver' => 'session',
             'provider' => 'respondents',
         ],
+
+        'officer' => [
+            'driver' => 'session',
+            'provider' => 'officers',
+        ],
     ],
 
     /*
@@ -79,6 +84,11 @@ return [
         'respondents' => [
             'driver' => 'eloquent',
             'model' => App\Models\Respondent::class,
+        ],
+
+        'officers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Officer::class,
         ],
 
         // 'users' => [

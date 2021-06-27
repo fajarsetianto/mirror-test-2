@@ -74,7 +74,7 @@ class QuestionController extends Controller
                     ));
                 endif;
             endforeach;
-            UserAnswer::created($arr);
+            UserAnswer::insert($arr);
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();

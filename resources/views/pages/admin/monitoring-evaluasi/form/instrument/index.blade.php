@@ -25,23 +25,21 @@
 		$(document).ready(function(){
 				instrumentDatatable = $('#instrument-table').DataTable({
 					pageLength : 10,
-					// lengthMenu: [[5, 10, 20], [5, 10, 20]],
+					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					retrieve: true,
-    				aaSorting: [],
 					ajax: '{!! route("monev.form.instrument.data",[$form->id]) !!}',
 					columns: [
-						{ "data": null,"sortable": false,
+						{ "data": null,"sortable": false, searchable: false,
 							render: function (data, type, row, meta) {
 								return meta.row + meta.settings._iDisplayStart + 1;
 							}
 						},
-						{data: 'name', name: 'name'},
-						{data: 'questions', name: 'questions'},
-						{data: 'max_score', name: 'max_score'},
-						{data: 'status', name: 'status'},
+						{data: 'name', name: 'instruments.name',searchable: true},
+						{data: 'questions', name: 'questions',searchable: false},
+						{data: 'max_score', name: 'max_score',searchable: false},
+						{data: 'status', name: 'status',searchable: false},
 						{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -50,25 +48,7 @@
 						search: '<span>Filter:</span> _INPUT_',
 						lengthMenu: '<span>Show:</span> _MENU_',
 						paginate: { 'first': 'First', 'last': 'Last', 'next': '→', 'previous': '←' }
-					},
-					rowReorder: {
-						selector: 'tr'
 					}
-				});
-
-				instrumentDatatable.on('row-reorder', function (e, details) {
-					if(details.length) {
-						let rows = [];
-						details.forEach(element => {
-							rows.push({
-								id: $(element.node).data('entry-id'),
-								position: element.newData
-							});
-						});
-
-						console.log(rows)
-					}
-
 				});
                 indicatorDatatable = $('#indicator-table').DataTable({
 					pageLength : 10,
@@ -78,7 +58,7 @@
 					responsive: true,
 					ajax: '{!! route("monev.form.indicator.data",[$form->id]) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}

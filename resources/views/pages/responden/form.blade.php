@@ -24,7 +24,7 @@
     				aaSorting: [],
 					ajax: '{!! route("respondent.form.data")!!}',
 					columns: [
-						{ "data": null,"sortable": false,
+						{ "data": null,"sortable": false, searchable: false,
 							render: function (data, type, row, meta) {
 								return meta.row + meta.settings._iDisplayStart + 1;
 							}
@@ -62,6 +62,36 @@
 				});
 			
 		});
+		function component(y){
+					$.blockUI({ 
+						message: '<i class="icon-spinner4 spinner"></i>',
+						overlayCSS: {
+							backgroundColor: '#1b2024',
+							opacity: 0.8,
+							zIndex: 1200,
+							cursor: 'wait'
+						},
+						css: {
+							border: 0,
+							color: '#fff',
+							padding: 0,
+							zIndex: 1201,
+							backgroundColor: 'transparent'
+						},
+					});
+
+					$.get(y, function(data){
+						$('.modal').html(data);
+					}).done(function() {
+						$('.modal').modal('show');
+					})
+					.fail(function() {
+						alert( "Terjadi Kesalahan" );
+					})
+					.always(function() {
+						$.unblockUI();
+					});
+				}
 	</script>
 @endpush
 
@@ -75,9 +105,7 @@
 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					
-					<button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan</span></button>
-					<button href="#" class="btn btn-info"><i class="mi-assignment"></i> <span>Kirim</span></button>
+					<button onclick="component('{{route('respondent.form.publish')}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Kirim</span></button>
 				</div>
 			</div>
 		</div>	
@@ -106,11 +134,11 @@
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
-                <div class="col-md-9 col-6">{{$user->target->nonSatuanPendidikan->name}}</div>
+                <div class="col-md-9 col-6">{{$user->target->institutionable->name}}</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Reponden</label>
-                <div class="col-md-9 col-6">{{$user->name}} ({{$user->target->nonSatuanPendidikan->email}})</div>
+                <div class="col-md-9 col-6">{{$user->name}} ({{$user->target->institutionable->email}})</div>
             </div>
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
@@ -153,3 +181,6 @@
 
 
 @endsection
+@push('scripts-bottom')
+	<x-modal></x-modal>
+@endpush

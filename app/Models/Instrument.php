@@ -18,7 +18,7 @@ class Instrument extends Model
 
     public function maxScore(){
         return $this->questions()->whereHas('offeredAnswer')->get()->sum(function($item){
-            if($item->questionType->name == "Multiple Choice"){
+            if($item->questionType->name == "Kotak Centang"){
                 return $item->offeredAnswer()->sum('score');
             }
             return $item->offeredAnswer()->max('score');

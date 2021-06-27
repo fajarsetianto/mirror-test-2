@@ -79,7 +79,7 @@ class InstrumentController extends Controller
     }
 
     public function data(Form $form){
-        $data = $form->instruments()->latest()->get();
+        $data = $form->instruments();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   

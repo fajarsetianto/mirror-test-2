@@ -19,14 +19,14 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            if($guard == null || $guard != 'respondent'){
+            if($guard == null || $guard == 'web'){
                 return redirect(RouteServiceProvider::HOME);
-            }else{
+            }elseif($guard == 'respondent'){
                 return redirect()->route('respondent.dashboard');
+            }elseif($guard == 'officer'){
+                return redirect()->route('officer.dashboard');
             }
-            
         }
-
         return $next($request);
     }
 }

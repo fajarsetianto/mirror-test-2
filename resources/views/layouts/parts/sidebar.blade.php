@@ -72,7 +72,7 @@
 						<li class="nav-item nav-item-submenu {{ (request()->is('management-lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="mi-domain"></i> <span>Manajemen Lembaga</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="#" class="nav-link">Satuan Pendidikan</a></li>
+								<li class="nav-item"><a href="{{route('institution.satuan.index')}}" class="nav-link {{ (request()->is('management-lembaga/satuan-pendidikan*')) ? 'active' : '' }}">Satuan Pendidikan</a></li>
 								<li class="nav-item"><a href="{{route('institution.non-satuan.index')}}" class="nav-link {{ (request()->is('management-lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
 							</ul>
 						</li>

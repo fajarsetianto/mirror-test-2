@@ -22,7 +22,7 @@
                     @foreach ($form->targets as $target)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$target->nonSatuanPendidikan->name}}</td>
+                            <td>{{$target->institutionable->name}}</td>
                             <td>{{$target->officerName()}}</td>
                             <td>{{$target->type}}</td>
                         </tr>

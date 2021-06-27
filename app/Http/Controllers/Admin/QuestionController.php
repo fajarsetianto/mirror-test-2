@@ -20,7 +20,7 @@ class QuestionController extends Controller
         return view($this->viewNamespace.'index', compact('form','instrument','data'));
     }
 
-    public function create(){
+    public function create(Form $form, Instrument $instrument){
         return view($this->viewNamespace.'form', [
         ]);
     }

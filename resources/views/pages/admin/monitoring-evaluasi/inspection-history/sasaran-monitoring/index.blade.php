@@ -19,7 +19,7 @@
 					serverSide: true,
 					ajax: '{!! route("monev.inspection-history.target.data",[$form->id]) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
@@ -27,6 +27,7 @@
 					{data: 'name', name: 'name'},
 					{data: 'officer_name', name: 'officer_name'},
                     {data: 'type', name: 'type'},
+					{data: 'status', name: 'status',searchable: false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -142,6 +143,7 @@
 					<th>Sasaran Monitoring</th>
                     <th>Nama Petugas</th>
                     <th>Pengisi Form</th>
+					<th>Status</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>

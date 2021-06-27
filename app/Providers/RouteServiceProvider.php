@@ -50,6 +50,8 @@ class RouteServiceProvider extends ServiceProvider
         
         $this->mapRespondenRoutes();
 
+        $this->mapOfficerRoutes();
+
         //
     }
 
@@ -96,5 +98,14 @@ class RouteServiceProvider extends ServiceProvider
             ->name('respondent.')
             ->namespace($this->namespace.'\Responden')
             ->group(base_path('routes/responden.php'));
+    }
+
+    protected function mapOfficerRoutes()
+    {
+        Route::middleware(['web'])
+            ->prefix('petugas')
+            ->name('officer.')
+            ->namespace($this->namespace.'\Officer')
+            ->group(base_path('routes/officer.php'));
     }
 }
