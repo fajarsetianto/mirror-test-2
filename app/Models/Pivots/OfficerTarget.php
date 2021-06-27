@@ -2,8 +2,8 @@
 
 namespace App\Models\Pivots;
 
-use App\Models\OfferedAnswer;
 use App\Models\Officer;
+use App\Models\OfficerAnswer;
 use App\Models\OfficerNote;
 use App\Models\Target;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -35,7 +35,7 @@ class OfficerTarget extends Pivot
     }
 
     public function answers(){
-        return $this->hasMany(OfferedAnswer::class,'officer_id')->whereTargetId($this->id);
+        return $this->hasMany(OfficerAnswer::class,'officer_id')->whereTargetId($this->id);
     }
 
     public function isSubmited(){
