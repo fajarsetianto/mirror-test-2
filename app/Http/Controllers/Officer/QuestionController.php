@@ -51,7 +51,7 @@ class QuestionController extends Controller
                         ['question_id'=> $row->id, 'officer_id'=> $userId],
                         [
                             'answer' => $data["answer_$key"],
-                            'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
+                            'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
                             'offered_answer_id' => NULL,
                             'target_id' => $officerTarget->target->id,
                             'question_id' => $row->id,
@@ -67,7 +67,7 @@ class QuestionController extends Controller
                             ['question_id'=> $row->id, 'officer_id' => $userId],
                             [
                                 'answer' => $fileName,
-                                'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
+                                'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
                                 'offered_answer_id' => NULL,
                                 'target_id' => $officerTarget->target->id,
                                 'question_id' => $row->id,
@@ -88,7 +88,7 @@ class QuestionController extends Controller
                                 ['question_id'=> $row->id, 'officer_id'=> $userId, 'offered_answer_id' => $answer[1]],
                                 [
                                     'answer' => $answer[0],
-                                    'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
+                                    'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
                                     'offered_answer_id' => $answer[1],
                                     'target_id' => $officerTarget->target->id,
                                     'question_id' => $row->id,
@@ -103,7 +103,7 @@ class QuestionController extends Controller
                         ['question_id'=> $row->id, 'officer_id'=> $userId],
                         [
                             'answer' => $answer[0],
-                            'discrepancy' => empty($data["discrepancy_$key"]) ? null : $data["discrepancy_$key"],
+                            'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
                             'offered_answer_id' => $answer[1],
                             'target_id' => $officerTarget->target->id,
                             'question_id' => $row->id,

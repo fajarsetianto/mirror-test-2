@@ -127,11 +127,11 @@
 		countQuestionRespondent.push(id)
 
 		if(option != null){
-			dataOption = JSON.parse(option.replace(/&quot;/g, '\"'))
+			dataOption = JSON.parse(option.replace(/&quot;/g, '\"').replace(/\t/g, '\\t'))
 		}
 		
 		if(answer != 'null'){
-			dataAnswer 	= JSON.parse(answer.replace(/&quot;/g, '\"'))
+			dataAnswer 	= JSON.parse(answer.replace(/&quot;/g, '\"').replace(/\t/g, '\\t'))
 			nameAnswer 	= dataAnswer.answer
 			offerId 	= dataAnswer.offered_answer_id
 			fileName 	= typeof nameAnswer.split('-')[2] != undefined ? nameAnswer.split('-')[2] : ''
@@ -283,7 +283,7 @@
 		let fileNameOfficer = ''
 
 		if(answer != 'null'){
-			dataAnswerOfficer	= JSON.parse(answer.replace(/&quot;/g, '\"'))
+			dataAnswerOfficer	= JSON.parse(answer.replace(/&quot;/g, '\"').replace(/\t/g, '\\t'))
 			nameAnswerOfficer 	= dataAnswerOfficer.answer
 			discrepancy 		= dataAnswerOfficer.discrepancy
 			offerIdOfficer 		= dataAnswerOfficer.offered_answer_id
@@ -298,7 +298,7 @@
 		countQuestionOfficer.push(id)
 
 		if(option != null){
-			dataOption = JSON.parse(option.replace(/&quot;/g, '\"'))
+			dataOption = JSON.parse(option.replace(/&quot;/g, '\"').replace(/\t/g, '\\t'))
 		}
 		
 	
@@ -485,7 +485,7 @@
     </div>
 	<div id="question-content"></div>
 	@foreach($officerTarget->target->respondent->answers()->get() as $key => $row)
-		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer)}}', '{{json_encode($row)}}')</script>
+		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
 	@endforeach
 	@if(count($officerTarget->officer->answers()->get()) < 1)
 		@foreach($item->questions()->get() as $key => $row)
@@ -493,7 +493,7 @@
 		@endforeach
 	@else
 		@foreach($officerTarget->officer->answers()->get() as $key => $row)
-			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer)}}', '{{json_encode($row)}}')</script>
+			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}')</script>
 		@endforeach
 	@endif
 	

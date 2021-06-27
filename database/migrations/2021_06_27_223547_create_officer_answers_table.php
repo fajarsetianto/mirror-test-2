@@ -23,8 +23,8 @@ class CreateOfficerAnswersTable extends Migration
             $table->timestamps();
 
             $table->foreign('offered_answer_id')->references('id')->on('offered_answers')->cascadeOnDelete();
-            $table->foreign('target_id')->references('id')->on('targets')->cascadeOnDelete();
             $table->foreign('question_id')->references('id')->on('questions')->cascadeOnDelete();
+            $table->foreign('target_id')->references('id')->on('targets')->cascadeOnDelete();
             $table->foreign('officer_id')->references('id')->on('officers')->cascadeOnDelete();
         });
     }

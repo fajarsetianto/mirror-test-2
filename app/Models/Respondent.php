@@ -64,7 +64,7 @@ class Respondent extends Authenticatable
     }
 
     public function answers(){
-        return $this->hasMany(UserAnswer::class)->orderBy('question_id');
+        return $this->hasMany(UserAnswer::class)->orderBy('question_id','asc');
     }
 
     public function score(){
