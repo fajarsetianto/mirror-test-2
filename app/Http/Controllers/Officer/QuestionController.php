@@ -27,10 +27,12 @@ class QuestionController extends Controller
     public function index(OfficerTarget $officerTarget, Instrument $instrument)
     {
         $officerTarget->load(['target.form','target.respondent','target.institutionable','officer']);
-       
+        $count = $officerTarget->target->respondent->answers()->byInstrumentId($instrument->id)->get()->count();
+        
         return view($this->viewNamespace.'index', [
             'item' => $instrument,
             'officerTarget' => $officerTarget,
+            'countRespondent' => $count,
             'url' => route('officer.monev.inspection.do.question.store',[$officerTarget->id, $instrument->id])
         ]);
     }
@@ -41,9 +43,9 @@ class QuestionController extends Controller
     {
         $data   = $request->all();
         $userId = auth('officer')->user()->id;
+        $i=1;
         try{
             DB::beginTransaction();
-            $arr = array();
             foreach($instrument->questions()->get() as $key => $row):                
                 if($row->question_type_id == '1' || $row->question_type_id == '2'):
                     OfficerAnswer::updateOrCreate(
@@ -57,7 +59,6 @@ class QuestionController extends Controller
                             'officer_id' => $userId
                         ]
                     );
-                   
                 elseif ($row->question_type_id == '6'):
                     if(array_key_exists("file_$key", $data)):
                         $file = $request->file("file_$key");
@@ -80,6 +81,7 @@ class QuestionController extends Controller
                         ['question_id', $row->id],
                         ['officer_id', $userId]
                     ])->delete();
+                    
                     foreach($row->offeredAnswer()->get() as $nm => $checkbox):
                         if(array_key_exists("answer_option_".$key."_".$nm, $data)):
                             $answer = explode("__", $data["answer_option_".$key."_".($nm)]);
@@ -97,20 +99,23 @@ class QuestionController extends Controller
                         endif;
                     endforeach;
                 else:
-                    $answer = explode("__", $data["answer_option_$key"]);
-                    OfficerAnswer::updateOrCreate(
-                        ['question_id'=> $row->id, 'officer_id'=> $userId],
-                        [
-                            'answer' => $answer[0],
-                            'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
-                            'offered_answer_id' => $answer[1],
-                            'target_id' => $officerTarget->target->id,
-                            'question_id' => $row->id,
-                            'officer_id' => $userId
-                        ]
-                    );
+                    if(array_key_exists("answer_option_".$key, $data)):
+                        $answer = explode("__", $data["answer_option_$key"]);
+                        OfficerAnswer::updateOrCreate(
+                            ['question_id'=> $row->id, 'officer_id'=> $userId],
+                            [
+                                'answer' => $answer[0],
+                                'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
+                                'offered_answer_id' => $answer[1],
+                                'target_id' => $officerTarget->target->id,
+                                'question_id' => $row->id,
+                                'officer_id' => $userId
+                            ]
+                        );
+                    endif;
                 endif;
             endforeach;
+            
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();

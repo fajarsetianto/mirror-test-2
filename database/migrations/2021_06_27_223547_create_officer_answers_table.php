@@ -16,8 +16,8 @@ class CreateOfficerAnswersTable extends Migration
         Schema::create('officer_answers', function (Blueprint $table) {
             $table->id();
             $table->text('answer');
-            $table->string('discrepancy',255)->nullable();;
-            $table->unsignedBigInteger(('offered_answer_id'));
+            $table->string('discrepancy',255)->nullable();
+            $table->unsignedBigInteger(('offered_answer_id'))->nullable();;
             $table->unsignedBigInteger('question_id');
             $table->unsignedBigInteger('target_id');
             $table->unsignedBigInteger('officer_id');
