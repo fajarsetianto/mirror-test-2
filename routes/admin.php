@@ -140,5 +140,9 @@ Route::group(['prefix' => 'management-user','as' => 'management-user.'], functio
         Route::put('{officer}/update', 'OfficerController@update')->name('update');
         Route::delete('{officer}', 'OfficerController@destroy')->name('destroy');
     });
-    
+});
+
+Route::group(['prefix' => 'pengaturan','as' => 'setting.'], function(){
+    Route::get('/', 'SettingController@index')->name('index');
+    Route::put('/update', 'SettingController@update')->name('update');
 });

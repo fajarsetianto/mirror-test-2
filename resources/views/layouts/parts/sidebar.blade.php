@@ -76,8 +76,8 @@
 								<li class="nav-item"><a href="{{route('admin.institution.non-satuan.index')}}" class="nav-link {{ (request()->is('admin/management-lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
 							</ul>
 						</li>
-						<li class="nav-item" >
-							<a href="#" class="nav-link">
+						<li class="nav-item {{ (request()->is('admin/setting/*')) ? 'nav-item-expanded nav-item-open' : '' }}" >
+							<a href="{{route('admin.setting.index')}}" class="nav-link">
 								<i class="icon-cog3"></i>
 								<span>Setting</span>
 							</a>
