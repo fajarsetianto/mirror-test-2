@@ -237,7 +237,7 @@
 			</div>
 		</div>	
 	</div>
-	{{-- {{ Breadcrumbs::render('responden.home.form',$form) }}	 --}}
+	{{ Breadcrumbs::render('officer.home.monev.inspection.do',$item) }}
 @endsection
 @section('content')
 <div class="content">

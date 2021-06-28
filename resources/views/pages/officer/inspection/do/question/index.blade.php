@@ -27,8 +27,10 @@
 	let numberRespodent = 1;
 	let numberOfficer = 1;
 	let arrOfferIdOfficer = [];
+	
 
 	$(document).ready(function(){
+		isLeader()
 	});
 	
 	save = () => {
@@ -70,6 +72,13 @@
 
 			}
 		})
+	}
+	isLeader = () => {
+		let status = "{{$officerTarget->is_leader}}"
+		if(status != '1'){
+			$(".leader").prop('disabled', true);
+			$(".btn-leader-save").addClass('d-none');
+		}
 	}
 
 	questionRespondent = (id, typeClick, questionName, option, answer) => {
@@ -231,7 +240,7 @@
 		$(`#checkbox-${numberOfficer-1}-${id}`).prop('checked', true);
 	}
 
-	questionOfficer = (id=null, typeClick, questionName, option, answer) => {
+	questionOfficer = (id=null, typeClick, questionName, option, answer, status) => {
 		let typeOfficer = ''
 		let tempDataOptionOfficer = ''
 		let uniqId = (new Date()).getTime()
@@ -249,7 +258,6 @@
 			fileNameOfficer 	= typeof nameAnswerOfficer.split('-')[2] != undefined ? nameAnswerOfficer.split('-')[2] : ''
 		}
 
-		console.log(id)
 		if(countQuestionOfficer.indexOf(id) !== -1 && id != null){
 			if(typeClick == 'kotak centang') checkboxHandling(offerIdOfficer)
 			return
@@ -269,7 +277,7 @@
 			typeOfficer = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-					<input type="text" class="alpaca-control form-control input" name="answer_${row}" value="${nameAnswerOfficer}" placeholder="Jawaban ${questionType}"  autocomplete="off">
+					<input type="text" class="alpaca-control form-control input leader" name="answer_${row}" value="${nameAnswerOfficer}" placeholder="Jawaban ${questionType}"  autocomplete="off">
 				</div>
 			`
 		} else if (typeClick == 'paraghraf'){
@@ -277,7 +285,7 @@
 			typeOfficer = `
 				<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 					<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-					<textarea rows="5" cols="5" name="answer_${row}" value="${nameAnswerOfficer}" class="form-control input" placeholder="Jawaban ${questionType}">${nameAnswerOfficer}</textarea>
+					<textarea rows="5" cols="5" name="answer_${row}" value="${nameAnswerOfficer}" class="form-control input leader" placeholder="Jawaban ${questionType}">${nameAnswerOfficer}</textarea>
 				</div>
 			`
 		} else if (typeClick == 'pilihan ganda'){
@@ -288,7 +296,7 @@
 				tempDataOptionOfficer += `
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="radio" ${checkedOfficer} class="form-control form-check-input-styled input" value="${element.value}__${element.id}" name="answer_option_${row}" data-fouc>
+						<input type="radio" ${checkedOfficer} class="form-control form-check-input-styled input leader" value="${element.value}__${element.id}" name="answer_option_${row}" data-fouc>
 						${element.value}
 					</label>
 				</div>
@@ -309,7 +317,7 @@
 				tempDataOptionOfficer += `
 				<div class="form-check">
 					<label class="form-check-label">
-						<input id="checkbox-${numberOfficer}-${element.id}" type="checkbox" ${checkedOfficer} name="answer_option_${row}_${key}" value="${element.value}__${element.id}" class="form-control form-check-input-styled input" data-fouc>
+						<input id="checkbox-${numberOfficer}-${element.id}" type="checkbox" ${checkedOfficer} name="answer_option_${row}_${key}" value="${element.value}__${element.id}" class="form-control form-check-input-styled input leader" data-fouc>
 						${element.value}
 					</label>
 				</div>
@@ -336,7 +344,7 @@
 			typeOfficer = `
 				<div class="form-group">
 					<label class="d-block">Opsi Jawaban</label>
-					<select data-placeholder="Select option" name="answer_option_${row}"  class="form-control form-control-select2 input">
+					<select data-placeholder="Select option" name="answer_option_${row}"  class="form-control form-control-select2 input leader">
 						<option>Select your option</option>
 						${tempDataOptionOfficer}
 					</select>
@@ -351,7 +359,7 @@
 					<div tabindex="500" class="btn btn-light text-left text-primary btn-file">
 						<i class="icon-upload4 mr-2"></i>
 						<span class="hidden-xs">File Upload</span>
-						<input type="file" class="file-input" id="files-${row}" name="file_${row}" onchange="upload(${row},$(this).val())" data-show-caption="true" data-show-upload="true" data-fouc>
+						<input type="file" class="file-input leader" id="files-${row}" name="file_${row}" onchange="upload(${row},$(this).val())" data-show-caption="true" data-show-upload="true" data-fouc>
 					</div>
 					<span class='ml-1 label label-info' id="upload-file-info-${row}">
 						<a target="_blank" href="{{route('officer.monev.inspection.do.question.show',[$officerTarget->id,$item->id])}}?file=${fileNameOfficer}&type=officer">${fileNameOfficer}</a>
@@ -360,35 +368,69 @@
 			`
 		}
 
-		$(`#row-${row}`).append(`
-			<div class="col-md-6">
-				<div class="card border-left-teal">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<p class="text-secondary">Petugas Monitoring dan Evaluasi</p>
+		if(status > 0){
+			$(`#row-${row}`).append(`
+				<div class="col-md-6">
+					<div class="card border-left-teal">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<p class="text-secondary">Petugas Monitoring dan Evaluasi</p>
+								</div>
+								<div class="col-lg-1">
+									<span class="question-number">${numberOfficer}</span>
+								</div>
+								<div class="col-lg-11">
+									<label>Pertanyaan - ${questionType}</label>
+									<span class="d-block mb-2 text-justify" >${questionName}</span>
+									${typeOfficer}
+								</div>
 							</div>
-							<div class="col-lg-1">
-								<span class="question-number">${numberOfficer}</span>
-							</div>
-							<div class="col-lg-11">
-								<label>Pertanyaan - ${questionType}</label>
-								<span class="d-block mb-2 text-justify" >${questionName}</span>
-								${typeOfficer}
-							</div>
+							<div id="field-other" class="row"></div>
+	
 						</div>
-						<div id="field-other" class="row"></div>
-
 					</div>
 				</div>
-			</div>
+			`)
+			$(`#card-${row}`).append(`
+				<div class="form-group">
+					<label for="">Perbedaan</label>
+					<textarea rows="3" name="discrepancy_${row}" cols="3" class="form-control input leader" id="discrepancy" placeholder="Perbedaan">${discrepancy}</textarea>
+				</div>
+			`)
+		} else {
+			$(`#question-content`).append(`
+				<div class="card card-body" id="card-${row}">
+					<div class="row" id="row-${row}">
+						<div class="col-md-12">
+							<div class="card border-left-teal">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-lg-12">
+											<p class="text-secondary">Responden</p>
+										</div>
+										<div class="col-lg-1">
+											<span class="question-number">${numberOfficer}</span>
+										</div>
+										<div class="col-lg-11">
+											<label>Pertanyaan - ${questionType}</label>
+											<span class="d-block mb-2 text-justify" >${questionName}</span>
+											${typeOfficer}
+										</div>
+									</div>
+									<div id="field-other" class="row"></div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="">Perbedaan</label>
+						<textarea rows="3" name="discrepancy_${row}" cols="3" class="form-control input leader" id="discrepancy" placeholder="Perbedaan">${discrepancy}</textarea>
+					</div>
+				</div>
 		`)
-		$(`#card-${row}`).append(`
-			<div class="form-group">
-				<label for="">Perbedaan</label>
-				<textarea rows="3" name="discrepancy_${row}" cols="3" class="form-control input" id="discrepancy" placeholder="Perbedaan">${discrepancy}</textarea>
-			</div>
-		`)
+		}
 
 		numberOfficer++
 	}
@@ -396,6 +438,7 @@
 
 	upload = (numberOfficer,name) => {
 		$(`#upload-file-info-${numberOfficer}`).html(name.split('\\').pop())
+		console.log( numberOfficer, name,`#files-${numberOfficer}` ,$(`#files-${numberOfficer}`).prop('files'))
 		let file = $(`#files-${numberOfficer}`).prop('files')[0]
 		formData.delete(`file_${numberOfficer}`)
 		formData.append(`file_${numberOfficer}`, file)
@@ -414,16 +457,16 @@
         </div>
 
         <div class="header-elements border-top-0 bg-white pl-4 pt-0">
-            <div class="d-flex">
+            <div class="text-right">
 
-                <button href="#" onclick="save()" class="mr-3 btn bg-primary mx-y button"><i class="mi-description"></i>
+                <button href="#" onclick="save()" class="mr-3 btn bg-primary mx-y button leader btn-leader-save"><i class="mi-description"></i>
                     <span>Simpan</span>
 				</button>
             </div>
         </div>
     </div>
 </div>
-{{-- {{ Breadcrumbs::render('responden.home.form',$form) }} --}}
+	{{ Breadcrumbs::render('officer.home.monev.inspection.do.question', $officerTarget, $item) }}
 @endsection
 @section('content')
 <div class="content">
@@ -443,16 +486,20 @@
         </div>
     </div>
 	<div id="question-content"></div>
+
+	@isset($officerTarget->target->respondent)
 	@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
 		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
 	@endforeach
+	@endif
+
 	@if(count($officerTarget->officer->answers()->byInstrumentId($item->id)->get()) < 1)
 		@foreach($item->questions()->get() as $key => $row)
-			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->officerAnswerOfficer)}}',)</script>
+			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->officerAnswerOfficer)}}',{{$countRespondent}})</script>
 		@endforeach
 	@else
 		@foreach($officerTarget->officer->answers()->byInstrumentId($item->id)->get() as $key => $row)
-			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}')</script>
+			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
 		@endforeach
 	@endif
 	

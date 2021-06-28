@@ -53,7 +53,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('admin.monev.inspection') }}				
+		{{ Breadcrumbs::render('officer.home.monev.inspection') }}				
 	</div>
 @endsection
 @section('content')

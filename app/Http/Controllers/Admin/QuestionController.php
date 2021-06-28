@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\QuestionType;
 use App\Models\OfferedAnswer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 
 class QuestionController extends Controller
@@ -106,39 +107,49 @@ class QuestionController extends Controller
             "score.*"  => "required|string",
         ]);
         $data = $request->all();
-       
-        $questionId = [];
-        Question::where('instrument_id', $instrument->id)->delete();
-        foreach($data['question'] as $key => $row):
-            $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
-            $question = new Question(array(
-                'content' => $row,
-                'instrument_id' => $instrument->id,
-                'question_type_id' => $questionType->id
-            ));
-            $question->save();
-            array_push($questionId,$question->id);
-        endforeach;
+        try{
+            DB::beginTransaction();
+            $questionId = [];
+            Question::where('instrument_id', $instrument->id)->delete();
+            foreach($data['question'] as $key => $row):
+                $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
+                $question = new Question(array(
+                    'content' => $row,
+                    'instrument_id' => $instrument->id,
+                    'question_type_id' => $questionType->id
+                ));
+                $question->save();
+                array_push($questionId,$question->id);
+            endforeach;
 
-        $x =0;
-        foreach($data['count_option'] as $key1 => $countOption):
-            $y = 1;
-            if(isset($data['option_answer'])):
-                for ($i=$x; $i < count($data['option_answer']); $i++) :
-                    if($y > $countOption){
-                        break;
-                    }
-                    $offeredAnswer = new OfferedAnswer(array(
-                        'value' => $data['option_answer'][$i],
-                        'score' => $data['score'][$i],
-                        'question_id' => $questionId[$key1]
-                    ));
+            $x =0;
+            foreach($data['count_option'] as $key1 => $countOption):
+                $y = 1;
+                if(isset($data['option_answer'])):
+                    for ($i=$x; $i < count($data['option_answer']); $i++) :
+                        if($y > $countOption){
+                            break;
+                        }
+                        $offeredAnswer = new OfferedAnswer(array(
+                            'value' => $data['option_answer'][$i],
+                            'score' => $data['score'][$i],
+                            'question_id' => $questionId[$key1]
+                        ));
 
-                    $offeredAnswer->save();
-                    $x++; $y++;
-                endfor;
-            endif;
-        endforeach;
+                        $offeredAnswer->save();
+                        $x++; $y++;
+                    endfor;
+                endif;
+            endforeach;
+            DB::commit();
+        } catch(\Throwable $throwable){
+            DB::rollBack();
+            return response()->json([
+                'status' => 0,
+                'title' => 'Failed!',
+                'msg' => 'Data failed Updated!'
+            ],422);
+        }
         
 
         return response()->json([

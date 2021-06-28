@@ -45,46 +45,72 @@ class QuestionController extends Controller
         try{
             DB::beginTransaction();
             $arr = array();
-            foreach($instrument->questions()->get() as $key => $row):
-                UserAnswer::where([
-                    ['question_id', $row->id],
-                    ['respondent_id', $userId]
-                ])->delete();
+            foreach($instrument->questions()->get() as $key => $row):                
                 if($row->question_type_id == '1' || $row->question_type_id == '2'):
-                    array_push($arr, array(
-                        'answer' => $data["answer_$key"],
-                        'offered_answer_id' => NULL,
-                        'question_id' => $row->id,
-                        'respondent_id' => $userId
-                    ));
+                    UserAnswer::updateOrCreate(
+                        ['question_id'=> $row->id, 'respondent_id'=> $userId],
+                        [
+                            'answer' => $data["answer_$key"],
+                            'offered_answer_id' => NULL,
+                            'question_id' => $row->id,
+                            'respondent_id' => $userId
+                        ]
+                    );
+                   
                 elseif ($row->question_type_id == '6'):
-                    $file = $request->file("file_$key");
-                    $fileName = time().'-'.$userId.'-'.$file->getClientOriginalName();
-                    array_push($arr, array(
-                        'answer' => $fileName,
-                        'offered_answer_id' => NULL,
-                        'question_id' => $row->id,
-                        'respondent_id' => $userId
-                    ));
-                    $file->move("data_file",$fileName);
+                    if(array_key_exists("file_$key", $data)):
+                        $file = $request->file("file_$key");
+                        $fileName = time().'-'.$userId.'-'.$file->getClientOriginalName();
+                        UserAnswer::updateOrCreate(
+                            ['question_id'=> $row->id, 'respondent_id' => $userId],
+                            [
+                                'answer' => $fileName,
+                                'offered_answer_id' => NULL,
+                                'question_id' => $row->id,
+                                'respondent_id' => $userId
+                            ]
+                        );
+                        $file->move("data_file",$fileName);
+                    endif;
+                elseif($row->question_type_id == '4'):
+                    UserAnswer::where([
+                        ['question_id', $row->id],
+                        ['respondent_id', $userId]
+                    ])->delete();
+                    foreach($row->offeredAnswer()->get() as $nm => $checkbox):
+                        if(array_key_exists("answer_option_".$key."_".$nm, $data)):
+                            $answer = explode("__", $data["answer_option_".$key."_".($nm)]);
+                            UserAnswer::updateOrCreate(
+                                ['question_id'=> $row->id, 'respondent_id'=> $userId, 'offered_answer_id' => $answer[1]],
+                                [
+                                    'answer' => $answer[0],
+                                    'offered_answer_id' => $answer[1],
+                                    'question_id' => $row->id,
+                                    'respondent_id' => $userId
+                                ]
+                            );
+                        endif;
+                    endforeach;
                 else:
                     $answer = explode("__", $data["answer_option_$key"]);
-                    array_push($arr, array(
-                        'answer' => $answer[0],
-                        'offered_answer_id' => $answer[1],
-                        'question_id' => $row->id,
-                        'respondent_id' => $userId
-                    ));
+                    UserAnswer::updateOrCreate(
+                        ['question_id'=> $row->id, 'respondent_id'=> $userId],
+                        [
+                            'answer' => $answer[0],
+                            'offered_answer_id' => $answer[1],
+                            'question_id' => $row->id,
+                            'respondent_id' => $userId
+                        ]
+                    );
                 endif;
             endforeach;
-            UserAnswer::insert($arr);
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();
             return response()->json([
                 'status' => 0,
                 'title' => 'Failed!',
-                'msg' => 'Data failed Updated!'
+                'msg' => 'Data failed Updated!'.$throwable->getMessage()
             ],422);
         }
 

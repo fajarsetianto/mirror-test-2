@@ -135,7 +135,7 @@
 					tempDataOption += `
 					<div class="form-check">
 						<label class="form-check-label">
-							<input type="checkbox" name="answer_option_${row}" ${checked} value="${element.value}__${element.id}" class="form-control form-check-input-styled" data-fouc>
+							<input type="checkbox" name="answer_option_${row}_${key}" ${checked} value="${element.value}__${element.id}" class="form-control form-check-input-styled" data-fouc>
 							${element.value}
 						</label>
 					</div>
@@ -185,23 +185,23 @@
 			let urlActionUpdate = ''
 			$(`#form-question`).append(`
 				<div id="form-card">
-						<div class="card border-left-teal">
-							<div class="card-body">
-								<div class="row">
-									<div class="col-lg-1">
-										<span class="question-number">${number}.</span>
-									</div>
-									<div class="col-lg-11">
-										<div class="d-flex ">
-											<label>${questionName}</label>
-										</div>
-										${type}
-									</div>
+					<div class="card border-left-teal">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-lg-1">
+									<span class="question-number">${number}.</span>
 								</div>
-								<div id="field-other" class="row"></div>
-								
+								<div class="col-lg-11">
+									<div class="d-flex ">
+										<label>${questionName}</label>
+									</div>
+									${type}
+								</div>
 							</div>
+							<div id="field-other" class="row"></div>
+							
 						</div>
+					</div>
 				</div>
 			`)
 		}

@@ -111,7 +111,7 @@
 				type = `
 				<div class="form-group">
 					<label class="d-block">Opsi Jawaban</label>
-					<select data-placeholder="Select option" disabled class="form-control form-control-select2">
+					<select data-placeholder="Select option" class="form-control form-control-select2">
 						<option>Select your option</option>
 						${tempDataOption}
 					</select>
