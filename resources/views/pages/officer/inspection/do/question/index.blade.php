@@ -498,20 +498,13 @@
 		@endif
 	@endif
 
-	@if(count($officerTarget->officer->answers()->byInstrumentId($item->id)->byTargetId($officerTarget->target->id)->get()) < 1)
-		@if(count($officerTarget->target->officerLeader->first()->pivot->answers) < 1)
-		
-			@foreach($item->questions()->get() as $key => $row)
-				<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', 'null',{{$countRespondent}})</script>
-			@endforeach
-		@else
-			@foreach($officerTarget->target->officerLeader->first()->pivot->answers as $key => $row)
-				<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer)}}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
-			@endforeach
-		@endif
+	@if(count($officerTarget->target->officerLeader->first()->pivot->answers()->byInstrumentId($item->id)->get()) < 1)
+		@foreach($item->questions()->get() as $key => $row)
+			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', 'null',{{$countRespondent}})</script>
+		@endforeach
 	@else
-		@foreach($officerTarget->officer->answers()->byInstrumentId($item->id)->byTargetId($officerTarget->target->id)->get() as $key => $row)
-			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
+		@foreach($officerTarget->target->officerLeader->first()->pivot->answers()->byInstrumentId($item->id)->get() as $key => $row)
+			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer()->byInstrumentId($item->id)->get())}}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
 		@endforeach
 	@endif
 	

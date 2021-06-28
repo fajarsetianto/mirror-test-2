@@ -127,17 +127,18 @@ class DoController extends Controller
         $data = $officerTarget->load('target.form')
                     ->target->form
                     ->instruments();
+
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($officerTarget){   
                 $link = '<a href="'.route('officer.monev.inspection.do.question.index',[$officerTarget->id,$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
-            ->addColumn('question', function($row){   
-                return $row->officerAnswer()->distinct('question_id')->count().'/'.$row->questions()->count();
+            ->addColumn('question', function($row) use($officerTarget){   
+                return $row->questions()->byTargetId($officerTarget->target_id)->count().'/'.$row->questions()->count();
             })
-            ->addColumn('status', function($row){  
-                if($row->officerAnswer()->distinct('question_id')->count() == $row->questions()->count()){
+            ->addColumn('status', function($row) use($officerTarget){  
+                if($row->questions()->byTargetId($officerTarget->target_id)->count() == $row->questions()->count()){
                     return '<span class="badge badge-success">Lengkap</span>';
                 } else {
                     return '<span class="badge badge-danger">Belum Lengkap</span>';
