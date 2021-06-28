@@ -105,13 +105,15 @@ class TargetController extends Controller
             $target->officers()->updateExistingPivot($request->officer_leader,['is_leader' => true]);
         }
 
-        if($request->type == 'responden' || $request->type == 'responden & petugas MONEV' && !$target->respondent()->exists()){
+        if(($request->type == 'responden' || $request->type == 'responden & petugas MONEV') && !$target->respondent()->exists()){
             $newToken = sha1(time());
             $target->respondent()->create([
                 'token' => Hash::make($newToken),
                 'plain_token' => $newToken,
                 'target_id' => $target->id
             ]);
+        }else{
+            $target->respondent()->delete();
         }
 
         return response()->json([
