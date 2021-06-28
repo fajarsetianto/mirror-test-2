@@ -158,7 +158,6 @@ class HomeController extends Controller
                 }
             })
             ->addColumn('actions', function($row){
-                dd($row);
                 if($row->isSubmitedByOfficer() || $row->form->isExpired()){
                     $btn = '<a href="'.route('officer.monev.inspection-history.detail.index',[$row->pivot_id]).'" class="btn btn-success btn-sm">
                         <i class="mi-visibility"></i>

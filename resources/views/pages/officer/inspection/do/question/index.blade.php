@@ -487,10 +487,11 @@
     </div>
 	<div id="question-content"></div>
 
-	
+	@isset($officerTarget->target->respondent)
 	@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
 		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
 	@endforeach
+	@endif
 
 	@if(count($officerTarget->officer->answers()->byInstrumentId($item->id)->get()) < 1)
 		@foreach($item->questions()->get() as $key => $row)

@@ -27,7 +27,7 @@ class QuestionController extends Controller
     public function index(OfficerTarget $officerTarget, Instrument $instrument)
     {
         $officerTarget->load(['target.form','target.respondent','target.institutionable','officer']);
-        $count = $officerTarget->target->type == 'petugas MONEV' ? 0 : $officerTarget->target->respondent->answers()->byInstrumentId($instrument->id)->get()->count();
+        $count = $officerTarget->target->type == 'petugas MONEV' ? 0 : 1;
         
         return view($this->viewNamespace.'index', [
             'item' => $instrument,
