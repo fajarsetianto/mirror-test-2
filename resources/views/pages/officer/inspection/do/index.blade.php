@@ -262,10 +262,14 @@
                 <label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
                 <div class="col-md-9 col-6">{{$item->target->institutionable->name}}</div>
             </div>
-            <div class="form-group row mb-0">
-                <label class="col-md-3 col-6 font-weight-bold">Responden</label>
-                <div class="col-md-9 col-6">{{$item->target->has('respondent') ? $item->target->respondent->name : ''}} ({{$item->target->institutionable->email}})</div>
-            </div>
+			@if($item->target->respondent != null))
+				<div class="form-group row mb-0">
+					<label class="col-md-3 col-6 font-weight-bold">Responden</label>
+					<div class="col-md-9 col-6">
+						{{$item->target->respondent->name}}
+					</div>
+				</div>
+			@endif
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
                 <div class="col-md-9 col-6">
