@@ -425,8 +425,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="">Perbedaan</label>
-						<textarea rows="3" name="discrepancy_${row}" cols="3" class="form-control input leader" id="discrepancy" placeholder="Perbedaan">${discrepancy}</textarea>
+						<textarea rows="3" name="discrepancy_${row}" cols="3" class="form-control input leader d-none" id="discrepancy" placeholder="Perbedaan">${discrepancy}</textarea>
 					</div>
 				</div>
 		`)
@@ -487,18 +486,31 @@
     </div>
 	<div id="question-content"></div>
 
-	@isset($officerTarget->target->respondent)
-	@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
-		<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
-	@endforeach
+	@if(isset($officerTarget->target->respondent) && $countRespondent > 0)
+		@if($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get()->count() < 1):
+			@foreach($item->questions()->get() as $key => $row)
+				<script>questionRespondent('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{!!json_encode($row->offeredAnswer)!!}', 'null')</script>
+			@endforeach
+		@else
+			@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
+				<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
+			@endforeach
+		@endif
 	@endif
 
-	@if(count($officerTarget->officer->answers()->byInstrumentId($item->id)->get()) < 1)
-		@foreach($item->questions()->get() as $key => $row)
-			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', '{{json_encode($row->officerAnswerOfficer)}}',{{$countRespondent}})</script>
-		@endforeach
+	@if(count($officerTarget->officer->answers()->byInstrumentId($item->id)->byTargetId($officerTarget->target->id)->get()) < 1)
+		@if(count($officerTarget->target->officerLeader->first()->pivot->answers) < 1)
+		
+			@foreach($item->questions()->get() as $key => $row)
+				<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', 'null',{{$countRespondent}})</script>
+			@endforeach
+		@else
+			@foreach($officerTarget->target->officerLeader->first()->pivot->answers as $key => $row)
+				<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer)}}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
+			@endforeach
+		@endif
 	@else
-		@foreach($officerTarget->officer->answers()->byInstrumentId($item->id)->get() as $key => $row)
+		@foreach($officerTarget->officer->answers()->byInstrumentId($item->id)->byTargetId($officerTarget->target->id)->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
 		@endforeach
 	@endif

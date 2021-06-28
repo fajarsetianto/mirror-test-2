@@ -3,12 +3,10 @@
 Breadcrumbs::for('officer.home', function ($trail) {
     $trail->push('Home', route('officer.dashboard'));
 });
-
     Breadcrumbs::for('officer.home.monev.inspection', function ($trail) {
         $trail->parent('officer.home');
         $trail->push('Pemeriksaaan', route('officer.monev.inspection.index'));
     });
-
         Breadcrumbs::for('officer.home.monev.inspection.do', function ($trail,$officerTarget) {
             $trail->parent('officer.home.monev.inspection');
             $trail->push('Formulir', route('officer.monev.inspection.do.index', [$officerTarget->id]));

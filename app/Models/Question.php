@@ -33,6 +33,7 @@ class Question extends Model
     }
     
     public function officerAnswerOfficer(){
-        return $this->hasOne(OfficerAnswer::class)->where('officer_id',auth('officer')->user()->id);;
+        return $this->hasOne(OfficerAnswer::class)->where('officer_id',auth('officer')->user()->id);
     }
+
 }
