@@ -19,7 +19,7 @@
 							<div class="text-center mb-3">
 								<img src="{{asset('images/logo.png')}}" class="img-fluid mb-4" style="width: 125px" alt="">
 								<h4 class="font-weight-bold">SISTEM MONITORING DAN EVALUASI</h4>
-								<h6>KEMENTRIAN PENDIDIKAN DAN KEBUDAYAAN REPUBLIK INDONESIA</h6>
+								<h6>KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN REPUBLIK INDONESIA</h6>
 							</div>
 							<form class="login-form w-100" method="POST" action="{{ route('login') }}">
 								@csrf
