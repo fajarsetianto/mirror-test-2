@@ -28,6 +28,10 @@ class OfficerAnswer extends Model
         });
     }
 
+    public function scopeByTargetId($query, $id){
+        return $query->where('target_id',$id);
+    }
+
     public function getScoreAttribute(){
         return $this->offeredAnswer()->exists() ? $this->offeredAnswer->score : 0;
     }
