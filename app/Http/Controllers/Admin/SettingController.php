@@ -4,10 +4,12 @@ namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class SettingController extends Controller
 {
     protected $viewNamespace = "pages.admin.setting.";
+    
 
     public function index(){
         $item = auth()->user();
@@ -15,12 +17,19 @@ class SettingController extends Controller
     }
 
     public function update(Request $request){
-        $request->validate([
-            'name' => 'required|string',
-            // 'old_password' => 'password',
-            // 'new_password' => 'required|password|confirmed',
+        $validator = $request->validate([
+            'name' => 'required_without:old_password,password|string',
+            'old_password' => 'required_with:password|string|password',
+            'password' => 'required_with:old_password|string|min:6|confirmed',
         ]);
-        $validatedData = $request->validated();
-        dd($validatedData);
+        
+        $data = $request->only(['name']);
+        if($request->has('password')){
+            $data['password'] = Hash::make($request->password);
+        }
+
+        auth()->user()->update($data);
+
+        return back()->with('success','Data berhasil diperbaharui');
     }
 }

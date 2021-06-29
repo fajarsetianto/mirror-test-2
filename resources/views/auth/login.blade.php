@@ -10,8 +10,8 @@
 
 @section('content')
 			<div class="row min-vh-100 no-gutters">
-				<div class="col-auto flex-1 d-md-block d-sm-none d-none">
-					<img src="{{asset('images/bg.png')}}" class="img-fluid h-100" alt="">
+				<div class="col-auto flex-1 d-md-block d-sm-none d-none" style = "background-image:url({{asset('images/bg.png')}});background-size:cover">
+					
 				</div>
 				<div class="col-lg-4 col-md-6 col-12 d-flex justify-content-center align-items-center">
 					<div class="">
