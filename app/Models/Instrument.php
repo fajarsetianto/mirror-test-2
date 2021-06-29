@@ -25,6 +25,10 @@ class Instrument extends Model
         return $this->hasMany(Question::class)->orderBy('id');
     }
 
+    public function question(){
+        return $this->hasOne(Question::class);
+    }
+
     public function offeredAnswers(){
         return $this->hasManyThrough(OfferedAnswer::class, Question::class,'instrument_id','question_id');
     }
