@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth:officer']], function(){
         Route::get('/markallread/{guard}',[NotificationController::class, 'markAllRead'])->name('markallread');
     });
 
-    Route::get('/','HomeController@index')->name('dashboard');
+    Route::get('/','HomeController@index')->name('dashboard'); 
     Route::get('/respondentData','HomeController@respondentData')->name('dashboard.data.respondent');
     Route::get('/officerData','HomeController@officerData')->name('dashboard.data.officer');
     
@@ -57,6 +57,10 @@ Route::group(['middleware' => ['auth:officer']], function(){
                 Route::get('/','InspectionHistoryController@detail')->name('index');
             });
         });
+    });
+    Route::group(['prefix' => 'pengaturan','as' => 'setting.'], function(){
+        Route::get('/', 'SettingController@index')->name('index');
+        Route::put('/update', 'SettingController@update')->name('update');
     });
     
 });
