@@ -26,6 +26,18 @@
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
 		status = true
+
+		$(document).ready(function(){
+			published()
+		});
+
+		published = () => {
+			let published = {{$form->isPublished()}}
+			if(published){
+				$('.published').addClass('d-none')
+			}
+		}
+		
 		removeOption = (questionId,uniqId) => {
 			let number = 1
 			$(`#row-${uniqId}`).remove()
@@ -380,8 +392,8 @@
 										<div class="d-flex ">
 											<label>Pertanyaan - ${questionType}</label>
 											<div class="question-action ml-auto">
-												<a onclick="edit(${uniqId})" id="edit-${uniqId}" class="${questionId == 0 ? 'd-none' : ''} mr-2 text-dark cursor"><i class="icon-pencil"></i></a>
-												<a onclick="destroy(${uniqId},'${questionId}')" id="trash-${uniqId}" class="${questionId == 0 ? 'd-none' : ''} mr-2 text-dark cursor"><i class="icon-trash-alt"></i></a>
+												<a onclick="edit(${uniqId})" id="edit-${uniqId}" class="${questionId == 0 ? 'd-none' : ''} published mr-2 text-dark cursor"><i class="icon-pencil"></i></a>
+												<a onclick="destroy(${uniqId},'${questionId}')" id="trash-${uniqId}" class="${questionId == 0 ? 'd-none' : ''} published mr-2 text-dark cursor"><i class="icon-trash-alt"></i></a>
 											</div>
 										</div>
 										<input id="question-input-${uniqId}" class="alpaca-control form-control flex-1 mr-3" ${questionId != 0 ? 'readonly' : ''} required name="question[]" value="${questionName == null ? '' : questionName}" placeholder="Pertanyaan - ${questionType}">
@@ -529,7 +541,7 @@
 	@endif
 
 	<div class="row">
-		<div class="col-lg-3">
+		<div class="col-lg-3 @if($form->isPublished()) d-none @endif">
 			<div class="card mb-0 pb-2">
 				<div class="card-header bg-teal-400 text-white header-elements-inline">
 					<h6 class="card-title">ACTION</h6>
@@ -555,7 +567,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-9" >
+		<div class="@if($form->isPublished()) col-lg-12 @else col-lg-9 @endif" >
 		<form action="#" id="content">
 			@csrf
 			<div class="card border-top-success">
@@ -565,7 +577,9 @@
 							<div class="instrument-header d-flex">
 								<h4><span class="font-weight-semibold">{{$instrument->name}}</span></h4>
 								<div class="instrument-action ml-auto">
+								@if(!$form->isPublished())
 									<a href="#" onclick="component('instrument',`{{route('admin.monev.form.instrument.edit',[$form->id,$instrument->id])}}`)" class="mr-"><i class="icon-pencil mr-1"></i> Edit</a>
+								@endif
 								</div>
 							</div>
 							<div class="instrument-description">

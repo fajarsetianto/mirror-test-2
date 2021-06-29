@@ -25,21 +25,21 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
                 Route::get('preview', 'InstrumentController@preview')->name('preview');
                 Route::get('/data', 'InstrumentController@data')->name('data');
                 Route::get('/create', 'InstrumentController@create')->name('create');
-                Route::post('/create', 'InstrumentController@store')->name('store');
+                Route::post('/create', 'InstrumentController@store')->middleware('can:published,form')->name('store');
                 Route::post('/reorder', 'InstrumentController@reorder')->name('reorder');
                 Route::get('{instrument}/edit', 'InstrumentController@edit')->name('edit');
-                Route::put('{instrument}/update', 'InstrumentController@update')->name('update');
-                Route::delete('{instrument}', 'InstrumentController@destroy')->name('destroy');
+                Route::put('{instrument}/update', 'InstrumentController@update')->middleware('can:published,form')->name('update');
+                Route::delete('{instrument}', 'InstrumentController@destroy')->middleware('can:published,form')->name('destroy');
     
                 Route::group(['prefix' => '{instrument}/question','as' => 'question.'],function(){
                     Route::get('/', 'QuestionController@index')->name('index');
                     Route::get('/data', 'QuestionController@data')->name('data');
                     Route::get('/create', 'QuestionController@create')->name('create');
-                    Route::post('/create', 'QuestionController@store')->name('store');
-                    Route::post('/changestatus', 'QuestionController@changestatus')->name('changestatus');
-                    Route::get('{question}/edit', 'QuestionController@edit')->name('edit');
-                    Route::put('{question}/update', 'QuestionController@update')->name('update');
-                    Route::delete('{question}', 'QuestionController@destroy')->name('destroy');
+                    Route::post('/create', 'QuestionController@store')->middleware('can:published,form')->name('store');
+                    Route::post('/changestatus', 'QuestionController@changestatus')->middleware('can:published,form')->name('changestatus');
+                    Route::get('{question}/edit', 'QuestionController@edit')->middleware('can:published,form')->name('edit');
+                    Route::put('{question}/update', 'QuestionController@update')->middleware('can:published,form')->name('update');
+                    Route::delete('{question}', 'QuestionController@destroy')->middleware('can:published,form')->name('destroy');
                 });
             });
             Route::group(['prefix' => '{form}/indicators','as' => 'indicator.'],function(){

@@ -437,7 +437,6 @@
 
 	upload = (numberOfficer,name) => {
 		$(`#upload-file-info-${numberOfficer}`).html(name.split('\\').pop())
-		console.log( numberOfficer, name,`#files-${numberOfficer}` ,$(`#files-${numberOfficer}`).prop('files'))
 		let file = $(`#files-${numberOfficer}`).prop('files')[0]
 		formData.delete(`file_${numberOfficer}`)
 		formData.append(`file_${numberOfficer}`, file)
