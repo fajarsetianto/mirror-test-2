@@ -31,8 +31,9 @@
 			published()
 		});
 
+		
 		published = () => {
-			let published = {{$form->isPublished()}}
+			let published = {{$form->isPublished() ? true : 0}}
 			if(published){
 				$('.published').addClass('d-none')
 			}
@@ -72,7 +73,7 @@
 					<div class="col-md-10 ml-0 pl-0">
 						<div class="row">
 							<div class="col-md-11 ml-0 pl-0">
-								<input class="alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${valueOption == null ? '' : valueOption}" name="option_answer[]" placeholder="Opsi Jawaban">   
+								<input class="input alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${valueOption == null ? '' : valueOption}" name="option_answer[]" placeholder="Opsi Jawaban">   
 							</div>
 							<div class="col-md-1 ml-0 pl-0">
 								<button type="button" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
@@ -81,7 +82,7 @@
 						<div class="row">
 							<div class="col-md-4 ml-0 pl-0">
 								<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-								<input class="alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
+								<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
 							</div>
 						</div>
 					</div>
@@ -108,7 +109,7 @@
 						<div class="col-md-10 ml-0 pl-0">
 							<div class="row">
 								<div class="col-md-11 ml-0 pl-0">
-									<input readonly class="alpaca-control form-control flex-1 mr-3" name="option_answer[]" value="Lainnya" placeholder="Lainnya">   
+									<input readonly class="input alpaca-control form-control flex-1 mr-3" name="option_answer[]" value="Lainnya" placeholder="Lainnya">   
 								</div>
 								<div class="col-md-1 ml-0 pl-0">
 									<button type="button" onclick="removeOption(${uniqId},${newUniqId})" class="remove-field-${uniqId} btn btn-icon rounded-round ${questionId != 0 ? 'd-none' : ''}"><i class="icon-cross2"></i></button>
@@ -117,7 +118,7 @@
 							<div class="row">
 								<div class="col-md-4 ml-0 pl-0">
 									<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-									<input class="alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''} required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
+									<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''} required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
 								</div>
 							</div>
 						</div>
@@ -230,7 +231,7 @@
 				type = `
 					<div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
 						<label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-						<input type="text" disabled id="alpaca5" class="alpaca-control form-control" placeholder="Jawaban ${questionType}"  autocomplete="off">
+						<input type="text" disabled id="alpaca5" class="input alpaca-control form-control" placeholder="Jawaban ${questionType}"  autocomplete="off">
 					</div>
 				`
 			} else if (typeClick == 'paraghraf'){
@@ -260,13 +261,13 @@
 							<div class="col-md-10 ml-0 pl-0">
 								<div class="row" id="row-option-${uniqId}">
 									<div class="col-md-11 ml-0 pl-0">
-										<input class="alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" required name="option_answer[]" placeholder="Opsi Jawaban">   
+										<input class="input alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" required name="option_answer[]" placeholder="Opsi Jawaban">   
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-4 ml-0 pl-0">
 										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3 score-${uniqId}" required name="score[]" type="number" placeholder="Bobot Nilai">   
+										<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" required name="score[]" type="number" placeholder="Bobot Nilai">   
 									</div>
 								</div>
 							</div>
@@ -301,13 +302,13 @@
 							<div class="col-md-10 ml-0 pl-0">
 								<div class="row" id="row-option-${uniqId}">
 									<div class="col-md-11 ml-0 pl-0">
-										<input class="alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" required name="option_answer[]" required  placeholder="Opsi Jawaban">   
+										<input class="input alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" required name="option_answer[]" required  placeholder="Opsi Jawaban">   
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-4 ml-0 pl-0">
 										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3 score-${uniqId}" required name="score[]" type="number" placeholder="Bobot Nilai">   
+										<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" required name="score[]" type="number" placeholder="Bobot Nilai">   
 									</div>
 								</div>
 							</div>
@@ -342,13 +343,13 @@
 							<div class="col-md-10 ml-0 pl-0">
 								<div class="row" id="row-option-${uniqId}">
 									<div class="col-md-11 ml-0 pl-0">
-										<input class="alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" required name="option_answer[]" required placeholder="Opsi Jawaban">   
+										<input class="input alpaca-control form-control flex-1 mr-3 option-answer-${uniqId}" required name="option_answer[]" required placeholder="Opsi Jawaban">   
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-4 ml-0 pl-0">
 										<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-										<input class="alpaca-control form-control flex-1 mr-3 score-${uniqId}" required name="score[]" type="number" placeholder="Bobot Nilai">   
+										<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" required name="score[]" type="number" placeholder="Bobot Nilai">   
 									</div>
 								</div>
 							</div>
@@ -379,9 +380,9 @@
 			let urlActionUpdate = `${'{{route('admin.monev.form.instrument.question.update',[$form->id, $instrument->id,'question-id'])}}'.replace('question-id',questionId)}?_method=PUT`
 			$('#content').append(`
 				<div id="form-card-${uniqId}">
-				@csrf
-				<input type="hidden" id="count-option-${uniqId}" name="count_option[]" value="${countOption}">
-				<input type="hidden" name="question_type[]" value="${questionType}">
+				<input class="input" type="hidden" name="_token" value="{{csrf_token()}}">
+				<input class="input" type="hidden" id="count-option-${uniqId}" name="count_option[]" value="${countOption}">
+				<input class="input" type="hidden" name="question_type[]" value="${questionType}">
 						<div class="card border-left-teal">
 							<div class="card-body">
 								<div class="row">
@@ -396,7 +397,10 @@
 												<a onclick="destroy(${uniqId},'${questionId}')" id="trash-${uniqId}" class="${questionId == 0 ? 'd-none' : ''} published mr-2 text-dark cursor"><i class="icon-trash-alt"></i></a>
 											</div>
 										</div>
-										<input id="question-input-${uniqId}" class="alpaca-control form-control flex-1 mr-3" ${questionId != 0 ? 'readonly' : ''} required name="question[]" value="${questionName == null ? '' : questionName}" placeholder="Pertanyaan - ${questionType}">
+										<textarea id="question-input-${uniqId}" 
+											class="input alpaca-control form-control flex-1 mr-3" ${questionId != 0 ? 'readonly' : ''} 
+											required name="question[]" value="${questionName == null ? '' : questionName}"
+											placeholder="Pertanyaan - ${questionType}">${questionName == null ? '' : questionName}</textarea>
 										
 										${type}
 									</div>
@@ -471,7 +475,7 @@
 		save = (uniqId, url) => {
 			let formData = new FormData()
 			status = true
-			$(`#form-card-${uniqId} input`).serializeArray().forEach(function(elem){
+			$(`#form-card-${uniqId} .input`).serializeArray().forEach(function(elem){
 				formData.append(elem.name, elem.value)
 			})
 			$.ajax({
@@ -517,6 +521,7 @@
 			})
 			return false
 		}
+		
 	</script>
 @endpush
 

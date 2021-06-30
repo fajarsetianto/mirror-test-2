@@ -28,6 +28,8 @@
 	<script src="{{asset('assets/global/js/demo_pages/form_checkboxes_radios.js')}}"></script>
 	<script>
 		let formData = new FormData()
+		let number = 1
+		let countQuestion = [];
 		save = () => {
 			let csrf_token = "{{csrf_token()}}"
 			formData.delete('_token')
@@ -69,10 +71,10 @@
 			})
 		}
 
-        question = (typeClick, questionName, option, answer, number) => {
+        question = (id,typeClick, questionName, option, answer) => {
 			let tempDataOption = ''
 			let checked = ''
-			let uniqId = (new Date()).getTime()
+			let uniqId = (new Date()).getTime()+(Math.floor(Math.random() * 10000))
 			let nameAnswer = ''
 			let offerId = ''
 			let fileName = ''
@@ -87,7 +89,19 @@
 				fileName 	= typeof nameAnswer.split('-')[2] != undefined ? nameAnswer.split('-')[2] : ''
 			}
 
+			if(countQuestion.indexOf(id) !== -1 && id != null){
+				if(typeClick == 'kotak centang') {
+					checkboxHandling(offerId)
+				} 
+				if (offerId == null && (typeClick != 'singkat' || typeClick != 'paraghraf')){
+					inputOtherHandling(nameAnswer,id)
+				}
+				return
+			}
+
 			let row = number - 1
+
+			countQuestion.push(id)
 
 			if(typeClick == 'singkat'){
 				
@@ -114,15 +128,17 @@
 					tempDataOption += `
 					<div class="form-check">
 						<label class="form-check-label">
-							<input type="radio" class="form-control form-check-input-styled" ${checked} name="answer_option_${row}" value="${element.value}__${element.id}" name="stacked-radio-left" data-fouc>
-							${element.value}
+							<input type="radio" class="form-control form-check-input-styled" ${checked} 
+								onchange="otherOptionRadio('option-answer-${number}', '${element.value}', ${id})"
+								name="answer_option_${row}" value="${element.value}__${element.id}" name="stacked-radio-left" data-fouc>
+								${element.value}
 						</label>
 					</div>
 					`
 				});
 
 				type = `
-				<div class="form-group mt-2">
+				<div class="form-group mt-2" id="option-answer-${number}">
 					${tempDataOption}
 				</div>
 				`
@@ -135,7 +151,11 @@
 					tempDataOption += `
 					<div class="form-check">
 						<label class="form-check-label">
-							<input type="checkbox" name="answer_option_${row}_${key}" ${checked} value="${element.value}__${element.id}" class="form-control form-check-input-styled" data-fouc>
+							<input type="checkbox" id="checkbox-${number}-${element.id}" 
+							name="answer_option_${row}_${key}" ${checked} 
+							onchange="otherOptionCheckbox('option-answer-${number}', '${element.value}', 'checkbox-${number}-${element.id}', ${id})" 
+							value="${element.value}__${element.id}" 
+							class="form-control form-check-input-styled" data-fouc>
 							${element.value}
 						</label>
 					</div>
@@ -143,7 +163,7 @@
 				});
 
 				type = `
-				<div class="form-group mt-2">
+				<div class="form-group mt-2" id="option-answer-${number}">
 					${tempDataOption}
 				</div>
 				`
@@ -158,8 +178,11 @@
 				});
 
 				type = `
-				<div class="form-group mt-2">
-					<select data-placeholder="Select option" name="answer_option_${row}" class="form-control form-control-select2">
+				<div class="form-group mt-2" id="option-answer-${number}">
+					<select data-placeholder="Select option" 
+						name="answer_option_${row}" 
+						onchange="otherOptionDropdown('option-answer-${number}', this, ${id})"
+						class="form-control form-control-select2">
 						<option>Select your option</option>
 						${tempDataOption}
 					</select>
@@ -204,6 +227,7 @@
 					</div>
 				</div>
 			`)
+			number++
 		}
 
 		upload = (row,uniqId,name) => {
@@ -211,6 +235,80 @@
 			let file = $(`#files-${uniqId}`).prop('files')[0]
 			formData.delete(`file_${row}`)
 			formData.append(`file_${row}`, file)
+		}
+		
+		checkboxHandling = (id) => {
+			$(`#checkbox-${number-1}-${id}`).prop('checked', true);
+		}
+
+		inputOtherHandling = (nameAnswer, id) => {
+			
+			$(`#option-answer-${number-1}`).append(`
+				<input id="option-answer-${number-1}-other" type="text" name="option_other_${id}" 
+					value="${nameAnswer}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+			`);
+			console.log(`#option-answer-${number-1}`)
+		}
+		
+		otherOptionCheckbox = (id,name, optionId, questionId) => {
+			if(name.toLowerCase().trim() == 'lainnya'){
+				if($(`#${optionId}`).prop('checked')){
+					if($(`#${id}-other`).length){
+						$(`#${id}-other`).removeClass('d-none')
+					} else {
+						$(`#${id}`).append(`
+							<input id="${id}-other" type="text" name="option_other_${questionId}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+						`)
+					}
+				} else {
+					$(`${id}-other`).val('')
+					$(`#${id}-other`).addClass('d-none')
+				}
+			} else {
+				$(`#${id}-other`).val('')
+				$(`#${id}-other`).addClass('d-none')
+			}
+		}
+
+		otherOptionRadio = (id,name, questionId) => {
+			if(name.toLowerCase().trim() == 'lainnya'){
+				if($(`#${id}`).prop('checked', true)){
+					if($(`#${id}-other`).length){
+						$(`#${id}-other`).removeClass('d-none')
+					} else {
+						$(`#${id}`).append(`
+							<input id="${id}-other" type="text" name="option_other_${questionId}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+						`)
+					}
+				} else {
+					$(`#${id}-other`).val('')
+					$(`#${id}-other`).addClass('d-none')
+				}
+			} else {
+				$(`#${id}-other`).val('')
+				$(`#${id}-other`).addClass('d-none')
+			}
+		}
+
+		otherOptionDropdown = (id,elem, questionId) => {
+			if(typeof elem.value.split('__')[0] !== 'undefined'){
+				let name = elem.value.split('__')[0]
+				if(name.toLowerCase().trim() == 'lainnya'){
+					if($(`#${id}-other`).length){
+						$(`#${id}-other`).removeClass('d-none')
+					} else {
+						$(`#${id}`).append(`
+							<input id="${id}-other" type="text" name="option_other_${questionId}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+						`)
+					}
+				} else {
+					$(`#${id}-other`).val('')
+					$(`#${id}-other`).addClass('d-none')
+				}
+			} else {
+				$(`#${id}-other`).val('')
+				$(`#${id}-other`).addClass('d-none')
+			}
 		}
 	</script>
 @endpush
@@ -245,7 +343,7 @@
 			</div>
 		</div>	
 	</div>
-	{{ Breadcrumbs::render('responden.home.form',$form) }}	
+	{{ Breadcrumbs::render('responden.home.form.question',$instrument) }}	
 @endsection
 
 @section('content')
@@ -273,11 +371,19 @@
 				<form id="form-question">
 					
 				</form>
-				@foreach($instrument->questions()->get() as $number => $question)
-					<script>
-						question('{{strtolower($question->questionType->name)}}', '{{$question->content}}', '{{json_encode($question->offeredAnswer)}}', '{{json_encode($question->userAnswerRespondent)}}', {{$number+1}})
-					</script>
-				@endforeach
+				@if($user->answers()->byInstrumentId($instrument->id)->get()->count() < 1):
+					@foreach($instrument->questions()->get() as $question)
+						<script>
+							question('{{strtolower($question->id)}}','{{strtolower($question->questionType->name)}}', '{{$question->content}}', '{{json_encode($question->offeredAnswer)}}', '{{json_encode($question->userAnswerRespondent)}}')
+						</script>
+					@endforeach
+				@else
+					@foreach($user->answers()->byInstrumentId($instrument->id)->get() as $row)
+						<script>
+							question('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer()->byInstrumentId($instrument->id)->get())}}', '{!!json_encode($row)!!}')
+						</script>
+					@endforeach
+				@endif
 			</div>
 		</div>
 	</div>

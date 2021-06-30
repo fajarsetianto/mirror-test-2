@@ -103,6 +103,25 @@ class QuestionController extends Controller
                         ]
                     );
                 endif;
+                if(array_key_exists("option_other_".$row->id, $data)):
+                    if(empty($data["option_other_".$row->id])):
+                        UserAnswer::where([
+                            ['question_id', $row->id],
+                            ['respondent_id', $userId],
+                            ['offered_answer_id', NULL]
+                        ])->delete();
+                    else:
+                        UserAnswer::updateOrCreate(
+                            ['question_id'=> $row->id, 'respondent_id'=> $userId, 'offered_answer_id' => NULL],
+                            [
+                                'answer' => $data["option_other_".$row->id],
+                                'offered_answer_id' => NULL,
+                                'question_id' => $row->id,
+                                'respondent_id' => $userId
+                            ]
+                        );
+                    endif;
+                endif;
             endforeach;
             DB::commit();
         } catch(\Throwable $throwable){

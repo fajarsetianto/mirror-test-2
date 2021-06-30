@@ -28,7 +28,6 @@
 	let numberOfficer = 1;
 	let arrOfferIdOfficer = [];
 	
-
 	$(document).ready(function(){
 		isLeader()
 	});
@@ -41,6 +40,7 @@
 			formData.delete(elem.name)
 			formData.append(elem.name, elem.value)
 		})
+
 		$.ajax({
 			url: '{{$url}}',
 			type: "POST",
@@ -73,6 +73,7 @@
 			}
 		})
 	}
+
 	isLeader = () => {
 		let status = "{{$officerTarget->is_leader}}"
 		if(status != '1'){
@@ -154,7 +155,7 @@
 				tempDataOptionResponden += `
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="checkbox" ${checked} class="form-control form-check-input-styled" disabled data-fouc>
+						<input  type="checkbox" ${checked} class="form-control form-check-input-styled" disabled data-fouc>
 						${element.value}
 					</label>
 				</div>
@@ -240,15 +241,24 @@
 		$(`#checkbox-${numberOfficer-1}-${id}`).prop('checked', true);
 	}
 
+	inputOtherHandling = (nameAnswerOfficer, id) => {
+		
+		$(`#option-answer-${numberOfficer-1}`).append(`
+			<input id="option-answer-${numberOfficer-1}-other" type="text" name="option_other_${id}" 
+				value="${nameAnswerOfficer}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+		`);
+	}
+
 	questionOfficer = (id=null, typeClick, questionName, option, answer, status) => {
 		let typeOfficer = ''
 		let tempDataOptionOfficer = ''
-		let uniqId = (new Date()).getTime()
+		let uniqId = (new Date()).getTime()+(Math.floor(Math.random() * 10000))
 		let checkedOfficer = ''
 		let nameAnswerOfficer = ''
 		let offerIdOfficer = ''
 		let discrepancy = ''
 		let fileNameOfficer = ''
+		
 
 		if(answer != 'null'){
 			dataAnswerOfficer	= JSON.parse(answer.replace(/&quot;/g, '\"').replace(/\t/g, '\\t'))
@@ -259,9 +269,16 @@
 		}
 
 		if(countQuestionOfficer.indexOf(id) !== -1 && id != null){
-			if(typeClick == 'kotak centang') checkboxHandling(offerIdOfficer)
+			if(typeClick == 'kotak centang') {
+				checkboxHandling(offerIdOfficer)
+			} 
+			if (offerIdOfficer == null && (typeClick != 'singkat' || typeClick != 'paraghraf')){
+				inputOtherHandling(nameAnswerOfficer,id)
+			}
 			return
 		}
+
+		let row = numberOfficer - 1
 
 		countQuestionOfficer.push(id)
 
@@ -271,7 +288,6 @@
 		
 	
 
-		let row = numberOfficer - 1
 		if(typeClick == 'singkat'){
 			questionType = 'Singkat'
 			typeOfficer = `
@@ -296,15 +312,18 @@
 				tempDataOptionOfficer += `
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="radio" ${checkedOfficer} class="form-control form-check-input-styled input leader" value="${element.value}__${element.id}" name="answer_option_${row}" data-fouc>
-						${element.value}
+						<input type="radio" ${checkedOfficer} 
+							onchange="otherOptionRadio('option-answer-${numberOfficer}', '${element.value}', ${id})" 
+							class="form-control form-check-input-styled input leader" value="${element.value}__${element.id}" 
+							name="answer_option_${row}" data-fouc>
+							${element.value}
 					</label>
 				</div>
 				`
 			});
 
 			typeOfficer = `
-				<div class="form-group">
+				<div class="form-group" id="option-answer-${numberOfficer}">
 					<label class="d-block">Opsi Jawaban</label>
 					${tempDataOptionOfficer}
 				</div>
@@ -317,7 +336,10 @@
 				tempDataOptionOfficer += `
 				<div class="form-check">
 					<label class="form-check-label">
-						<input id="checkbox-${numberOfficer}-${element.id}" type="checkbox" ${checkedOfficer} name="answer_option_${row}_${key}" value="${element.value}__${element.id}" class="form-control form-check-input-styled input leader" data-fouc>
+						<input id="checkbox-${numberOfficer}-${element.id}" 
+						onchange="otherOptionCheckbox('option-answer-${numberOfficer}', '${element.value}', 'checkbox-${numberOfficer}-${element.id}', ${id})" 
+						type="checkbox" ${checkedOfficer} name="answer_option_${row}_${key}" value="${element.value}__${element.id}" 
+						class="form-control form-check-input-styled input leader" data-fouc>
 						${element.value}
 					</label>
 				</div>
@@ -325,7 +347,7 @@
 			});
 
 			typeOfficer = `
-				<div class="form-group">
+				<div class="form-group" id="option-answer-${numberOfficer}">
 					<label class="d-block">Opsi Jawaban</label>
 					${tempDataOptionOfficer}
 				</div>
@@ -342,9 +364,12 @@
 			});
 
 			typeOfficer = `
-				<div class="form-group">
+				<div class="form-group" id="option-answer-${numberOfficer}">
 					<label class="d-block">Opsi Jawaban</label>
-					<select data-placeholder="Select option" name="answer_option_${row}"  class="form-control form-control-select2 input leader">
+					<select data-placeholder="Select option" 
+						name="answer_option_${row}" 
+						onchange="otherOptionDropdown('option-answer-${numberOfficer}', this, ${id})"  
+						class="form-control form-control-select2 input leader">
 						<option>Select your option</option>
 						${tempDataOptionOfficer}
 					</select>
@@ -432,6 +457,67 @@
 		}
 
 		numberOfficer++
+	}
+		
+	otherOptionCheckbox = (id,name, optionId, questionId) => {
+		if(name.toLowerCase().trim() == 'lainnya'){
+			if($(`#${optionId}`).prop('checked')){
+				if($(`#${id}-other`).length){
+					$(`#${id}-other`).removeClass('d-none')
+				} else {
+					$(`#${id}`).append(`
+						<input id="${id}-other" type="text" name="option_other_${questionId}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+					`)
+				}
+			} else {
+				$(`${id}-other`).val('')
+				$(`#${id}-other`).addClass('d-none')
+			}
+		} else {
+			$(`#${id}-other`).val('')
+			$(`#${id}-other`).addClass('d-none')
+		}
+	}
+
+	otherOptionRadio = (id,name, questionId) => {
+		if(name.toLowerCase().trim() == 'lainnya'){
+			if($(`#${id}`).prop('checked', true)){
+				if($(`#${id}-other`).length){
+					$(`#${id}-other`).removeClass('d-none')
+				} else {
+					$(`#${id}`).append(`
+						<input id="${id}-other" type="text" name="option_other_${questionId}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+					`)
+				}
+			} else {
+				$(`#${id}-other`).val('')
+				$(`#${id}-other`).addClass('d-none')
+			}
+		} else {
+			$(`#${id}-other`).val('')
+			$(`#${id}-other`).addClass('d-none')
+		}
+	}
+
+	otherOptionDropdown = (id,elem, questionId) => {
+		if(typeof elem.value.split('__')[0] !== 'undefined'){
+			let name = elem.value.split('__')[0]
+			if(name.toLowerCase().trim() == 'lainnya'){
+				if($(`#${id}-other`).length){
+					$(`#${id}-other`).removeClass('d-none')
+				} else {
+					$(`#${id}`).append(`
+						<input id="${id}-other" type="text" name="option_other_${questionId}" class="alpaca-control form-control mt-2 input" placeholder="Jawaban Lainnya" autocomplete="off">
+					`)
+				}
+			} else {
+				$(`#${id}-other`).val('')
+				$(`#${id}-other`).addClass('d-none')
+			}
+		} else {
+			$(`#${id}-other`).val('')
+			$(`#${id}-other`).addClass('d-none')
+		}
 	}
 	
 
