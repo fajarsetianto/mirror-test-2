@@ -42,7 +42,9 @@
 		removeOption = (questionId,uniqId) => {
 			let number = 1
 			$(`#row-${uniqId}`).remove()
-			$(`.remove-field-${questionId}`).addClass('d-none')
+			if($(`.remove-field-${questionId}`).length < 2){
+				$(`.remove-field-${questionId}`).addClass('d-none')
+			}
 			$(`.option-question-${questionId}`).each((key, elem) => {
 				$(`.option-number-${questionId}`).eq(key).text(`Opsi ${number++}`)
 			})
@@ -82,7 +84,7 @@
 						<div class="row">
 							<div class="col-md-4 ml-0 pl-0">
 								<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-								<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
+								<input type="number" class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''}  required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
 							</div>
 						</div>
 					</div>
@@ -118,7 +120,7 @@
 							<div class="row">
 								<div class="col-md-4 ml-0 pl-0">
 									<label  class="pt-2 control-label alpaca-control-label font-weight-bold">Bobot</label> 
-									<input class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" ${questionId != 0  ? 'readonly' : ''} required value="${score == null ? '' : score}" name="score[]" placeholder="Bobot Nilai">   
+									<input type="number" class="input alpaca-control form-control flex-1 mr-3 score-${uniqId}" readonly required value="${score == null ? '0' : score}" name="score[]" placeholder="Bobot Nilai">   
 								</div>
 							</div>
 						</div>
