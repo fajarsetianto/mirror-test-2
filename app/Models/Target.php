@@ -63,8 +63,8 @@ class Target extends Model
         }
         $respondentScore = $respondentScore->where('respondents.target_id', $this->id)->first()->score;
         $officerScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
-                            ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id','left outer')
-                            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id','left outer');
+                            ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
+                            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id');
                             
         if($instrument != null){
             $officerScore = $officerScore->join('questions','offered_answers.question_id','=','questions.id')
@@ -81,8 +81,8 @@ class Target extends Model
                             ->join('respondents','respondents.id','=','user_answers.respondent_id')
                             ->whereColumn('respondents.target_id', 'targets.id'),
             'officer_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
-                    ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id','left outer')
-                    ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id','left outer')
+                    ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
+                    ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id')
                     ->whereColumn('officer_targets.target_id', 'targets.id'),
         ]);
     }
