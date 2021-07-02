@@ -35,7 +35,7 @@ class OfficerTarget extends Pivot
     }
 
     public function answers(){
-        return $this->hasMany(OfficerAnswer::class,'officer_id','officer_id')->where('target_id',$this->target_id);
+        return $this->hasMany(OfficerAnswer::class,'officer_id','officer_id')->where('target_id',$this->target_id)->orderBy('question_id');
     }
 
     public function isSubmited(){

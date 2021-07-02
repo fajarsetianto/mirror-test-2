@@ -46,7 +46,8 @@ class QuestionController extends Controller
         $i=1;
         try{
             DB::beginTransaction();
-            foreach($instrument->questions()->get() as $key => $row):                
+            foreach($instrument->questions()->get() as $key => $row):
+                                
                 if($row->question_type_id == '1' || $row->question_type_id == '2'):
                     OfficerAnswer::updateOrCreate(
                         ['question_id'=> $row->id, 'officer_id'=> $userId],
@@ -107,6 +108,28 @@ class QuestionController extends Controller
                                 'answer' => $answer[0],
                                 'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
                                 'offered_answer_id' => $answer[1],
+                                'target_id' => $officerTarget->target->id,
+                                'question_id' => $row->id,
+                                'officer_id' => $userId
+                            ]
+                        );
+                    endif;
+                endif;
+
+                if(array_key_exists("option_other_".$row->id, $data)):
+                    if(empty($data["option_other_".$row->id])):
+                        OfficerAnswer::where([
+                            ['question_id', $row->id],
+                            ['officer_id', $userId],
+                            ['offered_answer_id', NULL]
+                        ])->delete();
+                    else:
+                        OfficerAnswer::updateOrCreate(
+                            ['question_id'=> $row->id, 'officer_id'=> $userId, 'offered_answer_id' => NULL],
+                            [
+                                'answer' => $data["option_other_".$row->id],
+                                'discrepancy' => empty($data["discrepancy_$key"]) ? '' : $data["discrepancy_$key"],
+                                'offered_answer_id' => NULL,
                                 'target_id' => $officerTarget->target->id,
                                 'question_id' => $row->id,
                                 'officer_id' => $userId

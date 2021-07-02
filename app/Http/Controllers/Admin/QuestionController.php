@@ -44,51 +44,61 @@ class QuestionController extends Controller
         ]);
         $data = $request->all();
         
-        if($question == 0):
+        try{
+            DB::beginTransaction();
+            if($question == 0):
+                foreach($data['question'] as $key => $row):
+                    $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
+                    $question = new Question(array(
+                        'content' => $row,
+                        'instrument_id' => $instrument->id,
+                        'question_type_id' => $questionType->id
+                    ));
+                    $question->save();
+                endforeach;
+            else:
+                $question = Question::find($question);
+            endif;
+
+            
             foreach($data['question'] as $key => $row):
                 $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
-                $question = new Question(array(
+                $question->update(array(
                     'content' => $row,
                     'instrument_id' => $instrument->id,
                     'question_type_id' => $questionType->id
                 ));
-                $question->save();
             endforeach;
-        else:
-            $question = Question::find($question);
-        endif;
 
-        
-        foreach($data['question'] as $key => $row):
-            $questionType = QuestionType::where('name', $data['question_type'][$key])->first();
-            $question->update(array(
-                'content' => $row,
-                'instrument_id' => $instrument->id,
-                'question_type_id' => $questionType->id
-            ));
-        endforeach;
+            $x =0;
+            OfferedAnswer::where('question_id', $question->id)->delete();
+            foreach($data['count_option'] as $key1 => $countOption):
+                $y = 1;
+                if(isset($data['option_answer'])):
+                    for ($i=$x; $i < count($data['option_answer']); $i++) :
+                        if($y > $countOption){
+                            break;
+                        }
+                        $offeredAnswer = new OfferedAnswer(array(
+                            'value' => $data['option_answer'][$i],
+                            'score' => $data['score'][$i],
+                            'question_id' => $question->id
+                        ));
 
-        $x =0;
-        OfferedAnswer::where('question_id', $question->id)->delete();
-        foreach($data['count_option'] as $key1 => $countOption):
-            $y = 1;
-            if(isset($data['option_answer'])):
-                for ($i=$x; $i < count($data['option_answer']); $i++) :
-                    if($y > $countOption){
-                        break;
-                    }
-                    $offeredAnswer = new OfferedAnswer(array(
-                        'value' => $data['option_answer'][$i],
-                        'score' => $data['score'][$i],
-                        'question_id' => $question->id
-                    ));
-
-                    $offeredAnswer->save();
-                    $x++; $y++;
-                endfor;
-            endif;
-        endforeach;
-
+                        $offeredAnswer->save();
+                        $x++; $y++;
+                    endfor;
+                endif;
+            endforeach;
+            DB::commit();
+        } catch(\Throwable $throwable){
+            DB::rollBack();
+            return response()->json([
+                'status' => 0,
+                'title' => 'Failed!',
+                'msg' => 'Data failed Updated!'
+            ],422);
+        }
         return response()->json([
             'status' => 1,
             'item' => ['question' => $question->id],
