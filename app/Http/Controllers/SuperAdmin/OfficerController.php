@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Officer;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 class OfficerController extends Controller
 {
-    protected $viewNamespace = "pages.admin.officer.";
+    protected $viewNamespace = "pages.super-admin.officer.";
 
     public function index(){
         return view($this->viewNamespace.'index');
@@ -78,8 +78,9 @@ class OfficerController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->officers()->latest();
+        $data = Officer::latest();
         return DataTables::of($data)
+            
             ->addIndexColumn()
             ->addColumn('actions', function($row){   
                 $btn = '<div class="list-icons">
@@ -89,25 +90,17 @@ class OfficerController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('admin.management-user.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.management-user.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
-                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>
             </div>';     
+                return $btn;
+            })
+            ->addColumn('createdBy', function($row){   
+                $btn = $row->createdBy->name;     
                 return $btn;
             })
             ->rawColumns(['actions'])
             ->make(true);
     }
 
-    public function select2(Request $request){
-        $data = auth()->user()->officers()->select('id','name')
-                ->when($request->has('search'), function($query) use ($request){
-                    $query->where('name','like','%'.$request->search.'%')
-                        ->orWhere('npsn','like','%'.$request->search.'%');
-                })
-                ->paginate(10);
-        return response()->json($data);
-    }
 }
