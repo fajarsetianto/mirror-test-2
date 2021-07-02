@@ -54,7 +54,6 @@ class Target extends Model
     }
 
     public function score(Instrument $instrument = null){
-        $instrument = Instrument::first();
         $respondentScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
                             ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
                             ->join('respondents','respondents.id','=','user_answers.respondent_id');
