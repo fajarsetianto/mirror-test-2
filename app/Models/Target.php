@@ -62,15 +62,18 @@ class Target extends Model
                             ->where('questions.instrument_id' , $instrument->id);
         }
         $respondentScore = $respondentScore->where('respondents.target_id', $this->id)->first()->score;
-        $officerScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
-                            ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
-                            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id');
-                            
+        $officerScore =  OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+            ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
+            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id')
+            ->where('officer_targets.is_leader', true)
+            ->where('officer_targets.target_id', $this->id)
+            ->where('officer_answers.target_id', $this->id);
+        
         if($instrument != null){
-            $officerScore = $officerScore->join('questions','offered_answers.question_id','=','questions.id')
-                            ->where('questions.instrument_id' , $instrument->id);
+        $officerScore = $officerScore->join('questions','offered_answers.question_id','=','questions.id')
+                ->where('questions.instrument_id' , $instrument->id);
         }
-        $officerScore = $officerScore->where('officer_targets.target_id', $this->id)->first()->score;
+        $officerScore = $officerScore->first()->score;
         return $respondentScore + $officerScore;
     }
 
@@ -83,7 +86,15 @@ class Target extends Model
             'officer_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
                     ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
                     ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id')
-                    ->whereColumn('officer_targets.target_id', 'targets.id'),
+                    ->where('officer_targets.is_leader', true)
+                    ->whereColumn('officer_targets.target_id', 'targets.id')
+                    ->whereColumn('officer_answers.target_id', 'targets.id')
         ]);
+    }
+
+    public function respondentScore(){
+        return $this->respondent()->exists() ? 
+            $this->respondent()->with('answers.offeredAnswer')->get()
+        : 0;
     }
 }
