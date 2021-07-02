@@ -167,10 +167,13 @@
 			<label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
 			<div class="col-md-9 col-6">{{$target->institutionable->name}}</div>
 		</div>
-		<div class="form-group row mb-0">
-			<label class="col-md-3 col-6 font-weight-bold">Reponden</label>
-			<div class="col-md-9 col-6">{{$target->institutionable->email}}</div>
-		</div>
+		@if($target->respondent != null)
+			<div class="form-group row mb-0">
+				<label class="col-md-3 col-6 font-weight-bold">Reponden</label>
+				<div class="col-md-9 col-6"> {{$target->institutionable->email}}</div>
+			</div>
+		@endif
+		@if($target->officers()->exists())
 		<div class="form-group row mb-0">
 			<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
 			<div class="col-md-9 col-6">
@@ -179,6 +182,7 @@
 				@endforeach
 			</div>
 		</div>
+		@endif
 
 	</div>
 	

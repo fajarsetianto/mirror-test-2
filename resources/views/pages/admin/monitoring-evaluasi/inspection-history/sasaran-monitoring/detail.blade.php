@@ -148,7 +148,7 @@
 	<div class="card-body bg-white ">
 		<div class="d-flex align-items-center">
 			<div class="mr-4">
-				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{{$target->respondent->score()}}</span>
+				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{{$target->score()}}</span>
 			</div>
 		</div>
 		
@@ -167,18 +167,22 @@
 			<label class="col-md-3 col-6 font-weight-bold">Sasaran Monitoring</label>
 			<div class="col-md-9 col-6">{{$target->institutionable->name}}</div>
 		</div>
-		<div class="form-group row mb-0">
-			<label class="col-md-3 col-6 font-weight-bold">Reponden</label>
-			<div class="col-md-9 col-6">{{$target->institutionable->email}}</div>
-		</div>
-		<div class="form-group row mb-0">
-			<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
-			<div class="col-md-9 col-6">
-				@foreach ($target->officers as $officer)
-					{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
-				@endforeach
+		@if($target->respondent != null)
+			<div class="form-group row mb-0">
+				<label class="col-md-3 col-6 font-weight-bold">Reponden</label>
+				<div class="col-md-9 col-6"> {{$target->institutionable->email}}</div>
 			</div>
-		</div>
+		@endif
+		@if($target->officers()->exists())
+			<div class="form-group row mb-0">
+				<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
+				<div class="col-md-9 col-6">
+					@foreach ($target->officers as $officer)
+						{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
+					@endforeach
+				</div>
+			</div>
+		@endif
 
 	</div>
 	

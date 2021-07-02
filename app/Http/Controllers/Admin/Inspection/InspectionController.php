@@ -15,9 +15,6 @@ class InspectionController extends Controller
         return view($this->viewNamespace.'index');
     }
 
-    
-
-
     public function data(){
         $data = auth()->user()->forms()->published()->valid()->latest();
         return DataTables::of($data)
