@@ -56,11 +56,11 @@ class Target extends Model
         $respondentScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
                             ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
                             ->join('respondents','respondents.id','=','user_answers.respondent_id')
-                            ->where('respondents.target_id', $this->id)->score;
+                            ->where('respondents.target_id', $this->id)->first()->score;
         $officerScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
                             ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id','left outer')
                             ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id','left outer')
-                            ->where('officer_targets.target_id', $this->id)->score;
+                            ->where('officer_targets.target_id', $this->id)->first()->score;
         return $respondentScore + $officerScore;
     }
 

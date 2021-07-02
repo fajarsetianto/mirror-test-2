@@ -50,6 +50,6 @@ Route::get('/debug', function(){
     // return $pdf->download('invoice.pdf');
     
     // return view('layouts.form.respondent',compact('data','target'));
-    dd(Target::first()->scores()->get());
+    dd(Target::first()->score());
 });
 
