@@ -9,6 +9,7 @@ use App\Models\UserAnswer;
 use Egulias\EmailValidator\Exception\CommaInDomain;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use PDF;
 
 /*
 |--------------------------------------------------------------------------

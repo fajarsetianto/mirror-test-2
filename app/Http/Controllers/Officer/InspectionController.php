@@ -51,7 +51,12 @@ class InspectionController extends Controller
                         }
                         break;
                     case 'petugas MONEV':
-                        return '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        if($row->isSubmitedByOfficer()){
+                            $res = '<span class="badge badge-success">Sudah Dikerjakan</span>';
+                        }else{
+                            $res = '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        }
+                        return $res;
                         break;
                     case 'responden & petugas MONEV':
                         if($row->respondent->isSubmited()){
