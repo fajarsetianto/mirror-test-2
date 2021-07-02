@@ -140,14 +140,16 @@
                 <label class="col-md-3 col-6 font-weight-bold">Reponden</label>
                 <div class="col-md-9 col-6">{{$user->name}} ({{$user->target->institutionable->email}})</div>
             </div>
-            <div class="form-group row mb-0">
-                <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
-                <div class="col-md-9 col-6">
-					@foreach ($user->target->officers as $officer)
-						{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
-					@endforeach
+			@if($user->target->officers->isNotEmpty())
+				<div class="form-group row mb-0">
+					<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
+					<div class="col-md-9 col-6">
+						@foreach ($user->target->officers as $officer)
+							{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
+						@endforeach
+					</div>
 				</div>
-            </div>
+			@endif
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Waktu Mulai</label>
                 <div class="col-md-9 col-6">{{$user->target->form->supervision_start_date->format('d/m/Y')}}</div>

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Pivots\OfficerTarget;
+use App\Models\UserAnswer;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Target extends Model
 {
@@ -44,8 +46,22 @@ class Target extends Model
         return $this->hasOne(Respondent::class,'target_id','id');
     }
 
+
     public function scopeWithAndWhereHas($query, $relation, $constraint){
         return $query->whereHas($relation, $constraint)
                      ->with([$relation => $constraint]);
+    }
+
+    public function scopeAddScores($q){
+        $q->addSelect([
+            'respondent_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+                            ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
+                            ->join('respondents','respondents.id','=','user_answers.respondent_id')
+                            ->whereColumn('respondents.target_id', 'targets.id'),
+            'officer_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+                    ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id','left outer')
+                    ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id','left outer')
+                    ->whereColumn('officer_targets.target_id', 'targets.id'),
+        ]);
     }
 }

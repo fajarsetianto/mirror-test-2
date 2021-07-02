@@ -34,6 +34,18 @@ class Indicator extends Model
                 });
     }
 
+    public function targetsIn(){
+        $min = $this->minimum;
+        $max = $this->maximum;
+        return $this->targets()->addScores()
+        ->groupBy('targets.id')
+        ->havingRaw('SUM(
+            respondent_score + officer_score
+        ) >= '.$min)
+        ->havingRaw('SUM(
+            respondent_score + officer_score
+        ) <= '.$max);
+    }
     
 }
 

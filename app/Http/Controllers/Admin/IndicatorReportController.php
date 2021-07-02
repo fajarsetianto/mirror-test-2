@@ -66,7 +66,7 @@ class IndicatorReportController extends Controller
     }
     
     public function detailIndicatorData(Form $form, Indicator $indicator){
-        $data = $indicator->targetsWithScore()->with('institutionable','form')->get();
+        $data = $indicator->targetsIn()->with('institutionable','form')->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -75,7 +75,6 @@ class IndicatorReportController extends Controller
                 return $link;
             })
             ->addColumn('target', function($row){   
-                
                 return $row->institutionable->name;
             })
             ->addColumn('category', function($row){   
@@ -85,22 +84,8 @@ class IndicatorReportController extends Controller
             ->addColumn('officer_name', function($row){   
                 return $row->officerName();
             })
-            // ->addColumn('actions', function($row){   
-            //     $btn = '<div class="list-icons">
-            //     <div class="dropdown">
-            //         <a href="#" class="list-icons-item" data-toggle="dropdown">
-            //             <i class="icon-menu9"></i>
-            //         </a>
-
-            //         <div class="dropdown-menu dropdown-menu-right">
-            //             <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
-            //         </div>
-            //     </div>
-            // </div>';     
-            //     return $btn;
-            // })
             ->addColumn('score', function($row){
-                return $row->respondent->scores;
+                return $row->respondent_score + $row->officer_score;
             })
             ->addColumn('status', function($row){   
                 switch($row->type){
@@ -112,7 +97,12 @@ class IndicatorReportController extends Controller
                         }
                         break;
                     case 'petugas MONEV':
-                        return '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        if($row->isSubmitedByOfficer()){
+                            $res = '<span class="badge badge-success">Sudah Dikerjakan</span>';
+                        }else{
+                            $res = '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        }
+                        return $res;
                         break;
                     case 'responden & petugas MONEV':
                         if($row->respondent->isSubmited()){

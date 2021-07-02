@@ -35,7 +35,7 @@ class Form extends Model
     }
 
     public function supervisionDaysRemaining(bool $unsigned = true){
-        return $this->supervision_end_date->diffInDays(Carbon::now(), $unsigned);
+        return $this->supervision_end_date->diffInDays(Carbon::today(), $unsigned);
     }
 
     public function supervisionDaysRemainingRender(){
@@ -48,11 +48,11 @@ class Form extends Model
     }
 
     public function isPublished(){
-    return $this->status == 'publish';
+        return $this->status == 'publish';
     }
 
     public function isExpired(){
-        return $this->supervision_end_date < Carbon::now();
+        return $this->supervision_end_date->lt(Carbon::today());
     }
 
     public function isPublishable(){
@@ -60,17 +60,16 @@ class Form extends Model
                 && !$this->instruments()->whereStatus('draft')->exists() 
                 && $this->targets()->exists()
                 && $this->supervisionDaysRemaining(false) <= 0;
-                
     }
 
     public function scopeExpired($query)
     {
-        return $query->whereDate('supervision_end_date', '<', Carbon::now());
+        return $query->whereDate('supervision_end_date', '<', Carbon::today());
     }
 
     public function scopeValid($query)
     {
-        return $query->whereDate('supervision_end_date', '>=', Carbon::now());
+        return $query->whereDate('supervision_end_date', '>=', Carbon::today());
     }
 
     public function scopePublished($query)

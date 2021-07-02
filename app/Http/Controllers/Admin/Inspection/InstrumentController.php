@@ -40,4 +40,20 @@ class InstrumentController extends Controller
             ->rawColumns(['actions', 'name'])
             ->make(true);
     }
+
+    public function download(Form $form, Target $target){
+        $data = $target->form()->with(['instruments.questions' => function($q) use ($target){
+            $q->when($target->type == 'responden' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+                $q->with(['userAnswers' => function($q) use ($target){
+                    $q->whereRespondentId($target->respondent->id);
+                }]);
+            })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+                $q->with(['officerAnswer' => function($q) use ($target){
+                    $q->whereTargetId($target->id);
+                }]);
+            });
+        },'instruments.questions.offeredAnswer'])
+        ->get(); 
+        return view('layouts.form.respondent',compact('data','target'));
+    }
 }
