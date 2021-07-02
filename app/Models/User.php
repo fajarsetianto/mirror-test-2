@@ -56,6 +56,6 @@ class User extends Authenticatable
     }
 
     public function admins(){
-        return $this->isSuperAdmin() ? User::query() : null ;
+        return $this->isSuperAdmin() ? User::query()->where('type','<>','super admin') : null ;
     }
 }
