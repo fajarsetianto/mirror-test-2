@@ -33,21 +33,21 @@ Route::group(['middleware' => 'auth'], function(){
 
 
 Route::get('/debug', function(){
-    // $target = Target::whereType('responden')->first();
-    // $data = $target->form()->with(['instruments.questions' => function($q) use ($target){
-    //     $q->when($target->type == 'responden' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
-    //         $q->with(['userAnswers' => function($q) use ($target){
-    //             $q->whereRespondentId($target->respondent->id);
-    //         }]);
-    //     })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
-    //         $q->with(['officerAnswer' => function($q) use ($target){
-    //             $q->whereTargetId($target->id);
-    //         }]);
-    //     });
-    // },'instruments.questions.offeredAnswer'])
-    // ->get(); 
-    // $pdf = PDF::loadView('layouts.form.respondent', compact('data','target'));
-    // return $pdf->download('invoice.pdf');
+    $target = Target::whereType('responden')->first();
+    $data = $target->form()->with(['instruments.questions' => function($q) use ($target){
+        $q->when($target->type == 'responden' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+            $q->with(['userAnswers' => function($q) use ($target){
+                $q->whereRespondentId($target->respondent->id);
+            }]);
+        })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+            $q->with(['officerAnswer' => function($q) use ($target){
+                $q->whereTargetId($target->id);
+            }]);
+        });
+    },'instruments.questions.offeredAnswer'])
+    ->get(); 
+    $pdf = PDF::loadView('layouts.form.respondent', compact('data','target'));
+    return $pdf->download('invoice.pdf');
     
     // return view('layouts.form.respondent',compact('data','target'));
     dd(Target::first()->respondentScore());

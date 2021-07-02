@@ -99,4 +99,15 @@ class OfficerController extends Controller
             ->make(true);
     }
 
+    public function select2(Request $request){
+        $data = auth()->user()->officers()->select('id','name')
+                ->when($request->has('search'), function($query) use ($request){
+                    $query->where('name','like','%'.$request->search.'%')
+                        ->orWhere('npsn','like','%'.$request->search.'%');
+                })
+                ->paginate(10);
+        return response()->json($data);
+    }
+
+
 }

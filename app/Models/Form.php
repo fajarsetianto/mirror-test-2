@@ -76,4 +76,10 @@ class Form extends Model
     {
         return $query->whereStatus('publish');
     }
+
+    public function getMaxScoreAttribute(){
+        return $this->instruments->sum(function($item){
+            return $item->maxScore();
+        });
+    }
 }
