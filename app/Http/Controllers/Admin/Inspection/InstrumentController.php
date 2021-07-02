@@ -27,9 +27,9 @@ class InstrumentController extends Controller
             ->addColumn('max_score', function($row){   
                 return $row->maxScore();
             })
-            ->addColumn('score', function($row) use ($respondent, $form){   
+            ->addColumn('score', function($row) use ($target, $form){   
                 if($form->type != 'petugas MONEV'){
-                    return $respondent->target->score($row);
+                    return $target->score($row);
                 }
                 return '-';
             })
