@@ -148,7 +148,7 @@
 	<div class="card-body bg-white ">
 		<div class="d-flex align-items-center">
 			<div class="mr-4">
-				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{{$target->scores()}}</span>
+				<span class="font-weight-bold">Total Bobot </span>: <span class="badge badge-primary">{{$target->score()}}</span>
 			</div>
 		</div>
 		
