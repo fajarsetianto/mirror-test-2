@@ -29,7 +29,7 @@ class InstrumentController extends Controller
             })
             ->addColumn('score', function($row) use ($respondent, $form){   
                 if($form->type != 'petugas MONEV'){
-                    return $respondent->scoreCountByInstrument($row);
+                    return $respondent->target->score($row);
                 }
                 return '-';
             })

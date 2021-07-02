@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Pivots\OfficerTarget;
 use App\Models\UserAnswer;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Instrument;
 use Illuminate\Support\Facades\DB;
 
 class Target extends Model
@@ -52,15 +53,25 @@ class Target extends Model
                      ->with([$relation => $constraint]);
     }
 
-    public function score(){
+    public function score(Instrument $instrument = null){
+        $instrument = Instrument::first();
         $respondentScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
                             ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
-                            ->join('respondents','respondents.id','=','user_answers.respondent_id')
-                            ->where('respondents.target_id', $this->id)->first()->score;
+                            ->join('respondents','respondents.id','=','user_answers.respondent_id');
+        if($instrument != null){
+            $respondentScore = $respondentScore->join('questions','offered_answers.question_id','=','questions.id')
+                            ->where('questions.instrument_id' , $instrument->id);
+        }
+        $respondentScore = $respondentScore->where('respondents.target_id', $this->id)->first()->score;
         $officerScore = OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
                             ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id','left outer')
-                            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id','left outer')
-                            ->where('officer_targets.target_id', $this->id)->first()->score;
+                            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id','left outer');
+                            
+        if($instrument != null){
+            $officerScore = $officerScore->join('questions','offered_answers.question_id','=','questions.id')
+                            ->where('questions.instrument_id' , $instrument->id);
+        }
+        $officerScore = $officerScore->where('officer_targets.target_id', $this->id)->first()->score;
         return $respondentScore + $officerScore;
     }
 
