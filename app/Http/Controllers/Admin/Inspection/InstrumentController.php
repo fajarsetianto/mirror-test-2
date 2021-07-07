@@ -11,14 +11,16 @@ use DataTables;
 
 class InstrumentController extends Controller
 {
+    protected $viewNamespace = "pages.admin.monitoring-evaluasi.inspection.instrument.";
+    
     public function data(Form $form, Target $target){
         $target->load('respondent');
         $respondent = $target->respondent;
         $data = $form->instruments()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('name', function($row){   
-                $link = '<a href="'.route('admin.monev.form.instrument.question.index',[$row->form_id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+            ->addColumn('name', function($row) use ($target){   
+                $link = '<a href="'.route('admin.monev.inspection.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('questions_count', function($row){   
@@ -30,27 +32,29 @@ class InstrumentController extends Controller
             ->addColumn('score', function($row) use ($target, $form){   
                 return $target->score($row);
             })
-            ->addColumn('actions', function($row) use ($form){   
-                $btn = '<button class="edit btn btn-success btn-sm">Lihat Detail</button>';        
+            ->addColumn('actions', function($row) use ($form,$target){   
+                $btn = '<a href="'.route('admin.monev.inspection.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'"class="edit btn btn-success btn-sm">Lihat Detail</a>';        
                 return $btn;
             })
             ->rawColumns(['actions', 'name'])
             ->make(true);
     }
 
-    public function download(Form $form, Target $target){
-        $data = $target->form()->with(['instruments.questions' => function($q) use ($target){
+    
+
+    public function detail(Form $form, Target $target, Instrument $instrument){
+        $instrument->load(['questions' => function($q) use ($target){
             $q->when($target->type == 'responden' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
                 $q->with(['userAnswers' => function($q) use ($target){
-                    $q->whereRespondentId($target->respondent->id);
+                    $q->byRespondent($target->respondent);
                 }]);
-            })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+            })->when($target->type == 'petugas MONEV' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
                 $q->with(['officerAnswer' => function($q) use ($target){
                     $q->whereTargetId($target->id);
                 }]);
             });
-        },'instruments.questions.offeredAnswer'])
-        ->get(); 
-        return view('layouts.form.respondent',compact('data','target'));
+        },'questions.offeredAnswer']);
+        
+        return view($this->viewNamespace.'index',compact('form','target','instrument'));
     }
 }

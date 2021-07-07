@@ -28,6 +28,10 @@ class UserAnswer extends Model
         });
     }
 
+    public function scopeByRespondent($query, Respondent $respondent){
+        return $query->whereRespondentId($respondent->id);
+    }
+
     public function getScoreAttribute(){
         return $this->offeredAnswer()->exists() ? $this->offeredAnswer->score : 0;
     }

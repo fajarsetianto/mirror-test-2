@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header bg-success-600">
             <h6 class="modal-title font-weight-semibold">Tambah Sasaran Monitoring</h6>
@@ -23,7 +23,9 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$target->institutionable->name}}</td>
-                            <td>{{$target->officerName()}}</td>
+                            <td>
+                                @include('layouts.parts.officers',['officers' => $target->officers])
+                            </td>
                             <td>{{$target->type}}</td>
                         </tr>
                     @endforeach

@@ -82,7 +82,7 @@ class IndicatorReportController extends Controller
                 return $btn;
             })
             ->addColumn('officer_name', function($row){   
-                return $row->officerName();
+                return view('layouts.parts.officers',['officers' => $row->officers]);
             })
             ->addColumn('score', function($row){
                 return $row->respondent_score + $row->officer_score;
@@ -120,7 +120,7 @@ class IndicatorReportController extends Controller
                         break;
                 }
             })
-            ->rawColumns(['name','target','status','category'])
+            ->rawColumns(['name','target','status','category','officer_name'])
             ->make(true);
     }
 }

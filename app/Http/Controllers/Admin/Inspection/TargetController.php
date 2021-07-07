@@ -7,6 +7,7 @@ use App\Models\Form;
 use App\Models\Target;
 use Illuminate\Http\Request;
 use DataTables;
+use PDF;
 
 class TargetController extends Controller
 {
@@ -29,7 +30,7 @@ class TargetController extends Controller
             return $row->institutionable->name;
         })
         ->addColumn('officer_name', function($row){   
-            return $row->officerName();
+            return view('layouts.parts.officers',['officers' => $row->officers]);
         })
         ->addColumn('status', function($row){   
             switch($row->type){
@@ -80,8 +81,25 @@ class TargetController extends Controller
                 return $btn;
         })
         
-        ->rawColumns(['status','actions'])
+        ->rawColumns(['status','actions','officer_name'])
         ->make(true);
+    }
+
+    public function download(Form $form, Target $target){
+        $form->load(['instruments.questions' => function($q) use ($target){
+            $q->when($target->type == 'responden' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+                $q->with(['userAnswers' => function($q) use ($target){
+                    $q->whereRespondentId($target->respondent->id);
+                }]);
+            })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+                $q->with(['officerAnswer' => function($q) use ($target){
+                    $q->whereTargetId($target->id);
+                }]);
+            });
+        },'instruments.questions.offeredAnswer']); 
+        $pdf = PDF::loadView('layouts.form.index', compact('form','target'));
+        return $pdf->download('Monev '.$form->name.' pada '.$target->institutionable->name.'.pdf');
+        // return view('layouts.form.index', compact('form','target'));
     }
 
     

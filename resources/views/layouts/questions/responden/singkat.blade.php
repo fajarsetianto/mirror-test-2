@@ -10,12 +10,13 @@
                 </div>
                 <div class="form-group alpaca-field alpaca-field-text alpaca-optional alpaca-autocomplete alpaca-edit alpaca-top alpaca-field-valid" data-alpaca-field-id="alpaca5" data-alpaca-field-path="/" data-alpaca-field-name="">
                     <label class="pt-2 control-label alpaca-control-label">Jawaban</label>
-                    @if($item->userAnswers->isNotEmpty())
-                        <p>
-                            {{$item->userAnswers->first()->answer}}
-                        </p>
+                    @if($item->relationLoaded('userAnswers'))
+                        @if($item->userAnswers->isNotEmpty())
+                            <p>
+                                {{$item->userAnswers->first()->answer}}
+                            </p>
+                        @endif
                     @endif
-                    
                 </div>
             </div>
         </div>

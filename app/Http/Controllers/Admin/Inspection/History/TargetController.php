@@ -29,7 +29,7 @@ class TargetController extends Controller
                 return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
-                return $row->officerName();
+                return view('layouts.parts.officers',['officers' => $row->officers]);
             })
             ->addColumn('status', function($row){   
                 switch($row->type){
@@ -80,7 +80,7 @@ class TargetController extends Controller
                 return $btn;
             })
             
-            ->rawColumns(['actions','status'])
+            ->rawColumns(['actions','status','officer_name'])
             ->make(true);
     }
 

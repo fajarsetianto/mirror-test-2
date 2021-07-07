@@ -12,8 +12,12 @@
                     <label class="pt-2 control-label alpaca-control-label">Jawaban</label>
                     <ul>
                         @foreach($item->offeredAnswer as $offeredAnswer)
-                            @if(in_array($offeredAnswer->id,$item->userAnswer->pluck('offered_answer_id')->toArray()))
-                                <li class="text-success font-weight-bold">{{$offeredAnswer->value}} <span class="badge badge-success"> {{$offeredAnswer->score}}</span></li>
+                            @if($item->relationLoaded('officerAnswer'))
+                                @if(in_array($offeredAnswer->id,$item->officerAnswer->pluck('offered_answer_id')->toArray()))
+                                    <li class="text-success font-weight-bold">{{$offeredAnswer->value}} <span class="badge badge-success"> {{$offeredAnswer->score}}</span></li>
+                                @else
+                                    <li>{{$offeredAnswer->value}} <span class="badge badge-secondary"> {{$offeredAnswer->score}}</span></li>
+                                @endif
                             @else 
                                 <li>{{$offeredAnswer->value}} <span class="badge badge-secondary"> {{$offeredAnswer->score}}</span></li>
                             @endif
@@ -22,6 +26,6 @@
                 </div>
             </div>
         </div>
-        <div id="field-other" class="row"></div>
     </div>
 </div>
+    

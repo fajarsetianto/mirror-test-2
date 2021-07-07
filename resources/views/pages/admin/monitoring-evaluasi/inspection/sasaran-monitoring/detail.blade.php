@@ -124,7 +124,7 @@
 			</div> 
 			<div class="header-elements d-none">
 				<div class="d-flex">
-					<button href="#" class="mr-3 btn bg-purple "><i class="icon-download"></i> <span>Unduh</span></button>
+					<a target="_blank" href="{{route('admin.monev.inspection.form.download',[$form->id,$target->id])}}" class="mr-3 btn bg-purple "><i class="icon-download"></i> <span>Unduh</span></a>
 				</div>
 			</div>
 		</div>
@@ -212,60 +212,51 @@
 	</div>
 </div>
 
-<div class="card">
-	<div class="card-header">
-		<h3 class="card-title font-weight-semibold">Catatan Petugas Monev</h3>
-	</div>
-	<div class="card-body">
-		<h6 class="font-weight-semibold">Lokasi</h6>
-		{Lokasi}
-		<h6 class="font-weight-semibold mt-3">Catatan</h6>
-		<div class="p-3" style="border:1px solid rgba(0,0,0,.125);border-radius: 5px">
-			asdadasd
+@if($target->officerLeader()->exists())
+	@php
+		$leader = $target->officerLeader()->first()->pivot;
+		$leader->load('officerNote');
+	@endphp
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title font-weight-semibold">Catatan Petugas Monev</h3>
 		</div>
-		<h6 class="font-weight-semibold mt-3">Lampiran</h6>
-		<div class="row">
-			<div class="col-md-6">
-				<div class="text-muted">Foto</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
-				</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
-				</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
-				</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
-				</div>
+		<div class="card-body">
+			<h6 class="font-weight-semibold">Lokasi</h6>
+			@if($leader->officerNote->where('type','location')->isNotEmpty())
+				{{$leader->officerNote->where('type','location')->first()->value}}
+			@endif
+			<h6 class="font-weight-semibold mt-3">Catatan</h6>
+			<div class="p-3" style="border:1px solid rgba(0,0,0,.125);border-radius: 5px">
+			@if($leader->officerNote->where('type','note')->isNotEmpty())
+				{{$leader->officerNote->where('type','note')->first()->value}}
+			@endif
 			</div>
-			<div class="col-md-6">
-				<div class="text-muted">File PDF</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+			<h6 class="font-weight-semibold mt-3">Lampiran</h6>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="text-muted">Foto</div>
+					@foreach($leader->officerNote->where('type','photo') as $photo)
+						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
+							<a href="">{{$photo->value}}</a>
+							<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+						</div>
+					@endforeach
+					
 				</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
-				</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
-				</div>
-				<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-					<a href="">File Format</a>
-					<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+				<div class="col-md-6">
+					<div class="text-muted">File PDF</div>
+					@foreach($leader->officerNote->where('type','pdf') as $pdf)
+						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
+							<a href="">{{$pdf->value}}</a>
+							<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+						</div>
+					@endforeach
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+@endif
 @endsection
 @push('scripts-bottom')
 	<x-modal></x-modal>
