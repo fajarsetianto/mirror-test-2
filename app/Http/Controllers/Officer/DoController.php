@@ -34,7 +34,7 @@ class DoController extends Controller
 
     public function store(Request $request,OfficerTarget $officerTarget){
         $this->validate($request, [
-            'ipaddr' => 'string',
+            'ipaddr' => 'string|nullable',
             'note' => 'required|string',
             'photo_1' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'photo_2' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
