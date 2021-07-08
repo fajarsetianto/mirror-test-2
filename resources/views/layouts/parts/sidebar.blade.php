@@ -66,7 +66,7 @@
 						<li class="nav-item nav-item-submenu {{ (request()->is('admin/management-user*')) ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="mi-people"></i> <span>Manajemen User</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('admin.management-user.index')}}" class="nav-link {{ (request()->is('admin/management-user*')) ? 'active' : '' }}">List User</a></li>
+								<li class="nav-item"><a href="{{route('admin.management-user.index')}}" class="nav-link {{ (request()->is('admin/management-user*')) ? 'active' : '' }}">Petugas MONEV</a></li>
 							</ul>
 						</li>
 						<li class="nav-item nav-item-submenu {{ (request()->is('admin/management-lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">

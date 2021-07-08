@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\Admin\Inspection\History;
+namespace  App\Http\Controllers\SuperAdmin\Inspection\History;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
@@ -11,7 +11,7 @@ use DataTables;
 
 class InstrumentController extends Controller
 {
-    protected $viewNamespace = "pages.admin.monitoring-evaluasi.inspection-history.instrument.";
+    protected $viewNamespace = "pages.super-admin.monitoring-evaluasi.inspection-history.instrument.";
 
     public function data(Form $form, Target $target){
         $target->load('respondent');
@@ -20,7 +20,7 @@ class InstrumentController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($target){   
-                $link = '<a href="'.route('admin.monev.inspection-history.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('superadmin.monev.inspection-history.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('questions_count', function($row){   

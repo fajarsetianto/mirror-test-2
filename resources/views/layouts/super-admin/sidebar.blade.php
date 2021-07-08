@@ -49,36 +49,35 @@
 						<!-- Main -->
 						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
 						<li class="nav-item" >
-							<a href="{{route('superadmin.dashboard')}}" class="nav-link {{ (request()->is('/superadmin')) ? 'active' : '' }}">
+							<a href="{{route('superadmin.dashboard')}}" class="nav-link {{ (request()->routeIs('superadmin.dashboard')) ? 'active' : ''}}">
 								<i class="mi-home"></i>
 								<span>Dashboard</span>
 							</a>
 						</li>
-						{{-- <li class="nav-item nav-item-submenu {{ (request()->is('monitoring-evaluasi/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
+						<li class="nav-item nav-item-submenu {{ request()->routeIs('superadmin.monev.*') ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="mi-find-in-page"></i> <span>Monitoring & Evaluasi</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('admin.monev.form.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/form*')) ? 'active' : '' }}">Form MONEV</a></li>
-								<li class="nav-item"><a href="{{route('admin.monev.inspection.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/pemeriksaan*')) ? 'active' : '' }}">Pemeriksaan</a></li>
-								<li class="nav-item"><a href="{{route('admin.monev.inspection-history.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/riwayat-pemeriksaan*')) ? 'active' : '' }}">Riwayat Pemeriksaan</a></li>
-								<li class="nav-item"><a href="{{route('admin.monev.indicator-report.index')}}" class="nav-link {{ (request()->is('monitoring-evaluasi/laporan-indikator*')) ? 'active' : '' }}">Laporan Indikator</a></li>
+								<li class="nav-item"><a href="{{route('superadmin.monev.inspection.index')}}" class="nav-link {{ request()->routeIs('superadmin.monev.inspection.*') ? 'active' : '' }}">Pemeriksaan</a></li>
+								<li class="nav-item"><a href="{{route('superadmin.monev.inspection-history.index')}}" class="nav-link {{ request()->routeIs('superadmin.monev.inspection-history.*') ? 'active' : '' }}">Riwayat Pemeriksaan</a></li>
+								<li class="nav-item"><a href="{{route('superadmin.monev.indicator-report.index')}}" class="nav-link {{ request()->routeIs('superadmin.monev.indicator-report.*') ? 'active' : '' }}">Laporan Indikator</a></li>
 							</ul>
-						</li> --}}
-						<li class="nav-item nav-item-submenu {{ (request()->is('superadmin/management-user*')) ? 'nav-item-expanded nav-item-open' : '' }}">
+						</li>
+						<li class="nav-item nav-item-submenu {{ request()->routeIs('superadmin.management-user.*') ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="mi-people"></i> <span>Manajemen User</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
 								<li class="nav-item"><a href="{{route('superadmin.management-user.admin.index')}}" class="nav-link {{ (request()->is('superadmin/management-user/admin*')) ? 'active' : '' }}">List Admin</a></li>
 								<li class="nav-item"><a href="{{route('superadmin.management-user.officer.index')}}" class="nav-link {{ (request()->is('superadmin/management-user/petugas-monev*')) ? 'active' : '' }}">List Petugas Monev</a></li>
 							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu {{ (request()->is('management-lembaga/*')) ? 'nav-item-expanded nav-item-open' : '' }}">
+						<li class="nav-item nav-item-submenu {{ request()->routeIs('superadmin.institution.*') ? 'nav-item-expanded nav-item-open' : '' }}">
 							<a href="#" class="nav-link"><i class="mi-domain"></i> <span>Manajemen Lembaga</span></a>
 							<ul class="nav nav-group-sub" data-submenu-title="Layouts">
-								<li class="nav-item"><a href="{{route('admin.institution.satuan.index')}}" class="nav-link {{ (request()->is('management-lembaga/satuan-pendidikan*')) ? 'active' : '' }}">Satuan Pendidikan</a></li>
-								<li class="nav-item"><a href="{{route('admin.institution.non-satuan.index')}}" class="nav-link {{ (request()->is('management-lembaga/non-satuan-pendidikan*')) ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
+								<li class="nav-item"><a href="{{route('superadmin.institution.satuan.index')}}" class="nav-link {{ request()->routeIs('superadmin.institution.satuan*') ? 'active' : '' }}">Satuan Pendidikan</a></li>
+								<li class="nav-item"><a href="{{route('superadmin.institution.non-satuan.index')}}" class="nav-link {{ request()->routeIs('superadmin.institution.non-satuan*') ? 'active' : '' }}">Non Satuan Pendidikan</a></li>
 							</ul>
 						</li>
-						<li class="nav-item" >
-							<a href="#" class="nav-link">
+						<li class="nav-item " >
+							<a href="{{route('superadmin.setting.index')}}" class="nav-link {{ (request()->routeIs('superadmin.setting.*')) ? 'active' : ''}}">
 								<i class="icon-cog3"></i>
 								<span>Setting</span>
 							</a>

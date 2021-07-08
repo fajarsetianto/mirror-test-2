@@ -15,13 +15,13 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Nama</label>
                     <div class="col-md-9">
-                        <input type="text" required class="form-control" @isset($item) value="{{$item->name}}" @endisset name="name" placeholder="Nama Petugas">
+                        <input type="text" required class="form-control" @isset($item) value="{{$item->name}}" @endisset name="name" placeholder="Nama Admin">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Email</label>
                     <div class="col-md-9">
-                        <input type="email" required class="form-control" @isset($item) value="{{$item->email}}" @endisset name="email" placeholder="Email Petugas">
+                        <input type="email" required class="form-control" @isset($item) value="{{$item->email}}" @endisset name="email" placeholder="Email Admin">
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">

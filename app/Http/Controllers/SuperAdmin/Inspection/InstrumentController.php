@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\Admin\Inspection\History;
+namespace  App\Http\Controllers\SuperAdmin\Inspection;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
@@ -11,16 +11,16 @@ use DataTables;
 
 class InstrumentController extends Controller
 {
-    protected $viewNamespace = "pages.admin.monitoring-evaluasi.inspection-history.instrument.";
-
+    protected $viewNamespace = "pages.super-admin.monitoring-evaluasi.inspection.instrument.";
+    
     public function data(Form $form, Target $target){
         $target->load('respondent');
         $respondent = $target->respondent;
         $data = $form->instruments()->latest();
         return DataTables::of($data)
             ->addIndexColumn()
-            ->addColumn('name', function($row) use($target){   
-                $link = '<a href="'.route('admin.monev.inspection-history.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'">'.strtoupper($row->name).'</a>';     
+            ->addColumn('name', function($row) use ($target){   
+                $link = '<a href="'.route('superadmin.monev.inspection.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('questions_count', function($row){   
@@ -32,13 +32,15 @@ class InstrumentController extends Controller
             ->addColumn('score', function($row) use ($target, $form){   
                 return $target->score($row);
             })
-            ->addColumn('actions', function($row) use ($form){   
-                $btn = '<button class="edit btn btn-success btn-sm">Lihat Detail</button>';        
+            ->addColumn('actions', function($row) use ($form,$target){   
+                $btn = '<a href="'.route('superadmin.monev.inspection.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'"class="edit btn btn-success btn-sm">Lihat Detail</a>';        
                 return $btn;
             })
             ->rawColumns(['actions', 'name'])
             ->make(true);
     }
+
+    
 
     public function detail(Form $form, Target $target, Instrument $instrument){
         $instrument->load(['questions' => function($q) use ($target){
@@ -52,6 +54,7 @@ class InstrumentController extends Controller
                 }]);
             });
         },'questions.offeredAnswer']);
+        
         return view($this->viewNamespace.'index',compact('form','target','instrument'));
     }
 }

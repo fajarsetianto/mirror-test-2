@@ -1,21 +1,23 @@
 @extends('layouts.super-admin.full')
 
-@section('site-title','Management Admin')
-
+@section('site-title','Form Instrument Monitoring dan Evaluasi')
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/pnotify.min.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.js')}}"></script>
+	<script src="{{asset('assets/global/js/plugins/pickers/pickadate/picker.date.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/notifications/sweet_alert.min.js')}}"></script>
 	<script>
 		$(document).ready(function(){
+			
 			instanceDatatable = $('.datatable').DataTable({
 					pageLength : 10,
 					lengthMenu: [[5, 10, 20], [5, 10, 20]],
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("superadmin.management-user.officer.data") !!}',
+					ajax: '{!! route("superadmin.monev.inspection.form.data",[$form->id]) !!}',
 					columns: [
 					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
@@ -23,8 +25,9 @@
 						}
 					},
 					{data: 'name', name: 'name'},
-					{data: 'email', name: 'email'},
-					{data: 'createdBy', name: 'createdBy'},
+					{data: 'officer_name', name: 'officer_name'},
+                    {data: 'type', name: 'type'},
+					{data: 'status', name: 'status',searchable: false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -116,40 +119,41 @@
 	<div class="page-header page-header-light">
 		<div class="page-header-content header-elements-md-inline">
 			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Management User</span> - Petugas MONEV</h4>
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Monitoring & Evaluasi</span> - Riwayat Pemeriksaan</h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('admin.management-user') }}				
+		{{ Breadcrumbs::render('admin.monev.inspection-history.form',$form) }}				
 	</div>
 @endsection
 @section('content')
 <div class="content">
-	<div class="card">
-		<div class="card-header header-elements-inline">
-			<h6 class="card-title font-weight-semibold">Daftar Admin</h6>
-		</div>
-		<hr class="m-0">
-		<div class="card-body">
-			<table class="table datatable">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Nama</th>
-						<th>Email</th>
-						<th>Didaftarkan Oleh</th>
-						{{-- <th>Kategori Satuan Pendidikan</th> --}}
-						{{-- <th>Status</th> --}}
-						<th class="text-center">Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
+
+@include('pages.admin.monitoring-evaluasi.form.parts.header')
+
+<div class="card">
+	<div class="card-header header-elements-inline">
+		<h6 class="card-title font-weight-semibold">Progress Pemeriksaan Monitoring dan Evaluasi</h6>
+	</div>
+	<hr class="m-0">
+	<div class="card-body">
+		<table class="table datatable">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Sasaran Monitoring</th>
+                    <th>Nama Petugas</th>
+                    <th>Pengisi Form</th>
+					<th>Status</th>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
 	</div>
 </div>
-
+</div>
 @endsection
 @push('scripts-bottom')
 	<x-modal></x-modal>

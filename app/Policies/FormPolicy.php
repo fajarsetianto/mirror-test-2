@@ -10,7 +10,7 @@ class FormPolicy
 {
     public function manage(User $user, Form $form)
     {
-        return $form->createdBy->is($user)
+        return $form->createdBy->is($user) || $user->isSuperAdmin()
             ? Response::allow()
             : Response::deny('You do not own this form.');
     }

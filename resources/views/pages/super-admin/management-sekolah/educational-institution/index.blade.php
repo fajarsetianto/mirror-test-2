@@ -15,7 +15,7 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("admin.institution.satuan.data") !!}',
+					ajax: '{!! route("superadmin.institution.satuan.data") !!}',
 					columns: [
 						{data: null,sortable: false, searchable: false,
 							render: function (data, type, row, meta) {
@@ -56,6 +56,7 @@
 	</div>
 @endsection
 @section('content')
+<div class="content">
 <div class="card">
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title font-weight-semibold">Daftar Lembaga Satuan Pendidikan</h6>
@@ -78,5 +79,6 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </div>
 @endsection

@@ -1,6 +1,6 @@
 <?php
 
-namespace  App\Http\Controllers\Admin;
+namespace  App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use DataTables;
 
 class IndicatorReportController extends Controller
 {
-    protected $viewNamespace = "pages.admin.monitoring-evaluasi.indicator-report.";
+    protected $viewNamespace = "pages.super-admin.monitoring-evaluasi.indicator-report.";
 
     public function index(){
         return view($this->viewNamespace.'index');
@@ -26,18 +26,16 @@ class IndicatorReportController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()
-                    ->forms()
-                    ->published();
+        $data = Form::published();
                     // ->expired();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('admin.monev.indicator-report.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('superadmin.monev.indicator-report.detail',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('target', function($row){   
-                $link = '<button onclick="component(`'.route('admin.monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
+                $link = '<button onclick="component(`'.route('superadmin.monev.form.target.summary',[$row->id]).'`)" class="edit btn btn-success btn-sm">Lihat Sasaran Monitoring</button>';     
                 return $link;
             })
             ->addColumn('actions', function($row){   
