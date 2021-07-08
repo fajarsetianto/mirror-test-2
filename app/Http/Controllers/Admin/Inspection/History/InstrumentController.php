@@ -32,8 +32,8 @@ class InstrumentController extends Controller
             ->addColumn('score', function($row) use ($target, $form){   
                 return $target->score($row);
             })
-            ->addColumn('actions', function($row) use ($form){   
-                $btn = '<button class="edit btn btn-success btn-sm">Lihat Detail</button>';        
+            ->addColumn('actions', function($row) use ($form,$target){   
+                $btn = '<a href="'.route('admin.monev.inspection-history.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'" class="edit btn btn-success btn-sm">Lihat Detail</a>';        
                 return $btn;
             })
             ->rawColumns(['actions', 'name'])
