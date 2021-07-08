@@ -238,8 +238,8 @@
 					<div class="text-muted">Foto</div>
 					@foreach($leader->officerNote->where('type','photo') as $photo)
 						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-							<a href="">{{$photo->value}}</a>
-							<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+							<a href="{{asset('data_file_note/'.$photo->value)}}">{{$photo->value}}</a>
+							<a href="{{asset('data_file_note/'.$photo->value)}}" target="_blank" class="btn btn-primary"><i class="icon-download"></i> Unduh</a>
 						</div>
 					@endforeach
 					
@@ -248,8 +248,8 @@
 					<div class="text-muted">File PDF</div>
 					@foreach($leader->officerNote->where('type','pdf') as $pdf)
 						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-							<a href="">{{$pdf->value}}</a>
-							<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+							<a href="{{asset('data_file_note/'.$pdf->value)}}">{{$pdf->value}}</a>
+							<a href="{{asset('data_file_note/'.$pdf->value)}}" target="_blank"  class="btn btn-primary"><i class="icon-download"></i> Unduh</a>
 						</div>
 					@endforeach
 				</div>
