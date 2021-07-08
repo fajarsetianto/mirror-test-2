@@ -61,6 +61,12 @@
                         <li class="nav-item"><a href="{{route('officer.monev.inspection-history.index')}}" class="nav-link {{ (request()->is('petugas/monitoring-evaluasi/riwayat-pemeriksaan*')) ? 'active' : '' }}">Riwayat Pemeriksaan MONEV</a></li>
                     </ul>
                 </li>
+                <li class="nav-item" >
+                    <a href="{{route('officer.setting.index')}}" class="nav-link {{ (request()->is('petugas/pengaturan/*')) ? 'active' : '' }}">
+                        <i class="icon-cog3"></i>
+                        <span>Setting</span>
+                    </a>
+                </li>
                 <!-- /page kits -->
 
             </ul>

@@ -75,8 +75,10 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
                 Route::get('/', 'TargetController@index')->name('index');
                 Route::get('data', 'TargetController@data')->name('data');
                 Route::get('/sasaran-monitoring/{target}', 'TargetController@detail')->name('detail');
+                Route::get('/sasaran-monitoring/{target}/download', 'TargetController@download')->name('download');
                 Route::group(['prefix' => '{target}', 'as' => 'instrument.'], function(){
                     Route::get('data', 'InstrumentController@data')->name('data');
+                    Route::get('detail/{instrument}', 'InstrumentController@detail')->name('detail');
                 });
             });
         });
@@ -90,6 +92,7 @@ Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
                 Route::get('/sasaran-monitoring/{target}', 'TargetController@detail')->name('detail');
                 Route::group(['prefix' => '{target}', 'as' => 'instrument.'], function(){
                     Route::get('data', 'InstrumentController@data')->name('data');
+                    Route::get('detail/{instrument}', 'InstrumentController@detail')->name('detail');
                 });
             });
         });
@@ -140,5 +143,9 @@ Route::group(['prefix' => 'management-user','as' => 'management-user.'], functio
         Route::put('{officer}/update', 'OfficerController@update')->name('update');
         Route::delete('{officer}', 'OfficerController@destroy')->name('destroy');
     });
-    
+});
+
+Route::group(['prefix' => 'pengaturan','as' => 'setting.'], function(){
+    Route::get('/', 'SettingController@index')->name('index');
+    Route::put('/update', 'SettingController@update')->name('update');
 });

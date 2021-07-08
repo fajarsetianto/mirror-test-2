@@ -78,8 +78,9 @@ class OfficerController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->officers()->latest();
+        $data = Officer::latest();
         return DataTables::of($data)
+            
             ->addIndexColumn()
             ->addColumn('actions', function($row){   
                 $btn = '<div class="list-icons">
@@ -89,9 +90,6 @@ class OfficerController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('admin.management-user.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.management-user.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
-                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>
                 </div>
             </div>';     
@@ -110,4 +108,6 @@ class OfficerController extends Controller
                 ->paginate(10);
         return response()->json($data);
     }
+
+
 }

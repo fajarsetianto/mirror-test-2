@@ -42,7 +42,6 @@ class InspectionHistoryController extends Controller
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="'.route('admin.monev.inspection-history.form.index',[$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
                         <a href="javascript:void(0)" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.monev.form.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                     </div>
                 </div>
             </div>';     

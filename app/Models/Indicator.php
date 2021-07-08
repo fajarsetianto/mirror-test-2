@@ -19,21 +19,19 @@ class Indicator extends Model
 
     // PERHATIAN
     // RELASI INI TIDAK BISA DIGUNAKAN BERSAMA EAGERLOAD
-    public function targetsWithScore(){
+
+    public function targetsIn(){
         $min = $this->minimum;
         $max = $this->maximum;
-        $having = 'scores >= '.$min.' and scores <= '.$max;
-        return $this->targets()->withAndWhereHas('respondent',function($q) use ($having){
-                    $q->withCount([
-                        'answers as scores' => function($q){
-                                $q->leftJoin('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
-                                    ->select(DB::raw('SUM(score)'));
-                                }
-                    ])
-                    ->havingRaw($having);
-                });
+        return $this->targets()->addScores()
+        ->groupBy('targets.id')
+        ->havingRaw('SUM(
+            respondent_score + officer_score
+        ) >= '.$min)
+        ->havingRaw('SUM(
+            respondent_score + officer_score
+        ) <= '.$max);
     }
-
     
 }
 

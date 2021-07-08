@@ -25,7 +25,6 @@ Route::group(['middleware' => ['auth:respondent','responden.name']], function(){
                 Route::get('/','QuestionController@index')->name('index');
                 Route::post('/','QuestionController@store')->name('store');
                 Route::get('/show','QuestionController@show')->name('show');
-
             });
         });
     });

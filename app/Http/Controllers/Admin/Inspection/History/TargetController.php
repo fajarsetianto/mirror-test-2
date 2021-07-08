@@ -29,7 +29,7 @@ class TargetController extends Controller
                 return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
-                return $row->officerName();
+                return view('layouts.parts.officers',['officers' => $row->officers]);
             })
             ->addColumn('status', function($row){   
                 switch($row->type){
@@ -41,7 +41,12 @@ class TargetController extends Controller
                         }
                         break;
                     case 'petugas MONEV':
-                        return '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        if($row->isSubmitedByOfficer()){
+                            $res = '<span class="badge badge-success">Sudah Dikerjakan</span>';
+                        }else{
+                            $res = '<span class="badge badge-warning">Belum Dikerjakan</span>';
+                        }
+                        return $res;
                         break;
                     case 'responden & petugas MONEV':
                         if($row->respondent->isSubmited()){
@@ -75,7 +80,7 @@ class TargetController extends Controller
                 return $btn;
             })
             
-            ->rawColumns(['actions','status'])
+            ->rawColumns(['actions','status','officer_name'])
             ->make(true);
     }
 

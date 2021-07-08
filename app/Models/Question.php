@@ -27,6 +27,10 @@ class Question extends Model
     public function userAnswer(){
         return $this->hasOne(UserAnswer::class);
     }
+
+    public function userAnswers(){
+        return $this->hasMany(UserAnswer::class);
+    }
     
     public function scopeByTargetId($query, $id){
         return $query->whereHas('officerAnswer', function($q) use($id){
@@ -34,7 +38,7 @@ class Question extends Model
         });
     }
 
-    public function officerAnswer(){
+    public function officerAnswer(){ 
         return $this->hasMany(OfficerAnswer::class);
     }
     

@@ -150,7 +150,7 @@ class TargetController extends Controller
                 return $row->institutionable->name;
             })
             ->addColumn('officer_name', function($row){   
-                return $row->officerName();
+                return view('layouts.parts.officers',['officers' => $row->officers]);
             })
             ->addColumn('actions', function($row) use ($form){   
                 $btn = '<div class="list-icons">
@@ -169,7 +169,7 @@ class TargetController extends Controller
                 return $form->isEditable() ? $btn : '';
             })
             
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions','officer_name'])
             ->make(true);
     }
 
