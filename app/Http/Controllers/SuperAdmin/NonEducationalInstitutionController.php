@@ -82,7 +82,7 @@ class NonEducationalInstitutionController extends Controller
     }
 
     public function data(){
-        $data = auth()->user()->institutions()->latest();
+        $data = NonEducationalInstitution::latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('actions', function($row){   
@@ -100,6 +100,9 @@ class NonEducationalInstitutionController extends Controller
                 </div>
             </div>';     
                 return $btn;
+            })
+            ->addColumn('createdBy', function($row){   
+                return $row->createdBy->name;
             })
             ->rawColumns(['actions'])
             ->make(true);

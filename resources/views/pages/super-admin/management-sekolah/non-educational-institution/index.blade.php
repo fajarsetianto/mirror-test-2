@@ -29,6 +29,7 @@
 					{data: 'province', name: 'province'},
                     {data: 'city', name: 'city'},
                     {data: 'headmaster', name: 'headmaster'},
+					{data: 'createdBy', name: 'createdBy',searchable: false},
 					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
@@ -149,6 +150,7 @@
                     <th>Provinsi</th>
                     <th>Kabupaten / Kota</th>
                     <th>Nama Kepala Lembaga</th>
+					<th>Dibuat Oleh</th>
 					<th class="text-center">Actions</th>
 				</tr>
 			</thead>
