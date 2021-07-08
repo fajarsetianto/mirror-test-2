@@ -74,10 +74,16 @@
     @if($item->relationLoaded('officerAnswer'))
         @if($item->officerAnswer->where('discrepancy','!=',null)->isNotEmpty())
             <div class="col-md-12">
-                Perbedaan
-                <p class="bodered">
-                    {{$item->officerAnswer->where('discrepancy','!=',null)->first()->discrepancy}}
-                </p>
+                <div class="card border-left-teal">
+                    <div class="card-header">
+                        <span class="text-muted">Perbedaan</span> 
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            {{$item->officerAnswer->where('discrepancy','!=',null)->first()->discrepancy}}
+                        </p>
+                    </div>
+                </div>
             </div>
         @endif
     @endif
