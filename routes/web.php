@@ -53,16 +53,33 @@ Route::get('/debug', function(){
     // dd(Target::first()->respondentScore());
 
     $form = Form::first();
+    DB::enableQueryLog();
+    // $data = $form->indicators()->with(['targets' => function($q){
+    //     $q->whereHas('officerLeader.answers.offeredAnswer', function($q){
+    //         $q->select(DB::raw("SUM(score) as scores"))
+    //             ->having('scores','>=','indicators.min')
+    //             ->having('scores','<=','indicators.max');
+    //     })->orWhereHas('respondent.answers.offeredAnswer',function($q){
+    //         $q->select(DB::raw("SUM(score) as scores"))
+    //             ->havingRaw('scores <= ?',[1]);
+    //         });
+    // }])->get();
     $data = $form->indicators()->with(['targets' => function($q){
-        $q->whereHas('officerLeader.answers.offeredAnswer', function($q){
-            $q->select(DB::raw("SUM(score) as scores"))
+        $q->whereHas('officerLeader.answers', function($q){
+            $q->join('offered_answers','officer_answers.offered_answer_id','offered_answers.id')
+                ->select(DB::raw("SUM(offered_answers.score) as scores"))
                 ->having('scores','>=','indicators.min')
                 ->having('scores','<=','indicators.max');
-        })->orWhereHas('respondent.answers.offeredAnswer',function($q){
-            $q->select(DB::raw("SUM(score) as scores"))
-                ->havingRaw('scores <= ?',[1]);
+            })
+        ->orWhereHas('respondent.answers', function($q){
+            $q->join('offered_answers','user_answers.offered_answer_id','offered_answers.id')
+                ->select(DB::raw("SUM(offered_answers.score) as scores"))
+                ->having('scores','>=','indicators.min')
+                ->having('scores','<=','indicators.max');
             });
-    }])->toSql();
+    }])->get();
+    // $query_dump = DB::getQueryLog();
+    // dd($query_dump);
 
     dd($data);
 });

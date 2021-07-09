@@ -26,7 +26,7 @@ class InspectionHistoryController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('respondent.form.question.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = strtoupper($row->name);     
                 return $link;
             })
             ->addColumn('question', function($row) use ($officerTarget){   
@@ -76,7 +76,7 @@ class InspectionHistoryController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('admin.monev.inspection.form.index',[$row->id]).'">'.strtoupper($row->form->name).'</a>';     
+                $link = strtoupper($row->form->name);     
                 return $link;
             })
             ->addColumn('target_name', function($row){   
