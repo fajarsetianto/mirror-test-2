@@ -211,7 +211,7 @@
 					<a href="{{route('admin.monev.form.instrument.preview',[$form->id])}}" class="mr-3 btn btn-success "><i class="mi-visibility"></i> <span>Preview</span></a>
 					<button onclick="component('{{route('admin.monev.form.target.summary',[$form->id])}}')" class="mr-3 btn bg-orange "><i class="mi-assignment-ind"></i> <span>Sasaran Monitoring</span></button>
 					@if($form->isEditable())
-						<button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan Draft</span></button>
+						{{-- <button href="#" class="mr-3 btn bg-purple-400 mx-y"><i class="mi-description"></i> <span>Simpan Draft</span></button> --}}
 						<button onclick="component('{{route('admin.monev.form.publish',[$form->id])}}')" class="btn btn-info"><i class="mi-assignment"></i> <span>Publish</span></button>
 					@endif
 				</div>
