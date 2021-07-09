@@ -91,7 +91,7 @@ class TargetController extends Controller
                 $q->with(['userAnswers' => function($q) use ($target){
                     $q->whereRespondentId($target->respondent->id);
                 }]);
-            })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+            })->when($target->type == 'petugas MONEV' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
                 $q->with(['officerAnswer' => function($q) use ($target){
                     $q->whereTargetId($target->id);
                 }]);

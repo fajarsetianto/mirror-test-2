@@ -64,23 +64,33 @@ Route::get('/debug', function(){
     //             ->havingRaw('scores <= ?',[1]);
     //         });
     // }])->get();
-    $data = $form->indicators()->with(['targets' => function($q){
-        $q->whereHas('officerLeader.answers', function($q){
-            $q->join('offered_answers','officer_answers.offered_answer_id','offered_answers.id')
-                ->select(DB::raw("SUM(offered_answers.score) as scores"))
-                ->having('scores','>=','indicators.min')
-                ->having('scores','<=','indicators.max');
-            })
-        ->orWhereHas('respondent.answers', function($q){
-            $q->join('offered_answers','user_answers.offered_answer_id','offered_answers.id')
-                ->select(DB::raw("SUM(offered_answers.score) as scores"))
-                ->having('scores','>=','indicators.min')
-                ->having('scores','<=','indicators.max');
-            });
-    }])->get();
+    // $data = $form->indicators()->with(['targets' => function($q){
+    //     $q->whereHas('officerLeader.answers', function($q){
+    //         $q->join('offered_answers','officer_answers.offered_answer_id','offered_answers.id')
+    //             ->select(DB::raw("SUM(offered_answers.score) as scores"))
+    //             ->havingRaw('scores >= indicators.min')
+    //             ->havingRaw('scores <= indicators.max');
+    //         })
+    //     ->orWhereHas('respondent.answers', function($q){
+    //         $q->join('offered_answers','user_answers.offered_answer_id','offered_answers.id')
+    //             ->select(DB::raw("SUM(offered_answers.score) as scores"))
+    //             ->havingRaw('scores >= indicators.min')
+    //             ->havingRaw('scores <= indicators.max');
+    //         });
+    // }])->get();
     // $query_dump = DB::getQueryLog();
     // dd($query_dump);
 
+    $data = $form->indicators()->with(['targets' => function($q){
+        
+        $q->with('customScore', function($q){
+            
+        });
+        $q->havingRaw('sum("customScore.score") > 0');
+    
+    }])->first()->targets[1];
+// $query_dump = DB::getQueryLog();
+    // dd($query_dump);
     dd($data);
 });
 

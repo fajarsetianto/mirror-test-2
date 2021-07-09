@@ -74,27 +74,69 @@ class Target extends Model
                 ->where('questions.instrument_id' , $instrument->id);
         }
         $officerScore = $officerScore->first()->score;
-        return $respondentScore + $officerScore;
+        switch($this->getAttribute('type')){
+            case 'responden':
+                return $respondentScore;
+                break;
+            default:
+                return $officerScore;
+                break;
+        }
+        // return $respondentScore + $officerScore;
     }
 
     public function scopeAddScores($q){
-        $q->addSelect([
-            'respondent_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
-                            ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
-                            ->join('respondents','respondents.id','=','user_answers.respondent_id')
-                            ->whereColumn('respondents.target_id', 'targets.id'),
-            'officer_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
-                    ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
-                    ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id')
-                    ->where('officer_targets.is_leader', true)
-                    ->whereColumn('officer_targets.target_id', 'targets.id')
-                    ->whereColumn('officer_answers.target_id', 'targets.id')
-        ]);
+        switch($this->getAttribute('type')){
+            case 'responden':
+                $q->addSelect([
+                    'score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+                                    ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
+                                    ->join('respondents','respondents.id','=','user_answers.respondent_id')
+                                    ->whereColumn('respondents.target_id', 'targets.id'),
+                ]);
+                break;
+            default:
+                $q->addSelect([
+                    'score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+                            ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
+                            ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id')
+                            ->where('officer_targets.is_leader', true)
+                            ->whereColumn('officer_targets.target_id', 'targets.id')
+                            ->whereColumn('officer_answers.target_id', 'targets.id')
+                ]);
+                break;
+        }
+        // $q->addSelect([
+        //     'respondent_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+        //                     ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')
+        //                     ->join('respondents','respondents.id','=','user_answers.respondent_id')
+        //                     ->whereColumn('respondents.target_id', 'targets.id'),
+        //     'officer_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0) as score')
+        //             ->join('officer_answers','offered_answers.id','=','officer_answers.offered_answer_id')
+        //             ->join('officer_targets','officer_targets.target_id','=','officer_answers.target_id')
+        //             ->where('officer_targets.is_leader', true)
+        //             ->whereColumn('officer_targets.target_id', 'targets.id')
+        //             ->whereColumn('officer_answers.target_id', 'targets.id')
+        // ]);
     }
 
     public function respondentScore(){
         return $this->respondent()->exists() ? 
             $this->respondent()->with('answers.offeredAnswer')->get()
         : 0;
+    }
+
+    public function customScore(){
+        switch($this->getAttribute('type')){
+            case 'responden':
+                return $this->hasManyThrough(UserAnswer::class,Respondent::class,'target_id','respondent_id','id','id')
+                    ->join('offered_answers','user_answers.offered_answer_id','=','offered_answers.id')->select('*');
+                break;
+            default:
+                return $this->hasManyThrough(OfficerAnswer::class,OfficerTarget::class,'target_id','target_id','id','target_id')
+                        ->where('officer_targets.is_leader',true)
+                        ->join('offered_answers','officer_answers.offered_answer_id','=','offered_answers.id')->select('*');
+                break;
+        }
     }
 }

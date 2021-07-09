@@ -25,12 +25,8 @@ class Indicator extends Model
         $max = $this->maximum;
         return $this->targets()->addScores()
         ->groupBy('targets.id')
-        ->havingRaw('SUM(
-            respondent_score + officer_score
-        ) >= '.$min)
-        ->havingRaw('SUM(
-            respondent_score + officer_score
-        ) <= '.$max);
+        ->havingRaw('score >= '.$min)
+        ->havingRaw('score <= '.$max);
     }
     
 }
