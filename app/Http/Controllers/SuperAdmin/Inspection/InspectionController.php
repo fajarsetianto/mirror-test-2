@@ -28,18 +28,7 @@ class InspectionController extends Controller
                 return $link;
             })
             ->addColumn('actions', function($row){   
-                $btn = '<div class="list-icons">
-                <div class="dropdown">
-                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                        <i class="icon-menu9"></i>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item" onclick="component(`'.route('superadmin.monev.inspection.form.index',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
-                    </div>
-                </div>
-            </div>';     
+                $btn = '<a href="'.route('superadmin.monev.inspection.form.index',[$row->id]).'" class="btn btn-info">Lihat Detail</a>';         
                 return $btn;
             })
             ->addColumn('status', function($row){   
