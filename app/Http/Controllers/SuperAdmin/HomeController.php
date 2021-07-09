@@ -4,6 +4,10 @@ namespace App\Http\Controllers\SuperAdmin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Officer;
+use App\Models\Form;
+use App\Models\NonEducationalInstitution;
+use App\Models\EducationalInstitution;
 
 class HomeController extends Controller
 {
@@ -17,6 +21,10 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        return view($this->viewNamespace.'dashboard');
+        $officerCount = Officer::count();
+        $formCount = Form::count();
+        $educationalCount = EducationalInstitution::count();
+        $nonEducationalCount = NonEducationalInstitution::count();
+        return view($this->viewNamespace.'dashboard',compact('officerCount','formCount','educationalCount','nonEducationalCount'));
     }
 }

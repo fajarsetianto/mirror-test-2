@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\EducationalInstitution;
 use App\Models\Form;
 use App\Models\Indicator;
+use App\Models\NonEducationalInstitution;
 use App\Models\OfferedAnswer;
+use App\Models\Officer;
 use App\Models\Respondent;
 use App\Models\Target;
 use App\Models\UserAnswer;
@@ -26,8 +29,12 @@ Route::group(['prefix' => 'auth'], function(){
 });
 
 Route::group(['middleware' => 'auth'], function(){
-    Route::get('/', function () {
-        return view('pages.admin.dashboard');
+    Route::get('/', function (){
+        $officerCount = Officer::whereCreatedBy(auth()->user()->id)->count();
+        $formCount = Form::whereCreatedBy(auth()->user()->id)->count();
+        $educationalCount = EducationalInstitution::count();
+        $nonEducationalCount = NonEducationalInstitution::whereCreatedBy(auth()->user()->id)->count();
+        return view('pages.admin.dashboard',compact('officerCount','formCount','educationalCount','nonEducationalCount'));
     });
 });
 

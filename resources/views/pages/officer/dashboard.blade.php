@@ -94,7 +94,6 @@
 							<div class="mr-3 align-self-center">
 								<i class="icon-enter6 icon-3x opacity-75"></i>
 							</div>
-
 							<div class="media-body text-right">
 								<h6 class="mb-0">{{$withRespondentCount}}</h6>
 								<span class="text-uppercase font-size-xs">Form Monitoring & Evaluasi</span>
