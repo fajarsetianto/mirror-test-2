@@ -9,9 +9,16 @@
 			@endif
         @endisset
 	</div>
-	
 	<div class="card-body">
 		{{$form->description}}
+	</div>
+	<div class="card-footer d-flex justify-content-between">
+		<div class="mr-4">
+			<span class="font-weight-bold">Jumlah Pertanyaan </span>: <span class="badge badge-info">{{$form->questions->count()}}</span>
+		</div>
+		<div class="mr-4">
+			<span class="font-weight-bold">Maksimal Skor</span>:  <span class="badge badge-info">{{$form->maxScore}}</span> 
+		</div>
 	</div>
 	<div class="card-footer bg-white d-flex align-items-center">
 		<div class="mr-4">
