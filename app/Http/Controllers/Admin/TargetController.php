@@ -4,11 +4,13 @@ namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
+use App\Models\Respondent;
 use App\Models\Target;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 class TargetController extends Controller
 {
     protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.sasaran-monitoring.";
@@ -63,12 +65,7 @@ class TargetController extends Controller
         }
 
         if($request->type == 'responden' || $request->type == 'responden & petugas MONEV'){
-            $newToken = sha1(time());
-            $newTarget->respondent()->create([
-                'token' => Hash::make($newToken),
-                'plain_token' => $newToken,
-                'target_id' => $newTarget->id
-            ]);
+            $this->createRespondent($newTarget);
         }
 
         return response()->json([
@@ -106,12 +103,7 @@ class TargetController extends Controller
         }
 
         if(($request->type == 'responden' || $request->type == 'responden & petugas MONEV') && !$target->respondent()->exists()){
-            $newToken = sha1(time());
-            $target->respondent()->create([
-                'token' => Hash::make($newToken),
-                'plain_token' => $newToken,
-                'target_id' => $target->id
-            ]);
+            $this->createRespondent($target);
         }else{
             $target->respondent()->delete();
         }
@@ -176,5 +168,17 @@ class TargetController extends Controller
     public function getInput(Form $form, Target $target){
         $users = auth()->user()->officers;
         return view($this->viewNamespace.'parts.petugas', compact('form','target','users'));
+    }
+
+    protected function createRespondent(Target $target){
+        $newToken = Str::random(10);
+        while(Respondent::wherePlainToken($newToken)->exists()){
+            $newToken = Str::random(10);
+        }
+        $target->respondent()->create([
+            'token' => Hash::make($newToken),
+            'plain_token' => $newToken,
+            'target_id' => $target->id
+        ]);
     }
 }

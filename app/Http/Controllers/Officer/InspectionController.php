@@ -17,14 +17,18 @@ class InspectionController extends Controller
 
     public function data(){
         $data = auth('officer')
-                    ->user()
-                    ->targets()
-                    ->wherePivotNull('submited_at')
-                    ->whereHas('form', function($item){
+                ->user()
+                ->targets()
+                ->whereHas('officerLeader',function($q){
+                    $q->where('officer_targets.submited_at', '=', null);
+                })
+                ->whereHas('form', function($item){
+                    $item->where(function($item){
                         $item->published()->valid();
-                    })
-                    ->with('form','institutionable')
-                    ->select(['targets.*','officer_targets.id as pivot_id']);
+                    });
+                })
+                ->with('form','institutionable')
+                ->select(['targets.*','officer_targets.id as pivot_id']);
                     
         return DataTables::of($data)
             ->addIndexColumn()
@@ -45,9 +49,9 @@ class InspectionController extends Controller
                 switch($row->type){
                     case 'responden':
                         if($row->respondent->isSubmited()){
-                            return '<span class="badge badge-success">Responden : Sudah Dikerjakan</span>';
+                            return '<span class="badge badge-success">Sudah Dikerjakan</span>';
                         }else{
-                            return '<span class="badge badge-warning">Responden : Belum Dikerjakan</span>';
+                            return '<span class="badge badge-warning">Belum Dikerjakan</span>';
                         }
                         break;
                     case 'petugas MONEV':
