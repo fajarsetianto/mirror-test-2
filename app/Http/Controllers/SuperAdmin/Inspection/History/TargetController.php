@@ -72,7 +72,7 @@ class TargetController extends Controller
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="'.route('superadmin.monev.inspection-history.form.detail',[$form->id,$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
-                        <a href="javascript:void(0)" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
+                        <a href="'.route('superadmin.monev.inspection.form.download',[$form->id,$row->id]).'" target="_blank" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
                     </div>
                 </div>
             </div>';     
