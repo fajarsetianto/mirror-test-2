@@ -83,7 +83,7 @@ class IndicatorReportController extends Controller
                 return view('layouts.parts.officers',['officers' => $row->officers]);
             })
             ->addColumn('score', function($row){
-                return $row->respondent_score + $row->officer_score;
+                return $row->score;
             })
             ->addColumn('status', function($row){   
                 switch($row->type){
