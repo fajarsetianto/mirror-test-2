@@ -210,9 +210,9 @@
 	</div>
 </div>
 
-@if($target->officerLeader()->exists())
+@if($target->officers->where('pivot.submited_at','<>',null)->isNotEmpty()) 
 	@php
-		$leader = $target->officerLeader()->first()->pivot;
+		$leader = $target->officers->where('pivot.submited_at','<>',null)->first()->pivot;
 		$leader->load('officerNote');
 	@endphp
 	<div class="card">

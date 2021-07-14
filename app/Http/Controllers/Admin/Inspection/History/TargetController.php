@@ -17,12 +17,14 @@ class TargetController extends Controller
     }
 
     public function detail(Form $form, Target $target){
-        $target->load('respondent');
+        $target->load(['institutionable','respondent','officers']);
         return view($this->viewNamespace.'detail', compact('form','target'));
     }
 
     public function data(Form $form){
-        $data = $form->targets()->latest();
+        $data = $form->targets()
+                ->with('officers','institutionable','respondent')
+                ->latest();
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($form){   

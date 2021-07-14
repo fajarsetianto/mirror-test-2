@@ -14,9 +14,11 @@ class InstrumentController extends Controller
     protected $viewNamespace = "pages.admin.monitoring-evaluasi.inspection-history.instrument.";
 
     public function data(Form $form, Target $target){
-        $target->load('respondent');
-        $respondent = $target->respondent;
-        $data = $form->instruments()->latest();
+        $data = $form->instruments()
+                    ->withTargetScore($target)
+                    ->with(['questions' => function($q){
+                        $q->withMaxScore();
+                    }])->latest();
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($target){   
@@ -24,13 +26,13 @@ class InstrumentController extends Controller
                 return $link;
             })
             ->addColumn('questions_count', function($row){   
-                return $row->questions()->count();
+                return $row->questions->count();
             })
             ->addColumn('max_score', function($row){   
-                return $row->maxScore();
+                return $row->questions->sum('max_score');
             })
-            ->addColumn('score', function($row) use ($target, $form){   
-                return $target->score($row);
+            ->addColumn('score', function($row){   
+                return $row->respondent_score + $row->officers_score;
             })
             ->addColumn('actions', function($row) use ($form,$target){   
                 $btn = '<a href="'.route('admin.monev.inspection-history.form.instrument.detail',[$row->form_id, $target->id, $row->id]).'" class="edit btn btn-success btn-sm">Lihat Detail</a>';        
@@ -51,7 +53,7 @@ class InstrumentController extends Controller
                     $q->whereTargetId($target->id);
                 }]);
             });
-        },'questions.offeredAnswer']);
+        },'questions.offeredAnswer','questions.questionType']);
         return view($this->viewNamespace.'index',compact('form','target','instrument'));
     }
 }

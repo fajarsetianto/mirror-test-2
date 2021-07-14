@@ -83,7 +83,10 @@ class InstrumentController extends Controller
     }
 
     public function data(Form $form){
-        $data = $form->instruments();
+        $data = $form->instruments()
+                ->with(['questions' => function($q){
+                    $q->withMaxScore();
+                }]);
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
@@ -91,10 +94,10 @@ class InstrumentController extends Controller
                 return $link;
             })
             ->addColumn('questions', function($row){   
-                return $row->questions()->count();
+                return $row->questions->count();
             })
             ->addColumn('max_score', function($row){   
-                return $row->maxScore();
+                return $row->questions->sum('max_score');
             })
             ->addColumn('status', function($row){   
                 switch($row->status){

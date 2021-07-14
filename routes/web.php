@@ -3,6 +3,7 @@
 use App\Models\EducationalInstitution;
 use App\Models\Form;
 use App\Models\Indicator;
+use App\Models\Instrument;
 use App\Models\NonEducationalInstitution;
 use App\Models\OfferedAnswer;
 use App\Models\Officer;
@@ -102,9 +103,9 @@ Route::get('/debug', function(){
     //             ->havingRaw('scores <= ?',[100]);
     //     });
     // }])->get();
-    $data = $form->indicators()
-        ->get()[2]
-        ->targetsQualified;
+    // $data = $form->indicators()
+    //     ->get()[2]
+    //     ->targetsQualified;
         // ->targetsIn;
         // ->newTarget;
 
@@ -130,6 +131,14 @@ Route::get('/debug', function(){
     //             ->get();
     // $query_dump = DB::getQueryLog();
     // dd($query_dump); 
+    // $data = Instrument::first()->maxScore();
+
+    $data = Form::first()->max_score;
+    
+
     dd($data);
+    return $data;
+    // echo $data;
+    // dd($data);
 });
 

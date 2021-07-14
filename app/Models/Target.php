@@ -10,12 +10,12 @@ use App\Models\Instrument;
 class Target extends Model
 {
 
+    protected $guarded = [];
+
     public static $institutionalbeClass = [
         'non satuan pendidikan' => NonEducationalInstitution::class,
         'satuan pendidikan' => EducationalInstitution::class
     ];
-    
-    protected $guarded = [];
 
     public function form(){
         return $this->belongsTo(Form::class);
@@ -84,21 +84,16 @@ class Target extends Model
 
     public function score(Instrument $instrument = null){
         if($this->type == 'responden'){
-            return $this->respondentAnswers()
-                ->join('offered_answers','offered_answers.id','=','user_answers.offered_answer_id')
-                ->when($instrument, function($q) use ($instrument){
-                    $q->join('questions','offered_answers.question_id','=','questions.id')
-                        ->where('questions.instrument_id','=',$instrument->id);
-                })
-                ->sum('offered_answers.score');
-        }
-        return $this->officersAnswers()
+            $query = $this->respondentAnswers()
+                ->join('offered_answers','offered_answers.id','=','user_answers.offered_answer_id');
+        }else{
+            $query = $this->officersAnswers()
                 ->whereNotNull('officer_targets.submited_at')
-                ->join('offered_answers','offered_answers.id','=','officer_answers.offered_answer_id')
-                ->when($instrument, function($q) use ($instrument){
-                    $q->join('questions','offered_answers.question_id','=','questions.id')
-                        ->where('questions.instrument_id','=',$instrument->id);
-                })
-                ->sum('offered_answers.score');
+                ->join('offered_answers','offered_answers.id','=','officer_answers.offered_answer_id');
+        }
+        return $query->when($instrument, function($q) use ($instrument){
+            $q->join('questions','offered_answers.question_id','=','questions.id')
+                ->where('questions.instrument_id','=',$instrument->id);
+        })->sum('offered_answers.score');
     }
 }
