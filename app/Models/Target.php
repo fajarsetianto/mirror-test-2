@@ -63,7 +63,7 @@ class Target extends Model
         );
     }
 
-    public function scopeByInstrument($q, $min, $max){
+    public function scopeByIndicator($q, $min, $max){
         $q->addSelect([
             'respondent_score' => OfferedAnswer::selectRaw('COALESCE(sum(offered_answers.score), 0)')
                 ->join('user_answers','offered_answers.id','=','user_answers.offered_answer_id')

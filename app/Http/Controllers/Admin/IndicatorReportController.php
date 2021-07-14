@@ -68,7 +68,7 @@ class IndicatorReportController extends Controller
     
     public function detailIndicatorData(Form $form, Indicator $indicator){
         $data = $indicator->targets()
-                ->byInstrument($indicator->minimum, $indicator->maximum)
+                ->byIndicator($indicator->minimum, $indicator->maximum)
                 ->with('institutionable');
 
         return DataTables::of($data)
