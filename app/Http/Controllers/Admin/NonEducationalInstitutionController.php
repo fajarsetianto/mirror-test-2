@@ -108,7 +108,7 @@ class NonEducationalInstitutionController extends Controller
     public function select2(Request $request){
         $data = auth()->user()
                 ->institutions()
-                ->select('id','name')
+                ->select('id','name','email')
                 ->when($request->has('search'), function($query) use ($request){
                     $query->where('name','like','%'.$request->search.'%');
                 })

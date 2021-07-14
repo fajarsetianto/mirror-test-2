@@ -26,11 +26,12 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Pilih Lembaga</label>
                     <div class="col-md-9">
-                        <select class="form-control select2ajax" name="institutionable_id" required>
-                            @isset($item)
-                                <option value="{{$item->institutionable->id}}" selected="selected">{{$item->institutionable->name}}</option>
-                            @endisset
-                        </select>
+                        
+                            <select class="form-control select2ajax" name="institutionable_id" required>
+                                @isset($item)
+                                    <option value="{{$item->institutionable->id}}" data-email="{{$item->institutionable->email}}" selected="selected">{{$item->institutionable->name}}</option>
+                                @endisset
+                            </select>
                         
                         @if($form->category == 'non satuan pendidikan')
                             <div class="form-group text-center text-muted content-divider mb-0">
@@ -40,6 +41,14 @@
                         @endif
                     </div>
                 </div>
+                {{-- @if($form->category == 'satuan pendidikan') --}}
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Email Lembaga</label>
+                        <div class="col-md-9">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email Satuan Pendidikan" required @isset($item) @if($item->type != 'petugas MONEV' ) value="{{$item->respondent->email}}" @endif @endisset>
+                        </div>
+                    </div>
+                {{-- @endif --}}
                 <div id="dynamic-input-wrapper" @isset($item) @if($item->type == 'responden') style="display:none" @endif @else  style="display:none"  @endisset>
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Petugas Monev</label>
@@ -125,8 +134,9 @@
                 return {
                     results:  $.map(data.data, function (item) {
                         return {
-                        text: item.name,
-                        id: item.id
+                            text: item.name,
+                            id: item.id,
+                            email: item.email
                         }
                     }),
                     pagination: {
@@ -134,8 +144,9 @@
                     }
                 };
             },
-            cache: true
-        }
+            cache: true,
+            
+        },
     });
     $("#modal-form").on('submit', function (e) {
        e.preventDefault();
@@ -239,6 +250,10 @@
 
     })
 
+    $('select[name="institutionable_id"]').on('change', function (e) {
+        $('#email').val($(this).select2('data')[0].email)
+    });
+
    function getInput(){
 					$.blockUI({ 
 						message: '<i class="icon-spinner4 spinner"></i>',
@@ -301,5 +316,6 @@
 					});
 				}
    
+
 
 </script>

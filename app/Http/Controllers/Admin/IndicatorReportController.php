@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Form;
 use App\Models\Indicator;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 
 class IndicatorReportController extends Controller
@@ -66,7 +67,9 @@ class IndicatorReportController extends Controller
     }
     
     public function detailIndicatorData(Form $form, Indicator $indicator){
-        $data = $indicator->targetsIn()->with('institutionable','form')->get();
+        $data = $indicator->targets()
+                ->byInstrument($indicator->minimum, $indicator->maximum)
+                ->with('institutionable');
 
         return DataTables::of($data)
             ->addIndexColumn()
@@ -85,7 +88,7 @@ class IndicatorReportController extends Controller
                 return view('layouts.parts.officers',['officers' => $row->officers]);
             })
             ->addColumn('score', function($row){
-                return $row->score;
+                return $row->respondent_score + $row->officers_score;
             })
             ->addColumn('status', function($row){   
                 switch($row->type){

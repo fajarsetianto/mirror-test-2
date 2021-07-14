@@ -47,6 +47,7 @@ class TargetController extends Controller
                     return $target->whereFormId($form->id)
                         ->whereInstitutionableType(Target::$institutionalbeClass[$form->category]);
                 })],
+            'email' => 'required|email',
             'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
             'officers.*'=> 'numeric|distinct|exists:users,id',
             'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.($request->officer != null ? '|in:'.implode(',', $request->officers) : ''),
@@ -65,7 +66,7 @@ class TargetController extends Controller
         }
 
         if($request->type == 'responden' || $request->type == 'responden & petugas MONEV'){
-            $this->createRespondent($newTarget);
+            $this->createRespondent($newTarget,$request->only('email'));
         }
 
         return response()->json([
@@ -87,6 +88,7 @@ class TargetController extends Controller
                         ->where('institutionable_id','<>',$target->institutionable_id)
                         ->whereInstitutionableType(Target::$institutionalbeClass[$form->category]);
                 })],
+            'email' => 'required|email',
             'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
             'officers.*'=> 'numeric|distinct|exists:users,id',
             'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.($request->officer != null ? '|in:'.implode(',', $request->officers) : ''),
@@ -101,11 +103,10 @@ class TargetController extends Controller
             $target->officers()->sync($request->officers);
             $target->officers()->updateExistingPivot($request->officer_leader,['is_leader' => true]);
         }
-
+        
+        $target->respondent()->delete();
         if(($request->type == 'responden' || $request->type == 'responden & petugas MONEV') && !$target->respondent()->exists()){
-            $this->createRespondent($target);
-        }else{
-            $target->respondent()->delete();
+            $this->createRespondent($target, $request->only('email'));
         }
 
         return response()->json([
@@ -170,15 +171,16 @@ class TargetController extends Controller
         return view($this->viewNamespace.'parts.petugas', compact('form','target','users'));
     }
 
-    protected function createRespondent(Target $target){
+    protected function createRespondent(Target $target, $data){
         $newToken = Str::random(10);
         while(Respondent::wherePlainToken($newToken)->exists()){
             $newToken = Str::random(10);
         }
-        $target->respondent()->create([
+        $data = array_merge($data,[
             'token' => Hash::make($newToken),
             'plain_token' => $newToken,
             'target_id' => $target->id
         ]);
+        $target->respondent()->create($data);
     }
 }

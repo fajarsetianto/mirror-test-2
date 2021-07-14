@@ -56,7 +56,7 @@ class Respondent extends Authenticatable
     }
 
     public function routeNotificationForMail(){
-        return $this->target->institutionable->email;
+        return $this->email;
     }
 
     public function isSubmited(){

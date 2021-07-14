@@ -178,9 +178,7 @@
 			<div class="form-group row mb-0">
 				<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
 				<div class="col-md-9 col-6">
-					@foreach ($target->officers as $officer)
-						{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
-					@endforeach
+					@include('layouts.parts.officers',['officers' => $target->officers])
 				</div>
 			</div>
 		@endif
