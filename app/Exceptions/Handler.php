@@ -56,12 +56,15 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($request->expectsJson()) {
+
             $message = $exception->getMessage();
             $code = Response::HTTP_BAD_REQUEST;
+
             if($exception instanceof NotFoundHttpException){
                 $message = 'Endpoint not found';
                 $code = Response::HTTP_NOT_FOUND;
             }
+            
             return $this->error($message,$code);
         }
         return parent::render($request, $exception);

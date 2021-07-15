@@ -28,6 +28,7 @@ class FillableController extends Controller
     {
         $data = auth()->user()
             ->targets()
+            ->addStatus()
             ->whereDoesntHave('officers',function($q){
                 $q->whereNotNull('officer_targets.submited_at');
             })
@@ -47,9 +48,9 @@ class FillableController extends Controller
                 });
             })
             ->with('form:id,name,supervision_end_date,published_at','institutionable:id,name');
-           
+        
         $data = $request->has('limit') && is_numeric($request->limit)
-            ? $data->paginate(abs($request->limit)) 
+            ? $data->paginate(abs($request->limit) > 50 ? 50 : abs($request->limit)) 
             : $data->paginate(10);
             
         return $this->success(

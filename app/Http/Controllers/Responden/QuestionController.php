@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Instrument;
 use App\Models\UserAnswer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
@@ -123,6 +124,14 @@ class QuestionController extends Controller
                     endif;
                 endif;
             endforeach;
+
+            $responden = auth('respondent')->user();
+            if($responden->start_working_at == null){
+                $responden->update([
+                    'start_working_at' => Carbon::now()
+                ]);
+            }
+
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();

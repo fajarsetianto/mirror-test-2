@@ -96,4 +96,19 @@ class Target extends Model
                 ->where('questions.instrument_id','=',$instrument->id);
         })->sum('offered_answers.score');
     }
+
+    public function scopeAddStatus($q){
+        $q->addSelect([
+            'respondent_status' => Respondent::selectRaw("
+                    CASE 
+                        WHEN respondents.submited_at is not null THEN 'sudah dikerjakan'
+                        WHEN respondents.start_working_at is not null THEN 'belum selesai'
+                        ELSE 'belum dikerjakan'
+                    END
+                ")->whereColumn('respondents.target_id','=','targets.id')
+                ->take(1),
+            
+        
+        ]);
+    }
 }

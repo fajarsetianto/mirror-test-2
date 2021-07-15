@@ -16,7 +16,7 @@ class OfficerMiddleware
             return $next($request);
         }
 
-        return $this->error('Not Autorized', 401);
+        return $this->error('Unauthorized', 401);
 
     }
 }
