@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pivots\OfficerTarget;
 use App\Models\OfficerNote;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 use DataTables;
 
 class DoController extends Controller
@@ -43,11 +44,11 @@ class DoController extends Controller
             'ipaddr' => 'string|nullable',
             'location' => 'string|nullable',
             'note' => 'required|string',
-            'photo_1' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_2' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_3' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_4' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'photo_5' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo_1' => 'image|required|mimes:jpeg,png,jpg,gif',
+            'photo_2' => 'image|required|mimes:jpeg,png,jpg,gif',
+            'photo_3' => 'image|required|mimes:jpeg,png,jpg,gif',
+            'photo_4' => 'image|required|mimes:jpeg,png,jpg,gif',
+            'photo_5' => 'image|required|mimes:jpeg,png,jpg,gif',
             'pdf_1' => 'required|mimetypes:application/pdf|max:10000'
         ]);
 
@@ -57,26 +58,32 @@ class DoController extends Controller
             DB::beginTransaction();
             $arr = array();
             $userId = auth('officer')->user()->id;
-            OfficerNote::where([
-                ['officer_target_id', $officerTarget->id],
-                ['officer_id', $officerTarget->officer_id], 
-                ['target_id', $officerTarget->target_id]
-            ])->delete();
+
             foreach($data as $key => $row):
-                $ex = explode('_',$key);
                 if($request->hasFile($key)){
+                    OfficerNote::where([
+                        ['officer_target_id', $officerTarget->id],
+                        ['officer_id', $officerTarget->officer_id], 
+                        ['target_id', $officerTarget->target_id],
+                        ['type', $key]
+                    ])->delete();
+                    
                     $file = $request->file($key);
                     $fileName = time().'-'.rand().$userId.'-'.$file->getClientOriginalName();
                     $file->move("data_file_note",$fileName);
+                    if (strpos($key, 'photo') !== false) {
+                        $img = Image::make(public_path('data_file_note/'.$fileName));
+                        $img->save(public_path('data_file_note/'.$fileName,60));
+                    }
                     $row = $fileName;
+                    array_push($arr, array(
+                        'value' => $row,
+                        'type' => $key,
+                        'officer_target_id' => $officerTarget->id,
+                        'officer_id' => $officerTarget->officer_id,
+                        'target_id' => $officerTarget->target_id 
+                    ));
                 }
-                array_push($arr, array(
-                    'value' => $row,
-                    'type' => trim($ex[0]),
-                    'officer_target_id' => $officerTarget->id,
-                    'officer_id' => $officerTarget->officer_id,
-                    'target_id' => $officerTarget->target_id 
-                ));
             endforeach;
             OfficerNote::insert($arr);
             DB::commit();
@@ -101,6 +108,36 @@ class DoController extends Controller
         try{
             DB::beginTransaction();
             $officerTarget->update(['submited_at' => date('Y-m-d')]);
+            $arr = array();
+            $userId = auth('officer')->user()->id;
+            $data               = $request->only('ipaddr','location','note','photo_1','photo_2','photo_3','photo_4','photo_5','pdf_1');
+            foreach($data as $key => $row):
+                if($request->hasFile($key)){
+                    OfficerNote::where([
+                        ['officer_target_id', $officerTarget->id],
+                        ['officer_id', $officerTarget->officer_id], 
+                        ['target_id', $officerTarget->target_id],
+                        ['type', $key]
+                    ])->delete();
+                    
+                    $file = $request->file($key);
+                    $fileName = time().'-'.rand().$userId.'-'.$file->getClientOriginalName();
+                    $file->move("data_file_note",$fileName);
+                    if (strpos($key, 'photo') !== false) {
+                        $img = Image::make(public_path('data_file_note/'.$fileName));
+                        $img->save(public_path('data_file_note/'.$fileName,60));
+                    }
+                    $row = $fileName;
+                    array_push($arr, array(
+                        'value' => $row,
+                        'type' => $key,
+                        'officer_target_id' => $officerTarget->id,
+                        'officer_id' => $officerTarget->officer_id,
+                        'target_id' => $officerTarget->target_id 
+                    ));
+                }
+            endforeach;
+            OfficerNote::insert($arr);
             DB::commit();
         } catch(\Throwable $throwable){
             DB::rollBack();
