@@ -133,11 +133,12 @@ Route::get('/debug', function(){
     // dd($query_dump); 
     // $data = Instrument::first()->maxScore();
 
-    $data = Form::first()->max_score;
+    // $data = Form::first()->max_score;
     
+    dd(OfficerAnswer::first()->officerTarget);
 
-    dd($data);
-    return $data;
+    // dd($data);
+    // return $data;
     // echo $data;
     // dd($data);
 });

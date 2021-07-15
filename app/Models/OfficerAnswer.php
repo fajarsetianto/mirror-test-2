@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Pivots\OfficerTarget;
 
 class OfficerAnswer extends Model
 {
@@ -20,6 +21,10 @@ class OfficerAnswer extends Model
 
     public function question(){
         return $this->belongsTo(Question::class);
+    }
+
+    public function officerTarget(){
+        return $this->belongsTo(OfficerTarget::class,'officer_id','officer_id');
     }
 
     public function scopeByInstrumentId($query, $id){

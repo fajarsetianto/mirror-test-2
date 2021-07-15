@@ -95,7 +95,10 @@ class TargetController extends Controller
                 }]);
             })->when($target->type == 'petugas MONEV' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
                 $q->with(['officerAnswer' => function($q) use ($target){
-                    $q->whereTargetId($target->id);
+                    $q->whereTargetId($target->id)
+                        ->whereHas('officerTarget',function($q){
+                            $q->whereNotNull('submited_at');
+                        });
                 }]);
             });
         },'instruments.questions.offeredAnswer','instruments.questions.questionType']); 
