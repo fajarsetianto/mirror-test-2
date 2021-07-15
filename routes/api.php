@@ -14,6 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'officer','namespace' => 'Officer',], function(){
+    Route::group(['prefix' => 'auth'], function(){
+        Route::post('login','AuthController@login');
+    });
+    Route::group(['prefix' => 'me','middleware' => ['auth:sanctum','type.officer']],function(){
+        Route::get('/', 'HomeController@index');
+        Route::group(['prefix' => 'review'], function($q){
+            Route::get('/', 'ReviewController@index');
+        });
+        Route::group(['prefix' => 'fillable'], function($q){
+            Route::get('/', 'FillableController@index');
+        });
+    });
 });
+
+Route::group(['prefix' => 'respondent','namespace' => 'Respondent',], function(){
+    Route::group(['prefix' => 'auth'], function(){
+        Route::post('login','AuthController@login');
+    });
+    Route::middleware(['auth:sanctum', 'type.respondent'])->group(function () {
+        // Route::get('/customers/orders', 'API\Customers\OrderController@index');
+    });
+});
+
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

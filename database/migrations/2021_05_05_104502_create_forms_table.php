@@ -22,6 +22,7 @@ class CreateFormsTable extends Migration
             $table->date('supervision_start_date');
             $table->date('supervision_end_date');
             $table->unsignedBigInteger('created_by');
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
 
             $table->foreign('created_by')->references('id')->on('users');

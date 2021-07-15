@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponerWrapper;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponerWrapper;
     /**
      * A list of the exception types that are not reported.
      *
@@ -51,5 +54,12 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return $request->expectsJson()
+                    ? $this->error($exception->getMessage(), 401)
+                    : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
 }

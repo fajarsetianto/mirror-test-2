@@ -1,0 +1,30 @@
+name: Respondent
+description: 'APIs for autenticate respondent'
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/respondent/auth/login
+    metadata:
+      title: Login
+      description: ''
+      authenticated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    queryParameters: []
+    bodyParameters:
+      token:
+        name: token
+        description: ''
+        required: true
+        example: enim
+        type: string
+    responses:
+      -
+        status: 200
+        content: '{"status":"Success","message":"Logged in Successfully","data":{"user":{"id":17,"name":null,"target_id":27,"token":"$2y$10$OeReEyUKTPGt52yOoQAwdeXxem3FHv5tcwfZr5gQB30GjyQ5GdK9m","plain_token":"scBJNCqLa8","start_working_at":null,"submited_at":null,"created_at":"2021-07-15T04:14:15.000000Z","updated_at":"2021-07-15T04:14:15.000000Z","email":"cobaemailbaru@gmail.com"},"token":"6|WM6sR3j8gNZuu4q67Zh5ZYCGZZM7aCKIMfIA44LD","token_type":"Bearer"}}'
+        headers: []
+        description: '200'
+    responseFields: []

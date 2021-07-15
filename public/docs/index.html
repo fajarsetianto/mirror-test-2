@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Api Documentation</title>
+
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../docs/css/theme-default.style.css" media="screen">
+    <link rel="stylesheet" href="../docs/css/theme-default.print.css" media="print">
+    <script src="../docs/js/theme-default-3.6.0.js"></script>
+
+    <link rel="stylesheet"
+          href="//unpkg.com/@highlightjs/cdn-assets@10.7.2/styles/obsidian.min.css">
+    <script src="//unpkg.com/@highlightjs/cdn-assets@10.7.2/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <script src="//cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script>
+        var baseUrl = "http://codenesia-5.test";
+    </script>
+    <script src="../docs/js/tryitout-3.6.0.js"></script>
+
+</head>
+
+<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
+<a href="#" id="nav-button">
+      <span>
+        MENU
+        <img src="../docs/images/navbar.png" alt="navbar-image" />
+      </span>
+</a>
+<div class="tocify-wrapper">
+                <div class="lang-selector">
+                            <a href="#" data-language-name="bash">bash</a>
+                            <a href="#" data-language-name="javascript">javascript</a>
+                    </div>
+        <div class="search">
+        <input type="text" class="search" id="input-search" placeholder="Search">
+    </div>
+    <ul class="search-results"></ul>
+
+    <ul id="toc">
+    </ul>
+
+            <ul class="toc-footer" id="toc-footer">
+                            <li><a href="../docs/collection.json">View Postman collection</a></li>
+                            <li><a href="../docs/openapi.yaml">View OpenAPI spec</a></li>
+                            <li><a href="http://github.com/knuckleswtf/scribe">Documentation powered by Scribe ✍</a></li>
+                    </ul>
+            <ul class="toc-footer" id="last-updated">
+            <li>Last updated: July 15 2021</li>
+        </ul>
+</div>
+<div class="page-wrapper">
+    <div class="dark-box"></div>
+    <div class="content">
+        <h1>Introduction</h1>
+<p>Api Documentation MONEV</p>
+<p>This documentation aims to provide all the information you need to work with our API.</p>
+<aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
+You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+<blockquote>
+<p>Base URL</p>
+</blockquote>
+<pre><code class="language-yaml">http://codenesia-5.test</code></pre>
+
+        <h1>Authenticating requests</h1>
+<p>This API is not authenticated.</p>
+
+        <h1 id="respondent">Respondent</h1>
+
+    <p>APIs for autenticate respondent</p>
+
+            <h2 id="respondent-POSTapi-respondent-auth-login">Login</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-respondent-auth-login">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "http://codenesia-5.test/api/respondent/auth/login" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"token\": \"enim\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "http://codenesia-5.test/api/respondent/auth/login"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "token": "enim"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-respondent-auth-login">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: &quot;Success&quot;,
+    &quot;message&quot;: &quot;Logged in Successfully&quot;,
+    &quot;data&quot;: {
+        &quot;user&quot;: {
+            &quot;id&quot;: 17,
+            &quot;name&quot;: null,
+            &quot;target_id&quot;: 27,
+            &quot;token&quot;: &quot;$2y$10$OeReEyUKTPGt52yOoQAwdeXxem3FHv5tcwfZr5gQB30GjyQ5GdK9m&quot;,
+            &quot;plain_token&quot;: &quot;scBJNCqLa8&quot;,
+            &quot;start_working_at&quot;: null,
+            &quot;submited_at&quot;: null,
+            &quot;created_at&quot;: &quot;2021-07-15T04:14:15.000000Z&quot;,
+            &quot;updated_at&quot;: &quot;2021-07-15T04:14:15.000000Z&quot;,
+            &quot;email&quot;: &quot;cobaemailbaru@gmail.com&quot;
+        },
+        &quot;token&quot;: &quot;6|WM6sR3j8gNZuu4q67Zh5ZYCGZZM7aCKIMfIA44LD&quot;,
+        &quot;token_type&quot;: &quot;Bearer&quot;
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-respondent-auth-login" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-respondent-auth-login"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-respondent-auth-login"></code></pre>
+</span>
+<span id="execution-error-POSTapi-respondent-auth-login" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-respondent-auth-login"></code></pre>
+</span>
+<form id="form-POSTapi-respondent-auth-login" data-method="POST"
+      data-path="api/respondent/auth/login"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-respondent-auth-login', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-respondent-auth-login"
+                    onclick="tryItOut('POSTapi-respondent-auth-login');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-respondent-auth-login"
+                    onclick="cancelTryOut('POSTapi-respondent-auth-login');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-respondent-auth-login" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/respondent/auth/login</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>token</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="token"
+               data-endpoint="POSTapi-respondent-auth-login"
+               data-component="body" required  hidden>
+    <br>
+        </p>
+    
+    </form>
+
+        <h1 id="officer">Officer</h1>
+
+    <p>APIs for autenticate officer</p>
+
+            <h2 id="officer-POSTapi-officer-auth-login">Login</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-officer-auth-login">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request POST \
+    "http://codenesia-5.test/api/officer/auth/login" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"email\": \"constantin05@example.com\",
+    \"password\": \"voluptates\"
+}"
+</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "http://codenesia-5.test/api/officer/auth/login"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "email": "constantin05@example.com",
+    "password": "voluptates"
+}
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-POSTapi-officer-auth-login">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: &quot;Success&quot;,
+    &quot;message&quot;: &quot;Logged in Successfully&quot;,
+    &quot;data&quot;: {
+        &quot;user&quot;: {
+            &quot;id&quot;: 7,
+            &quot;name&quot;: &quot;PETUGAS 2&quot;,
+            &quot;email&quot;: &quot;petugas2@gmail.com&quot;,
+            &quot;email_verified_at&quot;: null,
+            &quot;is_active&quot;: 0,
+            &quot;created_by&quot;: 1,
+            &quot;created_at&quot;: &quot;2021-07-02T06:04:22.000000Z&quot;,
+            &quot;updated_at&quot;: &quot;2021-07-02T06:04:22.000000Z&quot;
+        },
+        &quot;token&quot;: &quot;3|PyFzM4dKMHhkuRkuon2z0nVAUX8qyDxELazdoSvQ&quot;,
+        &quot;token_type&quot;: &quot;bearer&quot;
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-officer-auth-login" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-officer-auth-login"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-officer-auth-login"></code></pre>
+</span>
+<span id="execution-error-POSTapi-officer-auth-login" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-officer-auth-login"></code></pre>
+</span>
+<form id="form-POSTapi-officer-auth-login" data-method="POST"
+      data-path="api/officer/auth/login"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-officer-auth-login', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-officer-auth-login"
+                    onclick="tryItOut('POSTapi-officer-auth-login');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-officer-auth-login"
+                    onclick="cancelTryOut('POSTapi-officer-auth-login');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-officer-auth-login" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/officer/auth/login</code></b>
+        </p>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <p>
+            <b><code>email</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="email"
+               data-endpoint="POSTapi-officer-auth-login"
+               data-component="body" required  hidden>
+    <br>
+<p>Must be a valid email address.</p>        </p>
+                <p>
+            <b><code>password</code></b>&nbsp;&nbsp;<small>string</small>  &nbsp;
+                <input type="text"
+               name="password"
+               data-endpoint="POSTapi-officer-auth-login"
+               data-component="body" required  hidden>
+    <br>
+        </p>
+    
+    </form>
+
+            <h2 id="officer-GETapi-officer-me">Summary</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-GETapi-officer-me">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "http://codenesia-5.test/api/officer/me" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Authorization: Bearer {token}"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "http://codenesia-5.test/api/officer/me"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-officer-me">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: &quot;Success&quot;,
+    &quot;message&quot;: &quot;Data successfully loaded&quot;,
+    &quot;data&quot;: {
+        &quot;review_count&quot;: 1,
+        &quot;fillable_count&quot;: 2
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-officer-me" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-officer-me"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-officer-me"></code></pre>
+</span>
+<span id="execution-error-GETapi-officer-me" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-officer-me"></code></pre>
+</span>
+<form id="form-GETapi-officer-me" data-method="GET"
+      data-path="api/officer/me"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Authorization":"Bearer {token}"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-officer-me', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-officer-me"
+                    onclick="tryItOut('GETapi-officer-me');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-officer-me"
+                    onclick="cancelTryOut('GETapi-officer-me');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-officer-me" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/officer/me</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-officer-me" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-officer-me"
+                                                                data-component="header"></label>
+        </p>
+                </form>
+
+            <h2 id="officer-GETapi-officer-me-review">Reviews</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-GETapi-officer-me-review">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "http://codenesia-5.test/api/officer/me/review?limit=18&amp;page=18&amp;keyword=dolores" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Authorization: Bearer {token}"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "http://codenesia-5.test/api/officer/me/review"
+);
+
+const params = {
+    "limit": "18",
+    "page": "18",
+    "keyword": "dolores",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-officer-me-review">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: &quot;Success&quot;,
+    &quot;message&quot;: &quot;Data successfully loaded&quot;,
+    &quot;data&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;data&quot;: [
+            {
+                &quot;id&quot;: 26,
+                &quot;type&quot;: &quot;petugas MONEV&quot;,
+                &quot;form_id&quot;: 8,
+                &quot;institutionable_id&quot;: 19726,
+                &quot;institutionable_type&quot;: &quot;App\\Models\\EducationalInstitution&quot;,
+                &quot;created_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;,
+                &quot;form&quot;: {
+                    &quot;id&quot;: 8,
+                    &quot;name&quot;: &quot;MONITORING WEBISTE&quot;,
+                    &quot;supervision_end_date&quot;: &quot;2021-10-24T17:00:00.000000Z&quot;
+                },
+                &quot;institutionable&quot;: {
+                    &quot;id&quot;: 19726,
+                    &quot;name&quot;: &quot;SMKS PEMBAHARUAN PURWOREJO&quot;
+                },
+                &quot;pivot&quot;: {
+                    &quot;officer_id&quot;: 7,
+                    &quot;target_id&quot;: 26,
+                    &quot;id&quot;: 39,
+                    &quot;is_leader&quot;: 0,
+                    &quot;submited_at&quot;: null,
+                    &quot;created_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;
+                }
+            }
+        ],
+        &quot;first_page_url&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable?page=1&quot;,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;last_page_url&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable?page=1&quot;,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
+        ],
+        &quot;next_page_url&quot;: null,
+        &quot;path&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable&quot;,
+        &quot;per_page&quot;: 10,
+        &quot;prev_page_url&quot;: null,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-officer-me-review" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-officer-me-review"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-officer-me-review"></code></pre>
+</span>
+<span id="execution-error-GETapi-officer-me-review" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-officer-me-review"></code></pre>
+</span>
+<form id="form-GETapi-officer-me-review" data-method="GET"
+      data-path="api/officer/me/review"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Authorization":"Bearer {token}"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-officer-me-review', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-officer-me-review"
+                    onclick="tryItOut('GETapi-officer-me-review');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-officer-me-review"
+                    onclick="cancelTryOut('GETapi-officer-me-review');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-officer-me-review" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/officer/me/review</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-officer-me-review" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-officer-me-review"
+                                                                data-component="header"></label>
+        </p>
+                    <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                    <p>
+                <b><code>limit</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+                <input type="number"
+               name="limit"
+               data-endpoint="GETapi-officer-me-review"
+               data-component="query"  hidden>
+    <br>
+<p>optional</p>            </p>
+                    <p>
+                <b><code>page</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+                <input type="number"
+               name="page"
+               data-endpoint="GETapi-officer-me-review"
+               data-component="query"  hidden>
+    <br>
+<p>optional</p>            </p>
+                    <p>
+                <b><code>keyword</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="keyword"
+               data-endpoint="GETapi-officer-me-review"
+               data-component="query"  hidden>
+    <br>
+<p>optional</p>            </p>
+                </form>
+
+            <h2 id="officer-GETapi-officer-me-fillable">Fillables</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+
+
+<span id="example-requests-GETapi-officer-me-fillable">
+<blockquote>Example request:</blockquote>
+
+
+<pre><code class="language-bash">curl --request GET \
+    --get "http://codenesia-5.test/api/officer/me/fillable?limit=5&amp;page=14&amp;keyword=similique" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --header "Authorization: Bearer {token}"</code></pre>
+
+<pre><code class="language-javascript">const url = new URL(
+    "http://codenesia-5.test/api/officer/me/fillable"
+);
+
+const params = {
+    "limit": "5",
+    "page": "14",
+    "keyword": "similique",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+</span>
+
+<span id="example-responses-GETapi-officer-me-fillable">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json">{
+    &quot;status&quot;: &quot;Success&quot;,
+    &quot;message&quot;: &quot;Data successfully loaded&quot;,
+    &quot;data&quot;: {
+        &quot;current_page&quot;: 1,
+        &quot;data&quot;: [
+            {
+                &quot;id&quot;: 26,
+                &quot;type&quot;: &quot;petugas MONEV&quot;,
+                &quot;form_id&quot;: 8,
+                &quot;institutionable_id&quot;: 19726,
+                &quot;institutionable_type&quot;: &quot;App\\Models\\EducationalInstitution&quot;,
+                &quot;created_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;,
+                &quot;updated_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;,
+                &quot;form&quot;: {
+                    &quot;id&quot;: 8,
+                    &quot;name&quot;: &quot;MONITORING WEBISTE&quot;,
+                    &quot;supervision_end_date&quot;: &quot;2021-10-24T17:00:00.000000Z&quot;
+                },
+                &quot;institutionable&quot;: {
+                    &quot;id&quot;: 19726,
+                    &quot;name&quot;: &quot;SMKS PEMBAHARUAN PURWOREJO&quot;
+                },
+                &quot;pivot&quot;: {
+                    &quot;officer_id&quot;: 7,
+                    &quot;target_id&quot;: 26,
+                    &quot;id&quot;: 39,
+                    &quot;is_leader&quot;: 0,
+                    &quot;submited_at&quot;: null,
+                    &quot;created_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;,
+                    &quot;updated_at&quot;: &quot;2021-07-10T11:40:01.000000Z&quot;
+                }
+            }
+        ],
+        &quot;first_page_url&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable?page=1&quot;,
+        &quot;from&quot;: 1,
+        &quot;last_page&quot;: 1,
+        &quot;last_page_url&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable?page=1&quot;,
+        &quot;links&quot;: [
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;&amp;laquo; Previous&quot;,
+                &quot;active&quot;: false
+            },
+            {
+                &quot;url&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable?page=1&quot;,
+                &quot;label&quot;: &quot;1&quot;,
+                &quot;active&quot;: true
+            },
+            {
+                &quot;url&quot;: null,
+                &quot;label&quot;: &quot;Next &amp;raquo;&quot;,
+                &quot;active&quot;: false
+            }
+        ],
+        &quot;next_page_url&quot;: null,
+        &quot;path&quot;: &quot;http:\/\/codenesia-5.test\/api\/officer\/me\/fillable&quot;,
+        &quot;per_page&quot;: 10,
+        &quot;prev_page_url&quot;: null,
+        &quot;to&quot;: 1,
+        &quot;total&quot;: 1
+    }
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-officer-me-fillable" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-officer-me-fillable"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-officer-me-fillable"></code></pre>
+</span>
+<span id="execution-error-GETapi-officer-me-fillable" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-officer-me-fillable"></code></pre>
+</span>
+<form id="form-GETapi-officer-me-fillable" data-method="GET"
+      data-path="api/officer/me/fillable"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      data-headers='{"Content-Type":"application\/json","Accept":"application\/json","Authorization":"Bearer {token}"}'
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-officer-me-fillable', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-officer-me-fillable"
+                    onclick="tryItOut('GETapi-officer-me-fillable');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-officer-me-fillable"
+                    onclick="cancelTryOut('GETapi-officer-me-fillable');" hidden>Cancel
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-officer-me-fillable" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/officer/me/fillable</code></b>
+        </p>
+                <p>
+            <label id="auth-GETapi-officer-me-fillable" hidden>Authorization header:
+                <b><code>Bearer </code></b><input type="text"
+                                                                name="Authorization"
+                                                                data-prefix="Bearer "
+                                                                data-endpoint="GETapi-officer-me-fillable"
+                                                                data-component="header"></label>
+        </p>
+                    <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                    <p>
+                <b><code>limit</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+                <input type="number"
+               name="limit"
+               data-endpoint="GETapi-officer-me-fillable"
+               data-component="query"  hidden>
+    <br>
+<p>optional</p>            </p>
+                    <p>
+                <b><code>page</code></b>&nbsp;&nbsp;<small>integer</small>     <i>optional</i> &nbsp;
+                <input type="number"
+               name="page"
+               data-endpoint="GETapi-officer-me-fillable"
+               data-component="query"  hidden>
+    <br>
+<p>optional</p>            </p>
+                    <p>
+                <b><code>keyword</code></b>&nbsp;&nbsp;<small>string</small>     <i>optional</i> &nbsp;
+                <input type="text"
+               name="keyword"
+               data-endpoint="GETapi-officer-me-fillable"
+               data-component="query"  hidden>
+    <br>
+<p>optional</p>            </p>
+                </form>
+
+    
+
+        
+    </div>
+    <div class="dark-box">
+                    <div class="lang-selector">
+                                    <a href="#" data-language-name="bash">bash</a>
+                                    <a href="#" data-language-name="javascript">javascript</a>
+                            </div>
+            </div>
+</div>
+<script>
+    $(function () {
+        var exampleLanguages = ["bash","javascript"];
+        setupLanguages(exampleLanguages);
+    });
+</script>
+</body>
+</html>
