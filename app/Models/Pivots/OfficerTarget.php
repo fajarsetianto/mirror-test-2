@@ -29,6 +29,14 @@ class OfficerTarget extends Pivot
     public function officerNote(){
         return $this->hasMany(OfficerNote::class,'officer_target_id')->orderBy('type');
     }
+
+    public function officerNotesByTarget(){
+        return $this->hasMany(OfficerNote::class,'target_id','target_id')->orderBy('type');
+    }
+
+    public function officerNoteByTarget(){
+        return $this->hasOne(OfficerNote::class,'target_id', 'target_id')->orderBy('type');
+    }
     
     public function isLeader(){
         return $this->is_leader == '1';

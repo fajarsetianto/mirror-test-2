@@ -67,7 +67,7 @@
 
 			
 			
-			isLeader()
+			isFirstSubmit()
 		});
 
 		save = () => {
@@ -168,9 +168,10 @@
 			formData.delete(`${indexName}`)
 			formData.append(`${indexName}`, file)
 		}
-		isLeader = () => {
-			let status = "{{$item->is_leader}}"
-			if(status != '1'){
+		isFirstSubmit = () => {
+			const status = "{{$status}}"
+			const statusSameOfficer ="{{$statusSameOfficer}}"
+			if(status == '1' && statusSameOfficer != '1'){
 				$(".leader").prop('disabled', true);
 			}
 		}
@@ -318,63 +319,63 @@
 			<p class="font-weight-bold">Ambil Lokasi Terkini</p>
 			<div class="d-flex">
 				<button onclick="locations()" class="btn btn-success mr-2 leader">Ambil Lokasi</button>
-				<span class="d-flex align-self-center m-0 text-secondary geolocation">@isset($item->officerNote[7]->value){{$item->officerNote[7]->value}}@endisset</span>
-				<input type="hidden" name="location" class="d-flex align-self-center m-0 text-secondary border-0 not-allowed input geolocation" value="@isset($item->officerNote[7]->value){{$item->officerNote[7]->value}}@endisset" readonly>
+				<span class="d-flex align-self-center m-0 text-secondary geolocation">@isset($item->officerNotesByTarget[7]->value){{$item->officerNotesByTarget[7]->value}}@endisset</span>
+				<input type="hidden" name="location" class="d-flex align-self-center m-0 text-secondary border-0 not-allowed input geolocation" value="@isset($item->officerNotesByTarget[7]->value){{$item->officerNotesByTarget[7]->value}}@endisset" readonly>
 			</div>
 			<div class="mt-2 form-group">
 				<label for="noted" class="py-2 font-weight-bold">Tambah Catatan</label>
-				<textarea rows="3" name="note" cols="3" class="form-control input leader" id="noted" placeholder="Tambah Catatan">@isset($item->officerNote[0]->value){{$item->officerNote[0]->value}}@endisset</textarea>
+				<textarea rows="3" name="note" cols="3" class="form-control input leader" id="noted" placeholder="Tambah Catatan">@isset($item->officerNotesByTarget[0]->value){{$item->officerNotesByTarget[0]->value}}@endisset</textarea>
 			</div>
 			<div class="mt-3 form-group">
 				<label for="noted" class="font-weight-bold">Upload Foto</label>
 				<p class="text-secondary pb-1">Tambahkan 5 foto</p>
 				<div class="form-group d-flex">
-					<div class="@isset($item->officerNote[1]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
+					<div class="@isset($item->officerNotesByTarget[1]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
 						<input type="file" name="photo_1" class="form-control-uniform my-1 leader" id="photo-1" onchange="upload('photo-1')" data-fouc>
 					</div>
-					@isset($item->officerNote[1]->value)
+					@isset($item->officerNotesByTarget[1]->value)
 						<div class="p-0 m-0 col-md-1 pl-1" style="justify-content: space-between;">
-							<button type="button" onclick="download({{$item->officerNote[1]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
+							<button type="button" onclick="download({{$item->officerNotesByTarget[1]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
 						</div>
 					@endisset
 				</div>
 				<div class="form-group d-flex">
-					<div class="@isset($item->officerNote[2]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
+					<div class="@isset($item->officerNotesByTarget[2]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
 						<input type="file" name="photo_2" class="form-control-uniform my-1 leader" id="photo-2" onchange="upload('photo-2')" data-fouc>
 					</div>
-					@isset($item->officerNote[2]->value)
+					@isset($item->officerNotesByTarget[2]->value)
 						<div class="p-0 m-0 col-md-1 pl-1" style="justify-content: space-between;">
-							<button type="button" onclick="download({{$item->officerNote[2]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
+							<button type="button" onclick="download({{$item->officerNotesByTarget[2]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
 						</div>
 					@endisset
 				</div>
 				<div class="form-group d-flex">
-					<div class="@isset($item->officerNote[3]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
+					<div class="@isset($item->officerNotesByTarget[3]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
 						<input type="file" name="photo_3" class="form-control-uniform my-1 leader" id="photo-3" onchange="upload('photo-3')" data-fouc>
 					</div>
-					@isset($item->officerNote[3]->value)
+					@isset($item->officerNotesByTarget[3]->value)
 						<div class="p-0 m-0 col-md-1 pl-1" style="justify-content: space-between;">
-							<button type="button" onclick="download({{$item->officerNote[3]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
+							<button type="button" onclick="download({{$item->officerNotesByTarget[3]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
 						</div>
 					@endisset
 				</div>
 				<div class="form-group d-flex">
-					<div class="@isset($item->officerNote[4]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
+					<div class="@isset($item->officerNotesByTarget[4]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
 						<input type="file" name="photo_4" class="form-control-uniform my-1 leader" id="photo-4" onchange="upload('photo-4')" data-fouc>
 					</div>
-					@isset($item->officerNote[4]->value)
+					@isset($item->officerNotesByTarget[4]->value)
 						<div class="p-0 m-0 col-md-1 pl-1" style="justify-content: space-between;">
-							<button type="button" onclick="download({{$item->officerNote[4]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
+							<button type="button" onclick="download({{$item->officerNotesByTarget[4]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
 						</div>
 					@endisset
 				</div>
 				<div class="form-group d-flex">
-					<div class="@isset($item->officerNote[5]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
+					<div class="@isset($item->officerNotesByTarget[5]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
 						<input type="file" name="photo_5" class="form-control-uniform my-1 leader" id="photo-5" onchange="upload('photo-5')" data-fouc>
 					</div>
-					@isset($item->officerNote[5]->value)
+					@isset($item->officerNotesByTarget[5]->value)
 						<div class="p-0 m-0 col-md-1 pl-1" style="justify-content: space-between;">
-							<button type="button" onclick="download({{$item->officerNote[5]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
+							<button type="button" onclick="download({{$item->officerNotesByTarget[5]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
 						</div>
 					@endisset
 				</div>
@@ -383,17 +384,17 @@
 				<label for="noted" class="font-weight-bold">Tambahkan File PDF</label>
 				<p class="text-secondary pb-1">Tambahkan file PDF</p>
 				<div class="form-group d-flex">
-					<div class="@isset($item->officerNote[6]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
+					<div class="@isset($item->officerNotesByTarget[6]->value) col-md-11 @else col-md-12 @endisset p-0 m-0">
 						<input type="file" name="pdf_1" class="form-control-uniform my-1 leader" id="pdf-1" onchange="upload('pdf-1')" data-fouc>
 					</div>
-					@isset($item->officerNote[6]->value)
+					@isset($item->officerNotesByTarget[6]->value)
 						<div class="p-0 m-0 col-md-1 pl-1" style="justify-content: space-between;">
-							<button type="button" onclick="download({{$item->officerNote[6]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
+							<button type="button" onclick="download({{$item->officerNotesByTarget[6]->id}})" class="btn btn-block btn-primary"><i class="icon-download"></i></button>
 						</div>
 					@endisset
 				</div>
 			</div>
-			<input type="hidden" name="ipaddr" value="@isset($item->officerNote[8]->value){{$item->officerNote[8]->value}}@endisset" class="input" id="ip-addr">
+			<input type="hidden" name="ipaddr" value="@isset($item->officerNotesByTarget[8]->value){{$item->officerNotesByTarget[8]->value}}@endisset" class="input" id="ip-addr">
         </div>
 
     </div>

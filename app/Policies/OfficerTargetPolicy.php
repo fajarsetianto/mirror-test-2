@@ -39,7 +39,7 @@ class OfficerTargetPolicy
         $this->_load($officerTarget);
         return $officerTarget->is_leader == 1
             ? Response::allow()
-            : Response::deny("You're not leader!");
+            : Response::allow();
     }
 
     protected function _load(OfficerTarget $officerTarget)

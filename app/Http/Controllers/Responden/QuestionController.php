@@ -30,6 +30,7 @@ class QuestionController extends Controller
     public function index(Instrument $instrument)
     {
         $user = auth('respondent')->user()->load('target.form');
+
         return view($this->viewNamespace.'question', [
             'form' => $user->target->form,
             'instrument' => $instrument,
