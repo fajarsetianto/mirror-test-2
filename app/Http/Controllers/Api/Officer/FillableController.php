@@ -48,8 +48,6 @@ class FillableController extends Controller
             })
             ->with('form:id,name,supervision_end_date,published_at','institutionable:id,name');
            
-            
-
         $data = $request->has('limit') && is_numeric($request->limit)
             ? $data->paginate(abs($request->limit)) 
             : $data->paginate(10);
