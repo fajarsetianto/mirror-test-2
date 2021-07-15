@@ -18,12 +18,14 @@ class TargetController extends Controller
     }
 
     public function detail(Form $form, Target $target){
-        $target->load('respondent');
+        $target->load(['institutionable','respondent','officers']);
         return view($this->viewNamespace.'detail', compact('form','target'));
     }
 
     public function data(Form $form){
-        $data = $form->targets()->latest();
+        $data = $form->targets()
+            ->with('officers','institutionable','respondent')
+            ->latest();
         return DataTables::of($data)
         ->addIndexColumn()
         ->addColumn('name', function($row){   
@@ -73,7 +75,7 @@ class TargetController extends Controller
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="'.route('superadmin.monev.inspection.form.detail',[$form->id,$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
-                        <a href="javascript:void(0)" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
+                        <a href="'.route('superadmin.monev.inspection.form.download',[$form->id,$row->id]).'" target="_blank" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
                     </div>
                 </div>
             </div>';     
@@ -90,12 +92,12 @@ class TargetController extends Controller
                 $q->with(['userAnswers' => function($q) use ($target){
                     $q->whereRespondentId($target->respondent->id);
                 }]);
-            })->when($target->type == 'petugas' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
+            })->when($target->type == 'petugas MONEV' || $target->type == 'responden & petugas MONEV', function($q) use ($target){
                 $q->with(['officerAnswer' => function($q) use ($target){
                     $q->whereTargetId($target->id);
                 }]);
             });
-        },'instruments.questions.offeredAnswer']); 
+        },'instruments.questions.offeredAnswer','instruments.questions.questionType']); 
         $pdf = PDF::loadView('layouts.form.index', compact('form','target'));
         return $pdf->download('Monev '.$form->name.' pada '.$target->institutionable->name.'.pdf');
         // return view('layouts.form.index', compact('form','target'));

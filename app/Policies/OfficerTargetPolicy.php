@@ -30,7 +30,7 @@ class OfficerTargetPolicy
 
     public function viewHistory(Officer $user, OfficerTarget $officerTarget){
         $this->_load($officerTarget);
-        return $this->form->isPublished() && ($officerTarget->isSubmited() || $this->form->isExpired())
+        return $this->form->isPublished() && ($officerTarget->target->isSubmitedByOfficer() || $this->form->isExpired())
             ? Response::allow()
             : Response::deny('You can not view history of this monitoring');
     }

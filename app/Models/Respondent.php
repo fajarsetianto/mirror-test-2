@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Respondent extends Authenticatable
 {
+    use HasApiTokens;
     use Notifiable;
 
     protected $dates = [
@@ -56,7 +58,7 @@ class Respondent extends Authenticatable
     }
 
     public function routeNotificationForMail(){
-        return $this->target->institutionable->email;
+        return $this->email;
     }
 
     public function isSubmited(){

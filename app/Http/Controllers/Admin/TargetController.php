@@ -4,11 +4,13 @@ namespace  App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Form;
+use App\Models\Respondent;
 use App\Models\Target;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 class TargetController extends Controller
 {
     protected $viewNamespace = "pages.admin.monitoring-evaluasi.form.sasaran-monitoring.";
@@ -45,6 +47,7 @@ class TargetController extends Controller
                     return $target->whereFormId($form->id)
                         ->whereInstitutionableType(Target::$institutionalbeClass[$form->category]);
                 })],
+            'email' => 'required|email',
             'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
             'officers.*'=> 'numeric|distinct|exists:users,id',
             'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.($request->officer != null ? '|in:'.implode(',', $request->officers) : ''),
@@ -63,12 +66,7 @@ class TargetController extends Controller
         }
 
         if($request->type == 'responden' || $request->type == 'responden & petugas MONEV'){
-            $newToken = sha1(time());
-            $newTarget->respondent()->create([
-                'token' => Hash::make($newToken),
-                'plain_token' => $newToken,
-                'target_id' => $newTarget->id
-            ]);
+            $this->createRespondent($newTarget,$request->only('email'));
         }
 
         return response()->json([
@@ -90,6 +88,7 @@ class TargetController extends Controller
                         ->where('institutionable_id','<>',$target->institutionable_id)
                         ->whereInstitutionableType(Target::$institutionalbeClass[$form->category]);
                 })],
+            'email' => 'required|email',
             'officers' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|array|min:1',
             'officers.*'=> 'numeric|distinct|exists:users,id',
             'officer_leader' => 'required_if:type,petugas MONEV|required_if:type,responden & petugas MONEV|numeric'.($request->officer != null ? '|in:'.implode(',', $request->officers) : ''),
@@ -104,16 +103,10 @@ class TargetController extends Controller
             $target->officers()->sync($request->officers);
             $target->officers()->updateExistingPivot($request->officer_leader,['is_leader' => true]);
         }
-
+        
+        $target->respondent()->delete();
         if(($request->type == 'responden' || $request->type == 'responden & petugas MONEV') && !$target->respondent()->exists()){
-            $newToken = sha1(time());
-            $target->respondent()->create([
-                'token' => Hash::make($newToken),
-                'plain_token' => $newToken,
-                'target_id' => $target->id
-            ]);
-        }else{
-            $target->respondent()->delete();
+            $this->createRespondent($target, $request->only('email'));
         }
 
         return response()->json([
@@ -176,5 +169,18 @@ class TargetController extends Controller
     public function getInput(Form $form, Target $target){
         $users = auth()->user()->officers;
         return view($this->viewNamespace.'parts.petugas', compact('form','target','users'));
+    }
+
+    protected function createRespondent(Target $target, $data){
+        $newToken = Str::random(10);
+        while(Respondent::wherePlainToken($newToken)->exists()){
+            $newToken = Str::random(10);
+        }
+        $data = array_merge($data,[
+            'token' => Hash::make($newToken),
+            'plain_token' => $newToken,
+            'target_id' => $target->id
+        ]);
+        $target->respondent()->create($data);
     }
 }

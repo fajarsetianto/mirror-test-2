@@ -96,14 +96,14 @@
                 <label class="col-md-3 col-6 font-weight-bold">Reponden</label>
                 <div class="col-md-9 col-6"> ({{$item->target->institutionable->email}})</div>
             </div>
+			@if($item->target->officers->isNotEmpty())
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
                 <div class="col-md-9 col-6">
-					@foreach ($item->target->officers as $officer)
-						{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif
-					@endforeach
+					@include('layouts.parts.officers',['officers' => $item->target->officers])
 				</div>
             </div>
+			@endif
             <div class="form-group row mb-0">
                 <label class="col-md-3 col-6 font-weight-bold">Waktu Mulai</label>
                 <div class="col-md-9 col-6">{{$item->target->form->supervision_start_date->format('d/m/Y')}}</div>
@@ -138,5 +138,49 @@
         </div>
     </div>
 </div>
-
+@if($item->target->officerLeader()->exists())
+	@php
+		$leader = $item->target->officerLeader()->first()->pivot;
+		$leader->load('officerNote');
+	@endphp
+	<div class="card">
+		<div class="card-header">
+			<h3 class="card-title font-weight-semibold">Catatan Petugas Monev</h3>
+		</div>
+		<div class="card-body">
+			<h6 class="font-weight-semibold">Lokasi</h6>
+			@if($leader->officerNote->where('type','location')->isNotEmpty())
+				{{$leader->officerNote->where('type','location')->first()->value}}
+			@endif
+			<h6 class="font-weight-semibold mt-3">Catatan</h6>
+			<div class="p-3" style="border:1px solid rgba(0,0,0,.125);border-radius: 5px">
+			@if($leader->officerNote->where('type','note')->isNotEmpty())
+				{{$leader->officerNote->where('type','note')->first()->value}}
+			@endif
+			</div>
+			<h6 class="font-weight-semibold mt-3">Lampiran</h6>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="text-muted">Foto</div>
+					@foreach($leader->officerNote->where('type','photo') as $photo)
+						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
+							<a href="{{asset('data_file_note/'.$photo->value)}}">{{$photo->value}}</a>
+							<a href="{{asset('data_file_note/'.$photo->value)}}" target="_blank" class="btn btn-primary"><i class="icon-download"></i> Unduh</a>
+						</div>
+					@endforeach
+					
+				</div>
+				<div class="col-md-6">
+					<div class="text-muted">File PDF</div>
+					@foreach($leader->officerNote->where('type','pdf') as $pdf)
+						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
+							<a href="{{asset('data_file_note/'.$pdf->value)}}">{{$pdf->value}}</a>
+							<a href="{{asset('data_file_note/'.$pdf->value)}}" target="_blank"  class="btn btn-primary"><i class="icon-download"></i> Unduh</a>
+						</div>
+					@endforeach
+				</div>
+			</div>
+		</div>
+	</div>
+@endif
 @endsection

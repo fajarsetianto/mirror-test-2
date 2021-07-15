@@ -17,6 +17,7 @@ class CreateRespondentsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->unsignedBigInteger('target_id');
+            $table->string('email');
             $table->string('token',100)->unique();
             $table->string('plain_token',100)->unique();
             $table->timestamp('start_working_at')->nullable();

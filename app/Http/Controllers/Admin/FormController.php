@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Form;
 use App\Notifications\Officer\NewFormAssigned;
 use App\Notifications\Responden\TokenNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DataTables;
 
@@ -103,7 +104,10 @@ class FormController extends Controller
     public function publishing(Form $form){
         $form->load(['targets.institutionable','targets.respondent','targets.officers']);
         if($form->isPublishable()){
-            $form->update(['status' => 'publish']);
+            $form->update([
+                'status' => 'publish',
+                'published_at' => Carbon::now()
+            ]);
             foreach($form->targets as $target){
                 if($target->respondent()->exists()){
                     $target->respondent->notify(new TokenNotification($target));

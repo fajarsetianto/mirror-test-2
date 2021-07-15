@@ -1,4 +1,4 @@
-@extends('layouts.full')
+@extends('layouts.officer.full')
 
 @section('site-title','Pengaturan')
 
@@ -19,6 +19,9 @@
 @endsection
 
 @section('content')
+<div class="content">
+
+
 @if(session()->has('success'))
 	<div class="alert alert-success border-0 alert-dismissible">
 		<button type="button" class="close" data-dismiss="alert"><span>×</span></button>
@@ -110,6 +113,6 @@
 	</div>
 </div>
 
-
+</div>
 
 @endsection

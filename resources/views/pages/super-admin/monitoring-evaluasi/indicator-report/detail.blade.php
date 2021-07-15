@@ -30,7 +30,7 @@
 						<div class="card card-body has-bg-image" style="background-color:{{$indicator->color}}">
 							<div class="media">
 								<div class="align-self-center text-center">
-									<span class="mi-2x">{{$indicator->targetsIn()->count()}}</span>
+									<span class="mi-2x">{{$indicator->targets()->byIndicator($indicator->minimum, $indicator->maximum)->count()}}</span>
 								</div>
 								<div class="media-body text-right">
 									<h6 class="mb-0">Minimal {{$indicator->minimum}}<br>Maksimal {{$indicator->maximum}}</h6>

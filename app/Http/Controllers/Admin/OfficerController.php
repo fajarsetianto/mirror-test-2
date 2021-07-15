@@ -78,21 +78,22 @@ class OfficerController extends Controller
     }
 
     public function data(){
-        $data = Officer::latest();
+        $data = auth()->user()->officers()->latest();
         return DataTables::of($data)
-            
             ->addIndexColumn()
             ->addColumn('actions', function($row){   
                 $btn = '<div class="list-icons">
-                <div class="dropdown">
-                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                        <i class="icon-menu9"></i>
-                    </a>
+                        <div class="dropdown">
+                            <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                <i class="icon-menu9"></i>
+                            </a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
-                    </div>
-                </div>
-            </div>';     
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="#" class="dropdown-item" onclick="component(`'.route('admin.management-user.edit',[$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                                <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`'.route('admin.management-user.destroy',[$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                            </div>
+                        </div>
+                    </div>';    
                 return $btn;
             })
             ->rawColumns(['actions'])
@@ -102,8 +103,7 @@ class OfficerController extends Controller
     public function select2(Request $request){
         $data = auth()->user()->officers()->select('id','name')
                 ->when($request->has('search'), function($query) use ($request){
-                    $query->where('name','like','%'.$request->search.'%')
-                        ->orWhere('npsn','like','%'.$request->search.'%');
+                    $query->where('name','like','%'.$request->search.'%');
                 })
                 ->paginate(10);
         return response()->json($data);

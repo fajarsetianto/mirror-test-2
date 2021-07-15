@@ -33,18 +33,7 @@ class InspectionHistoryController extends Controller
                 return $link;
             })
             ->addColumn('actions', function($row){   
-                $btn = '<div class="list-icons">
-                <div class="dropdown">
-                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                        <i class="icon-menu9"></i>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="'.route('admin.monev.inspection-history.form.index',[$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
-                        <a href="javascript:void(0)" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
-                    </div>
-                </div>
-            </div>';     
+                $btn = '<a href="'.route('admin.monev.inspection-history.form.index',[$row->id]).'" class="btn btn-info">Lihat Detail</a>';        
                 return $btn;
             })
             ->rawColumns(['name','target','actions'])

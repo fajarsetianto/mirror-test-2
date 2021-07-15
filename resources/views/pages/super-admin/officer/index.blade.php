@@ -25,7 +25,7 @@
 					{data: 'name', name: 'name'},
 					{data: 'email', name: 'email'},
 					{data: 'createdBy', name: 'createdBy'},
-					{data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
+					// {data: 'actions', name: 'actions', className: "text-center", orderable: false, searchable: false}
 					],
 					autoWidth: false,
 					dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
@@ -140,7 +140,7 @@
 						<th>Didaftarkan Oleh</th>
 						{{-- <th>Kategori Satuan Pendidikan</th> --}}
 						{{-- <th>Status</th> --}}
-						<th class="text-center">Actions</th>
+						{{-- <th class="text-center">Actions</th> --}}
 					</tr>
 				</thead>
 				<tbody>

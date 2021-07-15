@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'responden.name' => \App\Http\Middleware\Responden\CheckForRespondenName::class,
         'responden.elegible' => \App\Http\Middleware\Responden\Eligibility::class,
         'admin.eligible' => \App\Http\Middleware\AdminEligibility::class,
+        'type.officer' => \App\Http\Middleware\Api\OfficerMiddleware::class,
+        'type.respondent' => \App\Http\Middleware\Api\ResponedntMiddleware::class,
     ];
 }

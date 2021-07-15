@@ -859,6 +859,10 @@
                         <div class="col-md-5 font-weight-bold">Waktu Selesai</div>
                         <div class="col-md-7">{{$target->form->supervision_end_date->format('d/m/Y')}} <span class="badge badge-danger">Sisa Waktu : {{$target->form->supervisionDaysRemainingRender()}} Hari</span></div>
                     </div>        
+                    <div class="form-group row mb-0">
+                        <div class="col-md-5 font-weight-bold">Jumlah Pertanyaan</div>
+                        <div class="col-md-7"><span class="badge badge-info">{{$form->questions->count()}}</span></div>
+                    </div>
                 </div>
                 <div class="col-6">
                     <div class="row">

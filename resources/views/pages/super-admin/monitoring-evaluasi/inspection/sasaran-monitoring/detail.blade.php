@@ -178,9 +178,7 @@
 		<div class="form-group row mb-0">
 			<label class="col-md-3 col-6 font-weight-bold">Petugas Monev</label>
 			<div class="col-md-9 col-6">
-				@foreach ($target->officers as $officer)
-					{{$loop->iteration}}. {{$officer->name}} @if($officer->pivot->is_leader) <span class="badge badge-info">Leader</span> @endif <br>
-				@endforeach
+				@include('layouts.parts.officers',['officers' => $target->officers])
 			</div>
 		</div>
 		@endif
@@ -213,9 +211,9 @@
 	</div>
 </div>
 
-@if($target->officerLeader()->exists())
+@if($target->officers->where('pivot.submited_at','<>',null)->isNotEmpty()) 
 	@php
-		$leader = $target->officerLeader()->first()->pivot;
+		$leader = $target->officers->where('pivot.submited_at','<>',null)->first()->pivot;
 		$leader->load('officerNote');
 	@endphp
 	<div class="card">
@@ -239,8 +237,8 @@
 					<div class="text-muted">Foto</div>
 					@foreach($leader->officerNote->where('type','photo') as $photo)
 						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-							<a href="">{{$photo->value}}</a>
-							<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+							<a href="{{asset('data_file_note/'.$photo->value)}}">{{$photo->value}}</a>
+							<a href="{{asset('data_file_note/'.$photo->value)}}" target="_blank" class="btn btn-primary"><i class="icon-download"></i> Unduh</a>
 						</div>
 					@endforeach
 					
@@ -249,8 +247,8 @@
 					<div class="text-muted">File PDF</div>
 					@foreach($leader->officerNote->where('type','pdf') as $pdf)
 						<div class="d-flex align-items-center my-1" style="justify-content: space-between;">
-							<a href="">{{$pdf->value}}</a>
-							<button class="btn btn-primary"><i class="icon-download"></i> Unduh</button>
+							<a href="{{asset('data_file_note/'.$pdf->value)}}">{{$pdf->value}}</a>
+							<a href="{{asset('data_file_note/'.$pdf->value)}}" target="_blank"  class="btn btn-primary"><i class="icon-download"></i> Unduh</a>
 						</div>
 					@endforeach
 				</div>

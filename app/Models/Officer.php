@@ -7,9 +7,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Form;
 use App\Models\Pivots\OfficerTarget;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Officer extends Authenticatable
 {
+    use HasApiTokens;
     use Notifiable;
 
     /**

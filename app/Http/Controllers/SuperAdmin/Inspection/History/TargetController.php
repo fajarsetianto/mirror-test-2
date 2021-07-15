@@ -17,12 +17,14 @@ class TargetController extends Controller
     }
 
     public function detail(Form $form, Target $target){
-        $target->load('respondent');
+        $target->load(['institutionable','respondent','officers']);
         return view($this->viewNamespace.'detail', compact('form','target'));
     }
 
     public function data(Form $form){
-        $data = $form->targets()->latest();
+        $data = $form->targets()
+            ->with('officers','institutionable','respondent')
+            ->latest();
             return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row) use($form){   
@@ -72,7 +74,7 @@ class TargetController extends Controller
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         <a href="'.route('superadmin.monev.inspection-history.form.detail',[$form->id,$row->id]).'" class="dropdown-item"><i class="icon-eye"></i> Lihat Detail</a>
-                        <a href="javascript:void(0)" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
+                        <a href="'.route('superadmin.monev.inspection.form.download',[$form->id,$row->id]).'" target="_blank" class="dropdown-item"><i class="icon-download"></i> Unduh</a>
                     </div>
                 </div>
             </div>';     

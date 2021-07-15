@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth:officer']], function(){
                     'middleware' => ['can:manage,officerTarget','can:viewHistory,officerTarget']
                 ], function(){
                 Route::get('/','InspectionHistoryController@detail')->name('index');
+                Route::get('/{instrument}','InstrumentController@show')->name('instrument.show');
             });
         });
     });

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Form extends Model
 {
@@ -78,8 +79,9 @@ class Form extends Model
     }
 
     public function getMaxScoreAttribute(){
-        return $this->instruments->sum(function($item){
-            return $item->maxScore();
-        });
+        return $this->questions()
+                    ->withMaxScore()
+                    ->get()
+                    ->sum('max_score');
     }
 }

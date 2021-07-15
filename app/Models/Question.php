@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Question extends Model
 {
@@ -44,6 +45,15 @@ class Question extends Model
     
     public function officerAnswerOfficer(){
         return $this->hasOne(OfficerAnswer::class)->where('officer_id',auth('officer')->user()->id);
+    }
+
+    public function scopeWithMaxScore($q){
+        return $q->addSelect([
+            'max_score' => OfferedAnswer::select(DB::raw('CASE WHEN question_type.name = "Kotak Centang" THEN sum(score) ELSE max(score) END'))
+                            ->whereColumn('questions.id', '=','offered_answers.question_id')
+                            ->join('questions as q','offered_answers.question_id','=','q.id')
+                            ->join('question_type','question_type.id','q.question_type_id')
+        ]);
     }
 
 }
