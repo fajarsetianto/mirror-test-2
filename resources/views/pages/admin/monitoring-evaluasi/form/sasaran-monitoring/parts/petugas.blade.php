@@ -8,7 +8,7 @@
                                 checked
                             @endif
                         @endisset> 
-                        <label class="form-check-label ml-2" for="radio">Petugas yang mengisi form</label>
+                        <label class="form-check-label ml-2" for="radio">Penanggung Jawab</label>
                     </span>
                 </span>
                 <div class="flex-fill">
