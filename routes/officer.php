@@ -40,7 +40,7 @@ Route::group(['middleware' => ['auth:officer']], function(){
 
                     Route::group(['prefix' => 'pertanyaan/{instrument}','as' => 'question.'],function(){
                         Route::get('/','QuestionController@index')->name('index');
-                        Route::post('/','QuestionController@store')->middleware('can:leader,officerTarget')->name('store');
+                        Route::post('/','QuestionController@store')->name('store');
                         Route::get('/show','QuestionController@show')->name('show');
                     });
             });
