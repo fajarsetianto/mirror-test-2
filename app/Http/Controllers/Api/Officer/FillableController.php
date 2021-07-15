@@ -50,8 +50,8 @@ class FillableController extends Controller
            
             
 
-        $data = $request->has('limit') && $request->limit != null
-            ? $data->paginate($request->limit) 
+        $data = $request->has('limit') && is_numeric($request->limit)
+            ? $data->paginate(abs($request->limit)) 
             : $data->paginate(10);
             
         return $this->success(
