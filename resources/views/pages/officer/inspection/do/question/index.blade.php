@@ -29,7 +29,7 @@
 	let arrOfferIdOfficer = [];
 	
 	$(document).ready(function(){
-		isLeader()
+		isFirstSubmit()
 	});
 	
 	save = () => {
@@ -74,7 +74,7 @@
 		})
 	}
 
-	isLeader = () => {
+	isFirstSubmit = () => {
 		const statusSubmitted = "{{$statusSubmitted}}"
 		const statusOfficerId = "{{$statusOfficerId}}"
 		
