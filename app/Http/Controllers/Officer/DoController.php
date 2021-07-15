@@ -22,8 +22,14 @@ class DoController extends Controller
     public function index(OfficerTarget $officerTarget)
     {
         $officerTarget->load(['target.form','target.officers','target.institutionable','officer']);
+        
+        $userId = auth('officer')->user()->id;
+        $statusSubmit = isset($officerTarget->officerNoteByTarget);
+        $statusSameOfficer = isset($officerTarget->officerNoteByTarget) && $officerTarget->officerNoteByTarget->officer_id == $userId;
         return view($this->viewNamespace.'index', [
             'item' => $officerTarget, 
+            'status' => $statusSubmit, 
+            'statusSameOfficer' => $statusSameOfficer, 
             'url' => route('officer.monev.inspection.do.store',[$officerTarget->id]),
             'urlDownload' => route('officer.monev.inspection.do.show',[$officerTarget->id]),
             'urlSend' => route('officer.monev.inspection.do.send',[$officerTarget->id]),
