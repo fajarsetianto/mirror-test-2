@@ -24,13 +24,22 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(OfficerTarget $officerTarget, Instrument $instrument)
+    public function index(Request $request, OfficerTarget $officerTarget, Instrument $instrument)
     {
         $officerTarget->load(['target.form','target.respondent','target.institutionable','officer']);
         $count = $officerTarget->target->type == 'petugas MONEV' ? 0 : 1;
         $userId = auth('officer')->user()->id;
         $statusSubmitted = false;
         $statusOfficerId = false;
+        $data = $officerTarget->load('target.form')->target->form->instruments()->pluck('id')->toArray();
+        $urlNextPage = null;
+        $next = array_search($instrument->id,$data);
+        if(isset($data[$next+1])){
+            $urlNextPage =  route('officer.monev.inspection.do.question.index',[$officerTarget->id,$data[$next+1]]);
+            $endArray = end($data);
+            if($urlNextPage == $endArray) $urlNextPage = null;
+        }
+
         if($officerTarget->submitedAnswer != null){
             if(isset($officerTarget->submitedAnswer->byInstrumentId($instrument->id)->first()->officer_id)){
                 $statusSubmitted = true;
@@ -43,6 +52,7 @@ class QuestionController extends Controller
         
         return view($this->viewNamespace.'index', [
             'item' => $instrument,
+            'urlNextPage' => $urlNextPage,
             'userId' => $userId,
             'statusSubmitted' => $statusSubmitted,
             'statusOfficerId' => $statusOfficerId,

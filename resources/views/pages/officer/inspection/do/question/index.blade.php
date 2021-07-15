@@ -541,6 +541,10 @@
 			$(idOther).addClass('d-none')
 		}
 	}
+
+	nextQuestion = (url) =>{
+		window.open(url)
+	}
 	
 
 	upload = (numberOfficer,name) => {
@@ -579,10 +583,15 @@
     <div class="card border-top-success">
         <div class="page-header">
             <div class="page-header-content">
-                <div class="page-title">
-                    <div class="instrument-header d-flex">
+                <div class="page-title row instrument-header">
+                    <div class="@isset($url) col-md-11 @else col-md-12 @endisset">
                         <h4><span class="font-weight-semibold">{{$item->name}}</span></h4>
                     </div>
+					@isset($urlNextPage)
+						<div class="col-md-1 text-right">
+							<h7><button onclick="nextQuestion('{{$urlNextPage}}')" class="btn m-0 p-0 btn-primary-outline font-weight-semibold">NEXT <i class="icon-circle-right2"></i></button></h7>
+						</div>
+					@endisset
                     <div class="instrument-description">
                         <p class="text-secondary">{{$item->description}}</p>
                     </div>
