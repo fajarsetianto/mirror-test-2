@@ -28,9 +28,24 @@ class QuestionController extends Controller
     {
         $officerTarget->load(['target.form','target.respondent','target.institutionable','officer']);
         $count = $officerTarget->target->type == 'petugas MONEV' ? 0 : 1;
+        $userId = auth('officer')->user()->id;
+        $statusSubmitted = false;
+        $statusOfficerId = false;
+        if($officerTarget->submitedAnswer != null){
+            if(isset($officerTarget->submitedAnswer->byInstrumentId($instrument->id)->first()->officer_id)){
+                $statusSubmitted = true;
+                if($officerTarget->submitedAnswer->byInstrumentId($instrument->id)->first()->officer_id ==  $userId){
+                    $statusOfficerId = false;
+                }
+            }
+        }
+
         
         return view($this->viewNamespace.'index', [
             'item' => $instrument,
+            'userId' => $userId,
+            'statusSubmitted' => $statusSubmitted,
+            'statusOfficerId' => $statusOfficerId,
             'officerTarget' => $officerTarget,
             'countRespondent' => $count,
             'url' => route('officer.monev.inspection.do.question.store',[$officerTarget->id, $instrument->id])

@@ -34,8 +34,20 @@ class OfficerTarget extends Pivot
         return $this->is_leader == '1';
     }
 
+    public function submitedAnswer(){
+        return $this->belongsTo(OfficerAnswer::class, 'target_id', 'target_id');
+    }
+
+    public function isSubmitedAnswer(){
+        return isset($this->submitedAnswer);
+    }
+
     public function answers(){
         return $this->hasMany(OfficerAnswer::class,'officer_id','officer_id')->where('target_id',$this->target_id)->orderBy('question_id');
+    }
+
+    public function answersSubmited(){
+        return $this->hasMany(OfficerAnswer::class,'target_id','target_id')->orderBy('question_id');
     }
 
     public function isSubmited(){

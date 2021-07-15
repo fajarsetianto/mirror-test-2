@@ -75,10 +75,12 @@
 	}
 
 	isLeader = () => {
-		let status = "{{$officerTarget->is_leader}}"
-		if(status != '1'){
-			$(".leader").prop('disabled', true);
-			$(".btn-leader-save").addClass('d-none');
+		const statusSubmitted = "{{$statusSubmitted}}"
+		const statusOfficerId = "{{$statusOfficerId}}"
+		
+		if(statusSubmitted == '1' && statusOfficerId != '1'){
+				$(".leader").prop('disabled', true);
+				$(".btn-leader-save").addClass('d-none');
 		}
 	}
 
@@ -98,7 +100,6 @@
 			offerId 			= dataAnswer.offered_answer_id
 			fileName 			= typeof nameAnswer.split('-')[2] != undefined ? nameAnswer.split('-')[2] : ''
 		}
-
 		if(countQuestionRespondent.indexOf(id) !== -1 && id != null){
 			if(typeClick == 'kotak centang') {
 				checkboxHandling(offerId, 'respondent')
@@ -514,7 +515,6 @@
 				$(idOther).addClass('d-none')
 			}
 		} else {
-			console.log(idOther)
 			$(idOther).val('')
 			$(idOther).addClass('d-none')
 		}
@@ -576,7 +576,6 @@
 @endsection
 @section('content')
 <div class="content">
-
     <div class="card border-top-success">
         <div class="page-header">
             <div class="page-header-content">
@@ -592,25 +591,28 @@
         </div>
     </div>
 	<div id="question-content"></div>
-
 	@if(isset($officerTarget->target->respondent) && $countRespondent > 0)
 		@if($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get()->count() < 1):
 			@foreach($item->questions()->get() as $key => $row)
 				<script>questionRespondent('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{!!json_encode($row->offeredAnswer)!!}', 'null')</script>
 			@endforeach
 		@else
+		
 			@foreach($officerTarget->target->respondent->answers()->byInstrumentId($item->id)->get() as $key => $row)
 				<script>questionRespondent('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{!!json_encode($row->question->offeredAnswer)!!}', '{!! json_encode($row) !!}')</script>
 			@endforeach
 		@endif
 	@endif
-
-	@if(count($officerTarget->target->officerLeader->first()->pivot->answers()->byInstrumentId($item->id)->get()) < 1)
+	@if($officerTarget->submitedAnswer == null)
+		@foreach($item->questions()->get() as $key => $row)
+			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', 'null',{{$countRespondent}})</script>
+		@endforeach
+	@elseif($officerTarget->submitedAnswer->byInstrumentId($item->id)->first() == null)
 		@foreach($item->questions()->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->id)}}','{{strtolower($row->questionType->name)}}', '{{$row->content}}', '{{json_encode($row->offeredAnswer)}}', 'null',{{$countRespondent}})</script>
 		@endforeach
 	@else
-		@foreach($officerTarget->target->officerLeader->first()->pivot->answers()->byInstrumentId($item->id)->get() as $key => $row)
+		@foreach($officerTarget->answersSubmited()->byInstrumentId($item->id)->get() as $key => $row)
 			<script>questionOfficer('{{strtolower($row->question->id)}}','{{strtolower($row->question->questionType->name)}}', '{{$row->question->content}}', '{{json_encode($row->question->offeredAnswer()->byInstrumentId($item->id)->get())}}', '{!!json_encode($row)!!}',{{$countRespondent}})</script>
 		@endforeach
 	@endif
