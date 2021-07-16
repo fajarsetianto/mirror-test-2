@@ -1,0 +1,577 @@
+openapi: 3.0.3
+info:
+  title: 'Api Documentation'
+  description: 'Api Documentation MONEV'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://codenesia-5.test'
+paths:
+  /api/respondent/auth/login:
+    post:
+      summary: Login
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Success
+                  message: 'Logged in Successfully'
+                  data:
+                    user:
+                      id: 17
+                      name: null
+                      target_id: 27
+                      token: $2y$10$OeReEyUKTPGt52yOoQAwdeXxem3FHv5tcwfZr5gQB30GjyQ5GdK9m
+                      plain_token: scBJNCqLa8
+                      start_working_at: null
+                      submited_at: null
+                      created_at: '2021-07-15T04:14:15.000000Z'
+                      updated_at: '2021-07-15T04:14:15.000000Z'
+                      email: cobaemailbaru@gmail.com
+                    token: 6|WM6sR3j8gNZuu4q67Zh5ZYCGZZM7aCKIMfIA44LD
+                    token_type: Bearer
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: 'Logged in Successfully'
+                  data:
+                    type: object
+                    example:
+                      user:
+                        id: 17
+                        name: null
+                        target_id: 27
+                        token: $2y$10$OeReEyUKTPGt52yOoQAwdeXxem3FHv5tcwfZr5gQB30GjyQ5GdK9m
+                        plain_token: scBJNCqLa8
+                        start_working_at: null
+                        submited_at: null
+                        created_at: '2021-07-15T04:14:15.000000Z'
+                        updated_at: '2021-07-15T04:14:15.000000Z'
+                        email: cobaemailbaru@gmail.com
+                      token: 6|WM6sR3j8gNZuu4q67Zh5ZYCGZZM7aCKIMfIA44LD
+                      token_type: Bearer
+      tags:
+        - Respondent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: ''
+                  example: enim
+              required:
+                - token
+      security: []
+  /api/officer/auth/login:
+    post:
+      summary: Login
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses:
+        200:
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Success
+                  message: 'Logged in Successfully'
+                  data:
+                    user:
+                      id: 7
+                      name: 'PETUGAS 2'
+                      email: petugas2@gmail.com
+                      email_verified_at: null
+                      is_active: 0
+                      created_by: 1
+                      created_at: '2021-07-02T06:04:22.000000Z'
+                      updated_at: '2021-07-02T06:04:22.000000Z'
+                    token: 3|PyFzM4dKMHhkuRkuon2z0nVAUX8qyDxELazdoSvQ
+                    token_type: bearer
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: 'Logged in Successfully'
+                  data:
+                    type: object
+                    example:
+                      user:
+                        id: 7
+                        name: 'PETUGAS 2'
+                        email: petugas2@gmail.com
+                        email_verified_at: null
+                        is_active: 0
+                        created_by: 1
+                        created_at: '2021-07-02T06:04:22.000000Z'
+                        updated_at: '2021-07-02T06:04:22.000000Z'
+                      token: 3|PyFzM4dKMHhkuRkuon2z0nVAUX8qyDxELazdoSvQ
+                      token_type: bearer
+      tags:
+        - Officer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: constantin05@example.com
+                password:
+                  type: string
+                  description: ''
+                  example: voluptates
+              required:
+                - email
+                - password
+      security: []
+  /api/officer/me:
+    get:
+      summary: Summary
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Success
+                  message: 'Data successfully loaded'
+                  data:
+                    review_count: 1
+                    fillable_count: 2
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: 'Data successfully loaded'
+                  data:
+                    type: object
+                    example:
+                      review_count: 1
+                      fillable_count: 2
+      tags:
+        - Officer
+  /api/officer/me/review:
+    get:
+      summary: Reviews
+      description: ''
+      parameters:
+        -
+          in: query
+          name: limit
+          description: optional
+          example: 18
+          required: false
+          schema:
+            type: integer
+            description: optional
+            example: 18
+        -
+          in: query
+          name: page
+          description: optional
+          example: 18
+          required: false
+          schema:
+            type: integer
+            description: optional
+            example: 18
+        -
+          in: query
+          name: keyword
+          description: optional
+          example: dolores
+          required: false
+          schema:
+            type: string
+            description: optional
+            example: dolores
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Success
+                  message: 'Data successfully loaded'
+                  data:
+                    current_page: 1
+                    data:
+                      -
+                        id: 26
+                        type: 'petugas MONEV'
+                        form_id: 8
+                        institutionable_id: 19726
+                        institutionable_type: App\Models\EducationalInstitution
+                        created_at: '2021-07-10T11:40:01.000000Z'
+                        updated_at: '2021-07-10T11:40:01.000000Z'
+                        form:
+                          id: 8
+                          name: 'MONITORING WEBISTE'
+                          supervision_end_date: '2021-10-24T17:00:00.000000Z'
+                        institutionable:
+                          id: 19726
+                          name: 'SMKS PEMBAHARUAN PURWOREJO'
+                        pivot:
+                          officer_id: 7
+                          target_id: 26
+                          id: 39
+                          is_leader: 0
+                          submited_at: null
+                          created_at: '2021-07-10T11:40:01.000000Z'
+                          updated_at: '2021-07-10T11:40:01.000000Z'
+                    first_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                    from: 1
+                    last_page: 1
+                    last_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        active: false
+                      -
+                        url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                        label: '1'
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        active: false
+                    next_page_url: null
+                    path: 'http://codenesia-5.test/api/officer/me/fillable'
+                    per_page: 10
+                    prev_page_url: null
+                    to: 1
+                    total: 1
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: 'Data successfully loaded'
+                  data:
+                    type: object
+                    example:
+                      current_page: 1
+                      data:
+                        -
+                          id: 26
+                          type: 'petugas MONEV'
+                          form_id: 8
+                          institutionable_id: 19726
+                          institutionable_type: App\Models\EducationalInstitution
+                          created_at: '2021-07-10T11:40:01.000000Z'
+                          updated_at: '2021-07-10T11:40:01.000000Z'
+                          form:
+                            id: 8
+                            name: 'MONITORING WEBISTE'
+                            supervision_end_date: '2021-10-24T17:00:00.000000Z'
+                          institutionable:
+                            id: 19726
+                            name: 'SMKS PEMBAHARUAN PURWOREJO'
+                          pivot:
+                            officer_id: 7
+                            target_id: 26
+                            id: 39
+                            is_leader: 0
+                            submited_at: null
+                            created_at: '2021-07-10T11:40:01.000000Z'
+                            updated_at: '2021-07-10T11:40:01.000000Z'
+                      first_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                      from: 1
+                      last_page: 1
+                      last_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                      links:
+                        -
+                          url: null
+                          label: '&laquo; Previous'
+                          active: false
+                        -
+                          url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                          label: '1'
+                          active: true
+                        -
+                          url: null
+                          label: 'Next &raquo;'
+                          active: false
+                      next_page_url: null
+                      path: 'http://codenesia-5.test/api/officer/me/fillable'
+                      per_page: 10
+                      prev_page_url: null
+                      to: 1
+                      total: 1
+      tags:
+        - Officer
+  /api/officer/me/fillable:
+    get:
+      summary: Fillables
+      description: ''
+      parameters:
+        -
+          in: query
+          name: limit
+          description: optional
+          example: 5
+          required: false
+          schema:
+            type: integer
+            description: optional
+            example: 5
+        -
+          in: query
+          name: page
+          description: optional
+          example: 14
+          required: false
+          schema:
+            type: integer
+            description: optional
+            example: 14
+        -
+          in: query
+          name: keyword
+          description: optional
+          example: similique
+          required: false
+          schema:
+            type: string
+            description: optional
+            example: similique
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {token}'
+          schema:
+            type: string
+      responses:
+        200:
+          description: '200'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: Success
+                  message: 'Data successfully loaded'
+                  data:
+                    current_page: 1
+                    data:
+                      -
+                        id: 26
+                        type: 'petugas MONEV'
+                        form_id: 8
+                        institutionable_id: 19726
+                        institutionable_type: App\Models\EducationalInstitution
+                        created_at: '2021-07-10T11:40:01.000000Z'
+                        updated_at: '2021-07-10T11:40:01.000000Z'
+                        form:
+                          id: 8
+                          name: 'MONITORING WEBISTE'
+                          supervision_end_date: '2021-10-24T17:00:00.000000Z'
+                        institutionable:
+                          id: 19726
+                          name: 'SMKS PEMBAHARUAN PURWOREJO'
+                        pivot:
+                          officer_id: 7
+                          target_id: 26
+                          id: 39
+                          is_leader: 0
+                          submited_at: null
+                          created_at: '2021-07-10T11:40:01.000000Z'
+                          updated_at: '2021-07-10T11:40:01.000000Z'
+                    first_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                    from: 1
+                    last_page: 1
+                    last_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        active: false
+                      -
+                        url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                        label: '1'
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        active: false
+                    next_page_url: null
+                    path: 'http://codenesia-5.test/api/officer/me/fillable'
+                    per_page: 10
+                    prev_page_url: null
+                    to: 1
+                    total: 1
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: 'Data successfully loaded'
+                  data:
+                    type: object
+                    example:
+                      current_page: 1
+                      data:
+                        -
+                          id: 26
+                          type: 'petugas MONEV'
+                          form_id: 8
+                          institutionable_id: 19726
+                          institutionable_type: App\Models\EducationalInstitution
+                          created_at: '2021-07-10T11:40:01.000000Z'
+                          updated_at: '2021-07-10T11:40:01.000000Z'
+                          form:
+                            id: 8
+                            name: 'MONITORING WEBISTE'
+                            supervision_end_date: '2021-10-24T17:00:00.000000Z'
+                          institutionable:
+                            id: 19726
+                            name: 'SMKS PEMBAHARUAN PURWOREJO'
+                          pivot:
+                            officer_id: 7
+                            target_id: 26
+                            id: 39
+                            is_leader: 0
+                            submited_at: null
+                            created_at: '2021-07-10T11:40:01.000000Z'
+                            updated_at: '2021-07-10T11:40:01.000000Z'
+                      first_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                      from: 1
+                      last_page: 1
+                      last_page_url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                      links:
+                        -
+                          url: null
+                          label: '&laquo; Previous'
+                          active: false
+                        -
+                          url: 'http://codenesia-5.test/api/officer/me/fillable?page=1'
+                          label: '1'
+                          active: true
+                        -
+                          url: null
+                          label: 'Next &raquo;'
+                          active: false
+                      next_page_url: null
+                      path: 'http://codenesia-5.test/api/officer/me/fillable'
+                      per_page: 10
+                      prev_page_url: null
+                      to: 1
+                      total: 1
+      tags:
+        - Officer

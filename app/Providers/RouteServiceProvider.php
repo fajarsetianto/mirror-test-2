@@ -46,6 +46,14 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapSuperAdminRoutes();
+
+        $this->mapAdminRoutes();
+        
+        $this->mapRespondenRoutes();
+
+        $this->mapOfficerRoutes();
+
         //
     }
 
@@ -74,7 +82,43 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
             ->middleware('api')
-            ->namespace($this->namespace)
+            ->namespace($this->namespace.'\Api')
             ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapSuperAdminRoutes()
+    {
+        Route::middleware(['web','auth','admin.eligible'])
+            ->name('superadmin.')
+            ->prefix('superadmin')
+            ->namespace($this->namespace.'\SuperAdmin')
+            ->group(base_path('routes/superadmin.php'));
+    }
+
+    protected function mapAdminRoutes()
+    {
+        Route::middleware(['web','auth','admin.eligible'])
+            ->name('admin.')
+            ->prefix('admin')
+            ->namespace($this->namespace.'\Admin')
+            ->group(base_path('routes/admin.php'));
+    }
+
+    protected function mapRespondenRoutes()
+    {
+        Route::middleware(['web'])
+            ->prefix('responden')
+            ->name('respondent.')
+            ->namespace($this->namespace.'\Responden')
+            ->group(base_path('routes/responden.php'));
+    }
+
+    protected function mapOfficerRoutes()
+    {
+        Route::middleware(['web'])
+            ->prefix('petugas')
+            ->name('officer.')
+            ->namespace($this->namespace.'\Officer')
+            ->group(base_path('routes/officer.php'));
     }
 }

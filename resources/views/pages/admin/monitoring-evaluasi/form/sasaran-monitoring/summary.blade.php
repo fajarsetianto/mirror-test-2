@@ -1,4 +1,4 @@
-<div class="modal-dialog modal-md">
+<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header bg-success-600">
             <h6 class="modal-title font-weight-semibold">Tambah Sasaran Monitoring</h6>
@@ -22,8 +22,10 @@
                     @foreach ($form->targets as $target)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$target->nonSatuanPendidikan->name}}</td>
-                            <td>{{$target->officerName()}}</td>
+                            <td>{{$target->institutionable->name}}</td>
+                            <td>
+                                @include('layouts.parts.officers',['officers' => $target->officers])
+                            </td>
                             <td>{{$target->type}}</td>
                         </tr>
                     @endforeach
@@ -32,8 +34,12 @@
             @endif
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-link" data-dismiss="modal">Tambahkan Nanti</button>
-            <a href="{{route('monev.form.target.index',[$form->id])}}" class="btn bg-success">Tambahkan Sasaran Monitoring</a>
+            @if($form->isEditable())
+                <button type="button" class="btn btn-link" data-dismiss="modal">Tambahkan Nanti</button>
+                <a href="{{route('admin.monev.form.target.index',[$form->id])}}" class="btn bg-success">Tambahkan Sasaran Monitoring</a>
+            @else
+                <a href="{{route('admin.monev.form.target.index',[$form->id])}}" class="btn bg-success">Lihat Sasaran Monitoring</a>
+            @endif
         </div>
     </div>
 </div>

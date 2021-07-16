@@ -18,9 +18,9 @@
 					processing: true,
 					serverSide: true,
 					responsive: true,
-					ajax: '{!! route("monev.indicator-report.data") !!}',
+					ajax: '{!! route("admin.monev.indicator-report.data") !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
@@ -51,13 +51,13 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('indicator-report') }}				
+		{{ Breadcrumbs::render('admin.monev.indicator-report') }}				
 	</div>
 @endsection
 @section('content')
 <div class="card">
 	<div class="card-header header-elements-inline">
-		<h6 class="card-title font-weight-semibold">Laporan Indicator Form Instrument Monitoring dan Evaluasi</h6>
+		<h6 class="card-title font-weight-semibold">Laporan Indikator Form Instrument Monitoring dan Evaluasi</h6>
 	</div>
 	<hr class="m-0">
 	<div class="card-body">

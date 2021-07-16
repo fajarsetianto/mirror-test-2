@@ -32,106 +32,21 @@
 
 				<li class="nav-item dropdown">
 					<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
-						<i class="icon-bubbles4"></i>
-						<span class="d-md-none ml-2">Messages</span>
-						<span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">2</span>
+						<i class="mi-notifications-none" style="font-size: 1.25rem"></i>
+						<span class="d-md-none ml-2">Notifikasi</span>
+						<span class="badge badge-pill bg-warning-400 ml-auto ml-md-0">{{auth()->user()->unReadNotifications()->count()}}</span>
 					</a>
 					
 					<div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
 						<div class="dropdown-content-header">
-							<span class="font-weight-semibold">Messages</span>
-							<a href="#" class="text-default"><i class="icon-compose"></i></a>
+							<span class="font-weight-semibold">Notifikasi</span>
 						</div>
-
-						<div class="dropdown-content-body dropdown-scrollable">
-							<ul class="media-list">
-								<li class="media">
-									<div class="mr-3 position-relative">
-										<img src="{{asset('assets/global/images/placeholders/placeholder.jpg')}}" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold">James Alexander</span>
-												<span class="text-muted float-right font-size-sm">04:58</span>
-											</a>
-										</div>
-
-										<span class="text-muted">who knows, maybe that would be the best thing for me...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3 position-relative">
-										<img src="{{asset('assets/global/images/placeholders/placeholder.jpg')}}" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold">Margo Baker</span>
-												<span class="text-muted float-right font-size-sm">12:16</span>
-											</a>
-										</div>
-
-										<span class="text-muted">That was something he was unable to do because...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3">
-										<img src="{{asset('assets/global/images/placeholders/placeholder.jpg')}}" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold">Jeremy Victorino</span>
-												<span class="text-muted float-right font-size-sm">22:48</span>
-											</a>
-										</div>
-
-										<span class="text-muted">But that would be extremely strained and suspicious...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3">
-										<img src="{{asset('assets/global/images/placeholders/placeholder.jpg')}}" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold">Beatrix Diaz</span>
-												<span class="text-muted float-right font-size-sm">Tue</span>
-											</a>
-										</div>
-
-										<span class="text-muted">What a strenuous career it is that I've chosen...</span>
-									</div>
-								</li>
-
-								<li class="media">
-									<div class="mr-3">
-										<img src="{{asset('assets/global/images/placeholders/placeholder.jpg')}}" width="36" height="36" class="rounded-circle" alt="">
-									</div>
-									<div class="media-body">
-										<div class="media-title">
-											<a href="#">
-												<span class="font-weight-semibold">Richard Vango</span>
-												<span class="text-muted float-right font-size-sm">Mon</span>
-											</a>
-										</div>
-										
-										<span class="text-muted">Other travelling salesmen live a life of luxury...</span>
-									</div>
-								</li>
-							</ul>
-						</div>
-
-						<div class="dropdown-content-footer justify-content-center p-0">
-							<a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
-						</div>
+						
+						@include('layouts.parts.notification',[
+                        'notifications' => auth()->user()->unReadNotifications,
+                        'prefix_routes' => 'admin',
+                        'guard' => 'web'
+                    ])
 					</div>
 				</li>
 

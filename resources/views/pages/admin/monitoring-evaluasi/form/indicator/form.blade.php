@@ -27,7 +27,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Warna Indikator</label>
                     <div class="col-md-9">
-                        <input type="text" name="color" class="form-control colorpicker-palette-toggle" @isset($item) value="{{$item->color}}" @else value="rgb(0,0,0)" @endisset data-fouc>
+                        <input type="text" name="color" class="form-control colorpicker-palette" @isset($item) value="{{$item->color}}" @else value="rgb(0,0,0)" @endisset data-fouc>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -117,12 +117,9 @@
             ["#900","#b45f06","#bf9000","#38761d","#134f5c","#0b5394","#351c75","#741b47"],
             ["#600","#783f04","#7f6000","#274e13","#0c343d","#073763","#20124d","#4c1130"]
         ];
-        $('.colorpicker-palette-toggle').spectrum({
+        $('.colorpicker-palette').spectrum({
             showPalette: true,
             showPaletteOnly: true,
-            togglePaletteOnly: true,
-            togglePaletteMoreText: 'More',
-            togglePaletteLessText: 'Less',
             palette: demoPalette
         });
 

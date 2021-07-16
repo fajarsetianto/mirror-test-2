@@ -1,7 +1,15 @@
 @extends('layouts.full')
 
 @section('site-title','Form Instrument Monitoring dan Evaluasi')
-
+@push('css-top')
+	<style>
+		.btn-group-toggle label.btn.btn-primary:not(.active) {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			color: inherit;
+		}
+	</style>
+@endpush
 @push('scripts-top')
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/global/js/plugins/tables/datatables/extensions/responsive.min.js')}}"></script>
@@ -18,9 +26,9 @@
 					responsive: true,
 					processing: true,
 					serverSide: true,
-					ajax: '{!! route("monev.form.data",['$form->id']) !!}',
+					ajax: '{!! route("admin.monev.form.data",['$form->id']) !!}',
 					columns: [
-					{ "data": null,"sortable": false,
+					{ "data": null,"sortable": false, searchable: false,
 						render: function (data, type, row, meta) {
 							return meta.row + meta.settings._iDisplayStart + 1;
 						}
@@ -124,7 +132,7 @@
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 		</div>
-		{{ Breadcrumbs::render('forms') }}				
+		{{ Breadcrumbs::render('admin.monev.forms') }}				
 	</div>
 @endsection
 @section('content')
@@ -132,7 +140,7 @@
 	<div class="card-header header-elements-inline">
 		<h6 class="card-title font-weight-semibold">Daftar Form Instrument Monitoring dan Evaluasi</h6>
 		<div class="header-elements">
-			<button class="btn bg-purple-400" onclick="component('{{route('monev.form.create')}}')"><i class="icon-add-to-list"></i> Buat Form</button>
+			<button class="btn bg-purple-400" onclick="component('{{route('admin.monev.form.create')}}')"><i class="icon-add-to-list"></i> Buat Form</button>
 		</div>
 	</div>
 	<hr class="m-0">

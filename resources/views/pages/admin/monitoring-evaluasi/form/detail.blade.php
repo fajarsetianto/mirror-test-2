@@ -1,4 +1,4 @@
-@extends('layouts.full',['breadcrumb' => 'home'])
+@extends('layouts.full')
 
 @section('site-title','Dashboard')
 
@@ -19,7 +19,7 @@
 		function component(x){
 				switch(x){
 					case 'add':
-						var url = "{{route('monev.form.create')}}";
+						var url = "{{route('admin.monev.form.create')}}";
 						break;
 				}
 

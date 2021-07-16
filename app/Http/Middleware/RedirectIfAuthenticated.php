@@ -19,9 +19,17 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+            if($guard == null || $guard == 'web'){
+                if(auth()->user()->isSuperAdmin()){
+                    return redirect()->route('superadmin.dashboard');
+                }
+                return redirect(RouteServiceProvider::HOME);
+            }elseif($guard == 'respondent'){
+                return redirect()->route('respondent.dashboard');
+            }elseif($guard == 'officer'){
+                return redirect()->route('officer.dashboard');
+            }
         }
-
         return $next($request);
     }
 }

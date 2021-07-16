@@ -19,15 +19,14 @@ class QuestionController extends Controller
         return view($this->viewNamespace.'index', compact('form','instrument','data'));
     }
 
-    public function create(Form $form){
+    public function create(){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.instrument.store',[$form->id]),
         ]);
     }
 
     public function edit(Form $form, Instrument $instrument){
         return view($this->viewNamespace.'form', [
-            'url' => route('monev.form.instrument.update',[$form->id, $instrument->id]),
+            'url' => route('admin.monev.form.instrument.update',[$form->id, $instrument->id]),
             'item' => $instrument
         ]);
     }
@@ -90,6 +89,7 @@ class QuestionController extends Controller
 
         return response()->json([
             'status' => 1,
+            'item' => ['question' => $question->id],
             'title' => 'Successful!',
             'msg' => 'Data succesfully updated!'
         ],200);
@@ -147,8 +147,8 @@ class QuestionController extends Controller
         ],200);
     }
 
-    public function destroy(Form $form, Instrument $instrument){
-        $instrument->delete();
+    public function destroy(Form $form, Instrument $instrument, Question $question){
+        $question->delete();
 
         return response()->json([
             'status' => 1,
@@ -162,7 +162,7 @@ class QuestionController extends Controller
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('name', function($row){   
-                $link = '<a href="'.route('monev.form.instrument.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
+                $link = '<a href="'.route('admin.monev.form.instrument.index',[$row->id]).'">'.strtoupper($row->name).'</a>';     
                 return $link;
             })
             ->addColumn('actions', function($row) use ($form){   
@@ -172,8 +172,8 @@ class QuestionController extends Controller
                         <i class="icon-menu9"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`edit`,`'.route('monev.form.instrument.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
-                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`instrument`,`'.route('monev.form.instrument.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="component(`edit`,`'.route('admin.monev.form.instrument.edit',[$form->id,$row->id]).'`)"><i class="icon-pencil"></i> Edit</a>
+                        <a href="javascript:void(0)" class="dropdown-item" onclick="destroy(`instrument`,`'.route('admin.monev.form.instrument.destroy',[$form->id,$row->id]).'`)"><i class="icon-trash"></i> Hapus</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
                         <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
                     </div>

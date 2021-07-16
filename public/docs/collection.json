@@ -1,0 +1,261 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "codenesia-5.test"
+        }
+    ],
+    "info": {
+        "name": "Api Documentation",
+        "_postman_id": "e62417e2-a2fb-4e8c-b205-e2abef905e6d",
+        "description": "Api Documentation MONEV",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": {
+        "1": {
+            "name": "Respondent",
+            "description": "APIs for autenticate respondent",
+            "item": [
+                {
+                    "name": "Login",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/respondent\/auth\/login",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/respondent\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"token\":\"enim\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"status\":\"Success\",\"message\":\"Logged in Successfully\",\"data\":{\"user\":{\"id\":17,\"name\":null,\"target_id\":27,\"token\":\"$2y$10$OeReEyUKTPGt52yOoQAwdeXxem3FHv5tcwfZr5gQB30GjyQ5GdK9m\",\"plain_token\":\"scBJNCqLa8\",\"start_working_at\":null,\"submited_at\":null,\"created_at\":\"2021-07-15T04:14:15.000000Z\",\"updated_at\":\"2021-07-15T04:14:15.000000Z\",\"email\":\"cobaemailbaru@gmail.com\"},\"token\":\"6|WM6sR3j8gNZuu4q67Zh5ZYCGZZM7aCKIMfIA44LD\",\"token_type\":\"Bearer\"}}",
+                            "name": "200"
+                        }
+                    ]
+                }
+            ]
+        },
+        "0": {
+            "name": "Officer",
+            "description": "APIs for autenticate officer",
+            "item": [
+                {
+                    "name": "Login",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/officer\/auth\/login",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/officer\/auth\/login"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"email\":\"constantin05@example.com\",\"password\":\"voluptates\"}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"status\":\"Success\",\"message\":\"Logged in Successfully\",\"data\":{\"user\":{\"id\":7,\"name\":\"PETUGAS 2\",\"email\":\"petugas2@gmail.com\",\"email_verified_at\":null,\"is_active\":0,\"created_by\":1,\"created_at\":\"2021-07-02T06:04:22.000000Z\",\"updated_at\":\"2021-07-02T06:04:22.000000Z\"},\"token\":\"3|PyFzM4dKMHhkuRkuon2z0nVAUX8qyDxELazdoSvQ\",\"token_type\":\"bearer\"}}",
+                            "name": "200"
+                        }
+                    ]
+                },
+                {
+                    "name": "Summary",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/officer\/me",
+                            "query": [],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/officer\/me"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"status\":\"Success\",\"message\":\"Data successfully loaded\",\"data\":{\"review_count\":1,\"fillable_count\":2}}",
+                            "name": "200"
+                        }
+                    ]
+                },
+                {
+                    "name": "Reviews",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/officer\/me\/review",
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "18",
+                                    "description": "optional",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "18",
+                                    "description": "optional",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "keyword",
+                                    "value": "dolores",
+                                    "description": "optional",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/officer\/me\/review?limit=18&page=18&keyword=dolores"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"status\":\"Success\",\"message\":\"Data successfully loaded\",\"data\":{\"current_page\":1,\"data\":[{\"id\":26,\"type\":\"petugas MONEV\",\"form_id\":8,\"institutionable_id\":19726,\"institutionable_type\":\"App\\\\Models\\\\EducationalInstitution\",\"created_at\":\"2021-07-10T11:40:01.000000Z\",\"updated_at\":\"2021-07-10T11:40:01.000000Z\",\"form\":{\"id\":8,\"name\":\"MONITORING WEBISTE\",\"supervision_end_date\":\"2021-10-24T17:00:00.000000Z\"},\"institutionable\":{\"id\":19726,\"name\":\"SMKS PEMBAHARUAN PURWOREJO\"},\"pivot\":{\"officer_id\":7,\"target_id\":26,\"id\":39,\"is_leader\":0,\"submited_at\":null,\"created_at\":\"2021-07-10T11:40:01.000000Z\",\"updated_at\":\"2021-07-10T11:40:01.000000Z\"}}],\"first_page_url\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable?page=1\",\"from\":1,\"last_page\":1,\"last_page_url\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable?page=1\",\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"active\":false},{\"url\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable?page=1\",\"label\":\"1\",\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"active\":false}],\"next_page_url\":null,\"path\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable\",\"per_page\":10,\"prev_page_url\":null,\"to\":1,\"total\":1}}",
+                            "name": "200"
+                        }
+                    ]
+                },
+                {
+                    "name": "Fillables",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "{{baseUrl}}",
+                            "path": "api\/officer\/me\/fillable",
+                            "query": [
+                                {
+                                    "key": "limit",
+                                    "value": "5",
+                                    "description": "optional",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "page",
+                                    "value": "14",
+                                    "description": "optional",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "keyword",
+                                    "value": "similique",
+                                    "description": "optional",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "http:\/\/{{baseUrl}}\/api\/officer\/me\/fillable?limit=5&page=14&keyword=similique"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": null,
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"status\":\"Success\",\"message\":\"Data successfully loaded\",\"data\":{\"current_page\":1,\"data\":[{\"id\":26,\"type\":\"petugas MONEV\",\"form_id\":8,\"institutionable_id\":19726,\"institutionable_type\":\"App\\\\Models\\\\EducationalInstitution\",\"created_at\":\"2021-07-10T11:40:01.000000Z\",\"updated_at\":\"2021-07-10T11:40:01.000000Z\",\"form\":{\"id\":8,\"name\":\"MONITORING WEBISTE\",\"supervision_end_date\":\"2021-10-24T17:00:00.000000Z\"},\"institutionable\":{\"id\":19726,\"name\":\"SMKS PEMBAHARUAN PURWOREJO\"},\"pivot\":{\"officer_id\":7,\"target_id\":26,\"id\":39,\"is_leader\":0,\"submited_at\":null,\"created_at\":\"2021-07-10T11:40:01.000000Z\",\"updated_at\":\"2021-07-10T11:40:01.000000Z\"}}],\"first_page_url\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable?page=1\",\"from\":1,\"last_page\":1,\"last_page_url\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable?page=1\",\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"active\":false},{\"url\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable?page=1\",\"label\":\"1\",\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"active\":false}],\"next_page_url\":null,\"path\":\"http:\\\/\\\/codenesia-5.test\\\/api\\\/officer\\\/me\\\/fillable\",\"per_page\":10,\"prev_page_url\":null,\"to\":1,\"total\":1}}",
+                            "name": "200"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "auth": {
+        "type": "noauth"
+    }
+}

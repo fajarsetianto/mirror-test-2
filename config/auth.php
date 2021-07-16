@@ -46,6 +46,16 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'respondent' => [
+            'driver' => 'session',
+            'provider' => 'respondents',
+        ],
+
+        'officer' => [
+            'driver' => 'session',
+            'provider' => 'officers',
+        ],
     ],
 
     /*
@@ -69,6 +79,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'respondents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Respondent::class,
+        ],
+
+        'officers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Officer::class,
         ],
 
         // 'users' => [

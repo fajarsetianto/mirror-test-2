@@ -1,0 +1,113 @@
+<?php
+
+Route::get('/', 'HomeController@index')->name('dashboard');
+
+Route::group(['prefix' => 'monitoring-evaluasi','as' => 'monev.'], function(){
+    Route::group(['prefix' => 'form','as' => 'form.'],function(){
+
+        Route::group(['middleware' => 'can:manage,form'], function(){
+            Route::group(['prefix' => '{form}/sasaran-monitoring','as' => 'target.'],function(){
+                Route::get('summary', 'TargetController@summary')->name('summary');
+            });
+        });
+       
+    });
+    Route::group(['namespace' => 'Inspection'], function(){
+        Route::group(['prefix' => 'pemeriksaan','as' => 'inspection.'], function(){
+            Route::get('/', 'InspectionController@index')->name('index');
+            Route::get('/data', 'InspectionController@data')->name('data');
+            Route::group(['prefix' => '{form}', 'as' => 'form.', 'middleware' => 'can:manage,form'], function(){
+                Route::get('/', 'TargetController@index')->name('index');
+                Route::get('data', 'TargetController@data')->name('data');
+                Route::get('/sasaran-monitoring/{target}', 'TargetController@detail')->name('detail');
+                Route::get('/sasaran-monitoring/{target}/download', 'TargetController@download')->name('download');
+                Route::group(['prefix' => '{target}', 'as' => 'instrument.'], function(){
+                    Route::get('data', 'InstrumentController@data')->name('data');
+                    Route::get('detail/{instrument}', 'InstrumentController@detail')->name('detail');
+                });
+            });
+        });
+    
+        Route::group(['namespace' => 'History','prefix' => 'riwayat-pemeriksaan','as' => 'inspection-history.'], function(){
+            Route::get('/', 'InspectionHistoryController@index')->name('index');
+            Route::get('/data', 'InspectionHistoryController@data')->name('data');
+            Route::group(['prefix' => '{form}', 'as' => 'form.', 'middleware' => 'can:manage,form'], function(){
+                Route::get('/', 'TargetController@index')->name('index');
+                Route::get('data', 'TargetController@data')->name('data');
+                Route::get('/sasaran-monitoring/{target}', 'TargetController@detail')->name('detail');
+                Route::group(['prefix' => '{target}', 'as' => 'instrument.'], function(){
+                    Route::get('data', 'InstrumentController@data')->name('data');
+                    Route::get('detail/{instrument}', 'InstrumentController@detail')->name('detail');
+                });
+            });
+        });
+    });
+    
+    Route::group(['prefix' => 'laporan-indikator','as' => 'indicator-report.'], function(){
+        Route::get('/', 'IndicatorReportController@index')->name('index');
+        Route::get('/data', 'IndicatorReportController@data')->name('data');
+        Route::group(['middleware' => 'can:manage,form'], function(){
+            Route::get('{form}/detail', 'IndicatorReportController@detail')->name('detail');
+            Route::get('{form}/{indicator}', 'IndicatorReportController@detailIndicator')->name('detail.indicator');
+            Route::get('{form}/{indicator}/data', 'IndicatorReportController@detailIndicatorData')->name('detail.indicator.data');
+        });
+    });
+});
+
+Route::group(['prefix' => 'management-lembaga','as' => 'institution.'], function(){
+    Route::group(['prefix' => 'satuan-pendidikan','as' => 'satuan.'], function(){
+        Route::get('/', 'EducationalInstitutionController@index')->name('index');
+        Route::get('/data', 'EducationalInstitutionController@data')->name('data');
+        Route::get('/select2', 'EducationalInstitutionController@select2')->name('select2');
+    });
+    Route::group(['prefix' => 'non-satuan-pendidikan','as' => 'non-satuan.'], function(){
+        Route::get('/', 'NonEducationalInstitutionController@index')->name('index');
+        Route::get('/data', 'NonEducationalInstitutionController@data')->name('data');
+        Route::get('/select2', 'NonEducationalInstitutionController@select2')->name('select2');
+        Route::get('/create', 'NonEducationalInstitutionController@create')->name('create');
+        Route::post('/create', 'NonEducationalInstitutionController@store')->name('store');
+
+        Route::group(['middleware' => 'can:manage,nonEducationalInstitution'], function(){
+            Route::get('{nonEducationalInstitution}/edit', 'NonEducationalInstitutionController@edit')->name('edit');
+            Route::put('{nonEducationalInstitution}/update', 'NonEducationalInstitutionController@update')->name('update');
+            Route::delete('{nonEducationalInstitution}', 'NonEducationalInstitutionController@destroy')->name('destroy');
+        });
+        
+    });
+});
+
+Route::group(['prefix' => 'management-user','as' => 'management-user.'], function(){
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+        Route::get('/', 'AdminController@index')->name('index');
+        Route::get('/data', 'AdminController@data')->name('data');
+        Route::get('/create', 'AdminController@create')->name('create');
+        Route::get('/select2', 'AdminController@select2')->name('select2');
+        Route::post('/create', 'AdminController@store')->name('store');
+    
+        Route::group(['middleware' => 'can:manage,officer'],function(){
+            Route::get('{officer}/edit', 'OfficerController@edit')->name('edit');
+            Route::put('{officer}/update', 'OfficerController@update')->name('update');
+            Route::delete('{officer}', 'OfficerController@destroy')->name('destroy');
+        });
+    });
+    Route::group(['prefix' => 'petugas-monev', 'as' => 'officer.'], function(){
+        Route::get('/', 'OfficerController@index')->name('index');
+        Route::get('/data', 'OfficerController@data')->name('data');
+        Route::get('/create', 'OfficerController@create')->name('create');
+        Route::get('/select2', 'OfficerController@select2')->name('select2');
+        Route::post('/create', 'OfficerController@store')->name('store');
+    
+        Route::group(['middleware' => 'can:manage,officer'],function(){
+            Route::get('{officer}/edit', 'OfficerController@edit')->name('edit');
+            Route::put('{officer}/update', 'OfficerController@update')->name('update'); 
+            Route::delete('{officer}', 'OfficerController@destroy')->name('destroy');
+        });
+    });
+   
+    
+});
+
+Route::group(['prefix' => 'pengaturan','as' => 'setting.'], function(){
+    Route::get('/', 'SettingController@index')->name('index');
+    Route::put('/update', 'SettingController@update')->name('update');
+});
