@@ -112,7 +112,7 @@
             line-height: 1.5385;
             color: #333;
             text-align: left;
-            background-color: #f5f5f5;
+            background-color: #ffffff;
         }
 
         h3,
